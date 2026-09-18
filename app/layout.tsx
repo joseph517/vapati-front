@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Archivo } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
 const newsreader = Newsreader({
   variable: "--font-newsreader",
@@ -24,9 +25,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${newsreader.variable} ${archivo.variable} h-full antialiased`}
+      className={cn("h-full antialiased", newsreader.variable, archivo.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );
 }
