@@ -1,0 +1,73 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { useAuthHydrated, useAuthStore } from "@/lib/store/auth-store";
+
+export default function ProtectedLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const hasHydrated = useAuthHydrated();
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const userInfo = useAuthStore((state) => state.userInfo);
+  const clearSession = useAuthStore((state) => state.clearSession);
+
+  useEffect(() => {
+    if (!hasHydrated) return;
+    if (!accessToken) {
+      router.replace("/login");
+    }
+  }, [hasHydrated, accessToken, router]);
+
+  function handleLogout() {
+    clearSession();
+    router.replace("/login?flash=logged-out");
+  }
+
+  if (!hasHydrated || !accessToken) {
+    return null;
+  }
+
+  return (
+    <div className="flex min-h-full flex-col">
+      <header className="sticky top-0 z-20 border-b border-border bg-card">
+        <div className="mx-auto flex max-w-[1080px] flex-wrap items-center gap-5 px-6 py-3.5">
+          <Link
+            href="/campaigns"
+            className="font-serif text-[22px] font-medium text-foreground"
+          >
+            VaPaTi
+          </Link>
+          <nav className="flex flex-wrap gap-[18px]">
+            <Link
+              href="/campaigns"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              Campañas
+            </Link>
+            <Link
+              href="/campaigns/new"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              Crear campaña
+            </Link>
+          </nav>
+          <div className="ml-auto flex items-center gap-4">
+            <span className="text-[13px] text-muted-foreground">
+              {userInfo?.fullName}
+            </span>
+            <Button type="button" variant="outline" size="sm" onClick={handleLogout}>
+              Salir
+            </Button>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1">{children}</main>
+    </div>
+  );
+}
