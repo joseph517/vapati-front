@@ -55,6 +55,29 @@
   --input: #e3d9cc; /* border-input */
   --ring: #a85a3c; /* accent (focus ring) */
   --radius: 0.5rem; /* 8px — input, botón primario */
+
+  /* Tokens del handoff sin equivalente directo en el tema de shadcn */
+  --border-strong: #c9b9a5;
+  --border-dashed: #dcd0c0;
+  --divider: #ebe2d6;
+  --ink-body: #4a4038;
+  --ink-label: #7a6d62;
+  --ink-faint: #756a5f;
+  --ink-eyebrow: #877565;
+  --accent-hover: #8e4830;
+  --accent-soft-border: #c08e76;
+  --success: #5f7150;
+  --success-bg: #f1f4ec;
+  --success-border: #bdcbb0;
+  --success-ink: #3d4a32;
+  --success-ink-soft: #4f5a44;
+  --danger-bg: #fbede8;
+  --danger-border: #e2bfb4;
+  --notice-bg: #f6ede1;
+  --notice-border: #d9c8b6;
+  --notice-ink: #6b4a32;
+  --track-soft: #f1e9de;
+  --overlay: rgba(38, 32, 27, 0.42);
 }
 
 body {
