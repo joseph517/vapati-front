@@ -15,14 +15,17 @@ export default function ProtectedLayout({
   const hasHydrated = useAuthHydrated();
   const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
+  const sessionExpired = useAuthStore((state) => state.sessionExpired);
   const clearSession = useAuthStore((state) => state.clearSession);
 
   useEffect(() => {
     if (!hasHydrated) return;
     if (!accessToken) {
-      router.replace("/login");
+      router.replace(
+        sessionExpired ? "/login?flash=session-expired" : "/login"
+      );
     }
-  }, [hasHydrated, accessToken, router]);
+  }, [hasHydrated, accessToken, sessionExpired, router]);
 
   function handleLogout() {
     clearSession();
@@ -39,7 +42,7 @@ export default function ProtectedLayout({
         <div className="mx-auto flex max-w-[1080px] flex-wrap items-center gap-5 px-6 py-3.5">
           <Link
             href="/campaigns"
-            className="font-serif text-[22px] font-medium text-foreground"
+            className="font-serif text-[22px] font-medium tracking-[-0.01em] text-foreground"
           >
             VaPaTi
           </Link>

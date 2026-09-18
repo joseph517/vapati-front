@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/lib/store/auth-store";
 import type { ApiError } from "@/lib/types";
 
 const API_BASE_URL = "http://localhost:8080";
@@ -56,7 +57,14 @@ export async function apiFetch<T>(
   if (!response.ok) {
     const apiError = parsedBody as ApiError | null;
     const message =
-      apiError?.message ?? "Ocurrió un error inesperado. Intentá de nuevo.";
+      apiError?.message ??
+      apiError?.error ??
+      "Ocurrió un error inesperado. Intentá de nuevo.";
+
+    if (response.status === 401 && accessToken) {
+      useAuthStore.getState().expireSession();
+    }
+
     throw new ApiClientError(response.status, message);
   }
 

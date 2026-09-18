@@ -1,0 +1,170 @@
+"use client";
+
+import { useEffect, useState, type FormEvent } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ApiClientError, apiFetch } from "@/lib/api";
+import type { CampaignResponseDTO, DonationResponseDTO } from "@/lib/types";
+import { cn, formatCurrencyCOP } from "@/lib/utils";
+
+const SUGGESTED_AMOUNTS = [10000, 25000, 50000, 100000];
+
+type DonationApiResponse = {
+  message: string;
+  donation: DonationResponseDTO;
+  status: string;
+};
+
+export type DonationReceipt = DonationResponseDTO & { message: string };
+
+export function DonateDialog({
+  open,
+  onOpenChange,
+  campaign,
+  accessToken,
+  onDonated,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  campaign: CampaignResponseDTO;
+  accessToken: string | null;
+  onDonated: (receipt: DonationReceipt) => void;
+}) {
+  const [amount, setAmount] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAmount("");
+      setError(null);
+      setSubmitting(false);
+    }
+  }, [open]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const amountValue = Number(amount);
+    if (!amount || amountValue <= 0) {
+      setError("Ingresá un monto mayor a 0.");
+      return;
+    }
+
+    setError(null);
+    setSubmitting(true);
+    try {
+      const data = await apiFetch<DonationApiResponse>("/api/donations", {
+        method: "POST",
+        accessToken,
+        body: { campaignId: campaign.id, amount: amountValue },
+      });
+      onDonated({ ...data.donation, message: data.message });
+      onOpenChange(false);
+    } catch (err) {
+      setError(
+        err instanceof ApiClientError
+          ? err.message
+          : "Ocurrió un error inesperado. Intentá de nuevo."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        showCloseButton={false}
+        className="w-[calc(100%-2rem)] max-w-[430px] gap-4 rounded-2xl border border-input bg-card p-[26px] shadow-[0_24px_60px_rgba(38,32,27,0.22)]"
+      >
+        <DialogHeader className="flex-row items-center justify-between space-y-0">
+          <DialogTitle className="font-serif text-2xl font-medium tracking-[-0.01em] text-foreground">
+            Donar
+          </DialogTitle>
+          <DialogClose asChild>
+            <button
+              type="button"
+              aria-label="Cerrar"
+              className="text-xl leading-none text-[var(--ink-faint)] hover:text-foreground"
+            >
+              ×
+            </button>
+          </DialogClose>
+        </DialogHeader>
+
+        <p className="-mt-2 text-[13.5px] text-muted-foreground">
+          {campaign.name}
+        </p>
+
+        {error && (
+          <Alert
+            variant="destructive"
+            className="border-[var(--danger-border)] bg-[var(--danger-bg)]"
+          >
+            <AlertDescription className="text-[13.5px]">
+              {error}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <Label
+              htmlFor="donation-amount"
+              className="text-[11.5px] font-medium tracking-[.07em] text-[var(--ink-label)] uppercase"
+            >
+              Monto
+            </Label>
+            <Input
+              id="donation-amount"
+              type="number"
+              value={amount}
+              onChange={(event) => setAmount(event.target.value)}
+              className="h-auto bg-secondary py-3 text-[17px]"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {SUGGESTED_AMOUNTS.map((suggested) => (
+              <button
+                key={suggested}
+                type="button"
+                onClick={() => setAmount(String(suggested))}
+                className={cn(
+                  "rounded-full border border-input bg-white px-3.5 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors",
+                  "hover:border-[var(--border-strong)] hover:text-foreground"
+                )}
+              >
+                {formatCurrencyCOP(suggested)}
+              </button>
+            ))}
+          </div>
+
+          <Button
+            type="submit"
+            disabled={submitting}
+            className="w-full py-[13px] text-[15px] font-semibold"
+          >
+            {submitting ? "procesando…" : "Confirmar donación"}
+          </Button>
+
+          <p className="text-center text-xs text-[var(--ink-faint)]">
+            El backend aprueba la donación de forma inmediata. No hay
+            pasarela de pago.
+          </p>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}

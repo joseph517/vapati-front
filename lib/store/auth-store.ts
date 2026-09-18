@@ -7,8 +7,10 @@ type AuthState = {
   accessToken: string | null;
   userInfo: UserInfo | null;
   hasHydrated: boolean;
+  sessionExpired: boolean;
   setSession: (accessToken: string, userInfo: UserInfo) => void;
   clearSession: () => void;
+  expireSession: () => void;
   setHasHydrated: (hasHydrated: boolean) => void;
 };
 
@@ -18,8 +20,13 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       userInfo: null,
       hasHydrated: false,
-      setSession: (accessToken, userInfo) => set({ accessToken, userInfo }),
-      clearSession: () => set({ accessToken: null, userInfo: null }),
+      sessionExpired: false,
+      setSession: (accessToken, userInfo) =>
+        set({ accessToken, userInfo, sessionExpired: false }),
+      clearSession: () =>
+        set({ accessToken: null, userInfo: null, sessionExpired: false }),
+      expireSession: () =>
+        set({ accessToken: null, userInfo: null, sessionExpired: true }),
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {

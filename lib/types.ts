@@ -36,11 +36,8 @@ export type DonationResponseDTO = {
   updatedAt: string;
 };
 
-export const INTEREST_CATEGORIES = [
-  { id: 1, label: "Educación" },
-  { id: 2, label: "Salud" },
-  { id: 3, label: "Medio ambiente" },
-  { id: 4, label: "Vivienda" },
-  { id: 5, label: "Animales" },
-  { id: 6, label: "Cultura" },
-] as const;
+export type CategoryDTO = {
+  id: number;
+  name: string;
+  description: string;
+};
