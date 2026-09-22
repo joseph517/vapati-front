@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { CampaignSearchBar } from "@/components/campaign-search-bar";
+import { CategoryStrip } from "@/components/category-strip";
 import { ProgressBar } from "@/components/progress-bar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ApiClientError, apiFetch } from "@/lib/api";
+import { useCategories } from "@/lib/hooks/use-categories";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
 import { formatCurrencyCOP } from "@/lib/utils";
@@ -16,20 +19,31 @@ function truncateDescription(text: string): string {
 
 export default function CampaignsPage() {
   const accessToken = useAuthStore((state) => state.accessToken);
+  const {
+    categories,
+    loading: categoriesLoading,
+    error: categoriesError,
+  } = useCategories();
 
   const [items, setItems] = useState<CampaignResponseDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filterCategory, setFilterCategory] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+  const [searchDraft, setSearchDraft] = useState("");
 
   useEffect(() => {
-    loadCampaigns();
+    loadCampaigns(filterCategory);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filterCategory]);
 
-  function loadCampaigns() {
+  function loadCampaigns(categoryId: number | null) {
     setLoading(true);
     setError(null);
-    apiFetch<CampaignResponseDTO[]>("/api/campaigns/list", { accessToken })
+    const query = categoryId ? `?categoryId=${categoryId}` : "";
+    apiFetch<CampaignResponseDTO[]>(`/api/campaigns/list${query}`, {
+      accessToken,
+    })
       .then((data) => setItems(data))
       .catch((err) => {
         setError(
@@ -41,8 +55,21 @@ export default function CampaignsPage() {
       .finally(() => setLoading(false));
   }
 
-  const empty = !loading && !error && items.length === 0;
-  const ready = !loading && !error && items.length > 0;
+  function toggleCategoryFilter(categoryId: number) {
+    setFilterCategory((current) => (current === categoryId ? null : categoryId));
+  }
+
+  const searchTerm = search.trim().toLowerCase();
+  const filteredItems = searchTerm
+    ? items.filter(
+        (campaign) =>
+          campaign.name.toLowerCase().includes(searchTerm) ||
+          campaign.description.toLowerCase().includes(searchTerm)
+      )
+    : items;
+
+  const empty = !loading && !error && filteredItems.length === 0;
+  const ready = !loading && !error && filteredItems.length > 0;
 
   let countLine: string;
   if (loading) {
@@ -71,6 +98,21 @@ export default function CampaignsPage() {
         </Button>
       </div>
 
+      <div className="mb-[26px] border-t border-b border-[var(--divider)] py-[18px]">
+        <CategoryStrip
+          categories={categories}
+          loading={categoriesLoading}
+          error={categoriesError}
+          activeId={filterCategory}
+          onToggle={toggleCategoryFilter}
+        />
+        <CampaignSearchBar
+          value={searchDraft}
+          onChange={setSearchDraft}
+          onSubmit={() => setSearch(searchDraft)}
+        />
+      </div>
+
       {loading && (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-[18px]">
           {Array.from({ length: 3 }).map((_, index) => (
@@ -97,7 +139,7 @@ export default function CampaignsPage() {
           <p className="mt-1.5 text-[13.5px] text-destructive/90">{error}</p>
           <button
             type="button"
-            onClick={loadCampaigns}
+            onClick={() => loadCampaigns(filterCategory)}
             className="mt-4 rounded-md border border-[var(--accent-soft-border)] bg-white px-3 py-1.5 text-[13px] font-medium text-destructive"
           >
             Reintentar
@@ -121,7 +163,7 @@ export default function CampaignsPage() {
 
       {ready && (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-[18px]">
-          {items.map((campaign) => {
+          {filteredItems.map((campaign) => {
             const pct = Math.min(
               100,
               Math.round((campaign.amountRaised / campaign.amountGoal) * 100)
