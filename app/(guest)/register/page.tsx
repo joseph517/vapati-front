@@ -18,6 +18,9 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const FIELD_LABEL_CLASSES =
   "text-[11.5px] font-medium tracking-[.07em] text-[var(--ink-label)] uppercase";
 
+const STEP_LABELS = ["Datos personales", "Cuenta", "Intereses"] as const;
+const TOTAL_STEPS = STEP_LABELS.length;
+
 export default function RegisterPage() {
   const router = useRouter();
 
@@ -32,6 +35,7 @@ export default function RegisterPage() {
   const [categoryIds, setCategoryIds] = useState<number[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
 
   const [categories, setCategories] = useState<CategoryDTO[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
@@ -64,25 +68,55 @@ export default function RegisterPage() {
     );
   }
 
-  function validate(): string | null {
+  function validateStep(target: 1 | 2): string | null {
     const missing: string[] = [];
-    if (!firstName.trim()) missing.push("nombre");
-    if (!lastName.trim()) missing.push("apellido");
-    if (!EMAIL_PATTERN.test(email.trim())) missing.push("un email válido");
-    if (!userName.trim()) missing.push("usuario");
-    if (password.length < 8)
-      missing.push("una contraseña de al menos 8 caracteres");
+    if (target === 1) {
+      if (!firstName.trim()) missing.push("nombre");
+      if (!lastName.trim()) missing.push("apellido");
+    } else {
+      if (!EMAIL_PATTERN.test(email.trim())) missing.push("un email válido");
+      if (!userName.trim()) missing.push("usuario");
+      if (password.length < 8)
+        missing.push("una contraseña de al menos 8 caracteres");
+    }
 
     if (missing.length === 0) return null;
     return `Falta ${missing.join(", ")}.`;
   }
 
+  function firstInvalidStep(): 1 | 2 | null {
+    if (validateStep(1)) return 1;
+    if (validateStep(2)) return 2;
+    return null;
+  }
+
+  function goToNextStep() {
+    const validationError = validateStep(step === 3 ? 2 : step);
+    if (validationError) {
+      setFormError(validationError);
+      return;
+    }
+    setFormError(null);
+    setStep((current) => (current === 3 ? current : ((current + 1) as 1 | 2 | 3)));
+  }
+
+  function goToPreviousStep() {
+    setFormError(null);
+    setStep((current) => (current === 1 ? current : ((current - 1) as 1 | 2 | 3)));
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const validationError = validate();
-    if (validationError) {
-      setFormError(validationError);
+    if (step !== 3) {
+      goToNextStep();
+      return;
+    }
+
+    const invalidStep = firstInvalidStep();
+    if (invalidStep) {
+      setStep(invalidStep);
+      setFormError(validateStep(invalidStep));
       return;
     }
 
@@ -146,10 +180,28 @@ export default function RegisterPage() {
         </Alert>
       )}
 
+      <div className="mb-5">
+        <div className="mb-2 flex items-baseline justify-between">
+          <span className="text-[11.5px] font-medium tracking-[.09em] text-[var(--ink-eyebrow)] uppercase">
+            {STEP_LABELS[step - 1]}
+          </span>
+          <span className="text-[12.5px] text-muted-foreground">
+            Paso {step} de {TOTAL_STEPS}
+          </span>
+        </div>
+        <div className="h-1 w-full overflow-hidden rounded-full bg-[var(--divider)]">
+          <div
+            className="h-full rounded-full bg-primary transition-all duration-300"
+            style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
+          />
+        </div>
+      </div>
+
       <form
         onSubmit={handleSubmit}
         className="rounded-xl border border-border bg-card p-6"
       >
+        {step === 1 && (
         <section>
           <h2 className="mb-3.5 text-[11.5px] font-medium tracking-[.09em] text-[var(--ink-eyebrow)] uppercase">
             Datos personales
@@ -203,9 +255,9 @@ export default function RegisterPage() {
             </div>
           </div>
         </section>
+        )}
 
-        <div className="my-6 border-t border-[var(--divider)]" />
-
+        {step === 2 && (
         <section>
           <h2 className="mb-3.5 text-[11.5px] font-medium tracking-[.09em] text-[var(--ink-eyebrow)] uppercase">
             Cuenta
@@ -262,9 +314,9 @@ export default function RegisterPage() {
             />
           </div>
         </section>
+        )}
 
-        <div className="my-6 border-t border-[var(--divider)]" />
-
+        {step === 3 && (
         <section>
           <h2 className="mb-3.5 text-[11.5px] font-medium tracking-[.09em] text-[var(--ink-eyebrow)] uppercase">
             Intereses
@@ -313,11 +365,36 @@ export default function RegisterPage() {
             </div>
           )}
         </section>
+        )}
 
         <div className="mt-[26px] flex items-center gap-3">
-          <Button type="submit" disabled={submitting} className="flex-1">
-            Crear cuenta
-          </Button>
+          {step === 1 && (
+            <Button type="button" onClick={goToNextStep} className="flex-1">
+              Continuar
+            </Button>
+          )}
+          {step > 1 && (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={goToPreviousStep}
+                disabled={submitting}
+              >
+                Atrás
+              </Button>
+              {step === 2 && (
+                <Button type="button" onClick={goToNextStep} className="flex-1">
+                  Continuar
+                </Button>
+              )}
+              {step === 3 && (
+                <Button type="submit" disabled={submitting} className="flex-1">
+                  Crear cuenta
+                </Button>
+              )}
+            </>
+          )}
           {submitting && (
             <span className="animate-pulse text-[13px] text-muted-foreground opacity-85">
               enviando…
