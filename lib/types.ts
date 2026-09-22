@@ -14,6 +14,7 @@ export type CampaignResponseDTO = {
   amountGoal: number;
   amountRaised: number;
   userId: number;
+  userName: string;
   categories: CategoryDTO[];
   status: CampaignStatus;
 };

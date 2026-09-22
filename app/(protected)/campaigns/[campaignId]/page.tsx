@@ -19,7 +19,6 @@ import { formatCurrencyCOP } from "@/lib/utils";
 export default function CampaignDetailPage() {
   const params = useParams<{ campaignId: string }>();
   const accessToken = useAuthStore((state) => state.accessToken);
-
   const [campaign, setCampaign] = useState<CampaignResponseDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -115,7 +114,7 @@ export default function CampaignDetailPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs font-medium tracking-[.08em] text-[var(--ink-eyebrow)] uppercase">
-              Campaña #{campaign.id} · creada por usuario {campaign.userId}
+              Campaña #{campaign.id} · creada por {campaign.userName}
             </span>
             <StatusBadge status={campaign.status} />
           </div>
