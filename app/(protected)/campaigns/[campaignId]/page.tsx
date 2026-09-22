@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CampaignOwnerActions } from "@/components/campaign-owner-actions";
+import { CampaignStatusHistoryPanel } from "@/components/campaign-status-history-panel";
 import { CategoryChips } from "@/components/category-chips";
 import { DonateDialog, type DonationReceipt } from "@/components/donate-dialog";
 import { ProgressBar } from "@/components/progress-bar";
@@ -133,6 +134,8 @@ export default function CampaignDetailPage() {
             onDonateClick={() => setIsDonateOpen(true)}
             onOwnerActionUpdated={loadCampaign}
           />
+
+          <CampaignStatusHistoryPanel campaign={campaign} />
 
           <DonateDialog
             open={isDonateOpen}
