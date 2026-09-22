@@ -140,7 +140,11 @@ export function DonateDialog({
               <button
                 key={suggested}
                 type="button"
-                onClick={() => setAmount(String(suggested))}
+                onClick={() =>
+                  setAmount((current) =>
+                    String((Number(current) || 0) + suggested)
+                  )
+                }
                 className={cn(
                   "rounded-full border border-input bg-white px-3.5 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors",
                   "hover:border-[var(--border-strong)] hover:text-foreground"
