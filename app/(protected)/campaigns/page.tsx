@@ -3,19 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { CampaignCard } from "@/components/campaign-card";
 import { CampaignSearchBar } from "@/components/campaign-search-bar";
 import { CategoryStrip } from "@/components/category-strip";
-import { ProgressBar } from "@/components/progress-bar";
+import { EmptyState } from "@/components/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ApiClientError, apiFetch } from "@/lib/api";
 import { useCategories } from "@/lib/hooks/use-categories";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
-import { formatCurrencyCOP } from "@/lib/utils";
-
-function truncateDescription(text: string): string {
-  return text.length > 130 ? `${text.slice(0, 130)}…` : text;
-}
 
 export default function CampaignsPage() {
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -59,6 +55,12 @@ export default function CampaignsPage() {
     setFilterCategory((current) => (current === categoryId ? null : categoryId));
   }
 
+  function clearFilters() {
+    setFilterCategory(null);
+    setSearch("");
+    setSearchDraft("");
+  }
+
   const searchTerm = search.trim().toLowerCase();
   const filteredItems = searchTerm
     ? items.filter(
@@ -68,7 +70,11 @@ export default function CampaignsPage() {
       )
     : items;
 
-  const empty = !loading && !error && filteredItems.length === 0;
+  const hasActiveFilter = filterCategory !== null || searchTerm !== "";
+  const emptyNoFilter =
+    !loading && !error && filteredItems.length === 0 && !hasActiveFilter;
+  const emptyWithFilter =
+    !loading && !error && filteredItems.length === 0 && hasActiveFilter;
   const ready = !loading && !error && filteredItems.length > 0;
 
   let countLine: string;
@@ -147,55 +153,35 @@ export default function CampaignsPage() {
         </div>
       )}
 
-      {empty && (
-        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-[var(--border-dashed)] px-6 py-[60px] text-center">
-          <h2 className="font-serif text-lg text-foreground">
-            Todavía no hay campañas
-          </h2>
-          <p className="max-w-[380px] text-sm text-muted-foreground">
-            Creá la primera campaña para empezar a recibir aportes.
-          </p>
-          <Button asChild className="mt-2">
-            <Link href="/campaigns/new">Crear la primera</Link>
-          </Button>
-        </div>
+      {emptyNoFilter && (
+        <EmptyState
+          title="Todavía no hay campañas"
+          description="Creá la primera campaña para empezar a recibir aportes."
+          action={
+            <Button asChild className="mt-2">
+              <Link href="/campaigns/new">Crear la primera</Link>
+            </Button>
+          }
+        />
+      )}
+
+      {emptyWithFilter && (
+        <EmptyState
+          title="Ninguna campaña coincide con este filtro"
+          description="Probá con otra categoría u otro estado, o volvé a ver todas las campañas."
+          action={
+            <Button variant="outline" className="mt-2" onClick={clearFilters}>
+              Quitar filtros
+            </Button>
+          }
+        />
       )}
 
       {ready && (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-[18px]">
-          {filteredItems.map((campaign) => {
-            const pct = Math.min(
-              100,
-              Math.round((campaign.amountRaised / campaign.amountGoal) * 100)
-            );
-            return (
-              <Link
-                key={campaign.id}
-                href={`/campaigns/${campaign.id}`}
-                className="group flex flex-col rounded-xl border border-border bg-card p-[22px] text-left transition-[border-color,transform] duration-150 hover:-translate-y-0.5 hover:border-[var(--border-strong)]"
-              >
-                <span className="text-xs font-medium tracking-[.08em] text-[var(--ink-eyebrow)] uppercase">
-                  Campaña #{campaign.id}
-                </span>
-                <h3 className="mt-1 font-serif text-xl leading-[1.25] tracking-[-0.01em] text-foreground">
-                  {campaign.name}
-                </h3>
-                <p className="mt-2 text-[13.5px] leading-[1.55] text-muted-foreground">
-                  {truncateDescription(campaign.description)}
-                </p>
-                <div className="mt-4 flex-1" />
-                <ProgressBar value={pct} className="h-[7px]" />
-                <div className="mt-2.5 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-foreground">
-                    {formatCurrencyCOP(campaign.amountRaised)}
-                  </span>
-                  <span className="text-[12.5px] text-[var(--ink-label)]">
-                    {pct}% de {formatCurrencyCOP(campaign.amountGoal)}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+          {filteredItems.map((campaign) => (
+            <CampaignCard key={campaign.id} campaign={campaign} />
+          ))}
         </div>
       )}
     </main>
