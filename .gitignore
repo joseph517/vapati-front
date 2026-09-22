@@ -42,7 +42,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/Prototipo-Vapati-Next.js
 /specs
 CLAUDE.md
 claude.md
