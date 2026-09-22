@@ -114,7 +114,7 @@ export default function CampaignDetailPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs font-medium tracking-[.08em] text-[var(--ink-eyebrow)] uppercase">
-              Campaña #{campaign.id} · creada por {campaign.userName}
+              creada por {campaign.userName}
             </span>
             <StatusBadge status={campaign.status} />
           </div>
