@@ -4,9 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { CampaignOwnerActions } from "@/components/campaign-owner-actions";
+import { CategoryChips } from "@/components/category-chips";
 import { DonateDialog, type DonationReceipt } from "@/components/donate-dialog";
 import { ProgressBar } from "@/components/progress-bar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { StatusBadge } from "@/components/status-badge";
 import { ApiClientError, apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
@@ -109,10 +112,16 @@ export default function CampaignDetailPage() {
             </div>
           )}
 
-          <span className="text-xs font-medium tracking-[.08em] text-[var(--ink-eyebrow)] uppercase">
-            Campaña #{campaign.id} · creada por usuario {campaign.userId}
-          </span>
-          <h1 className="mt-1 font-serif text-[38px] leading-[1.1] tracking-[-0.02em] text-foreground">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-xs font-medium tracking-[.08em] text-[var(--ink-eyebrow)] uppercase">
+              Campaña #{campaign.id} · creada por usuario {campaign.userId}
+            </span>
+            <StatusBadge status={campaign.status} />
+          </div>
+          <div className="mt-3">
+            <CategoryChips categories={campaign.categories} />
+          </div>
+          <h1 className="mt-3 font-serif text-[38px] leading-[1.1] tracking-[-0.02em] text-foreground">
             {campaign.name}
           </h1>
           <p className="mt-4 mb-[34px] max-w-[62ch] text-base leading-[1.65] text-[var(--ink-body)]">
@@ -122,6 +131,7 @@ export default function CampaignDetailPage() {
           <CampaignProgressPanel
             campaign={campaign}
             onDonateClick={() => setIsDonateOpen(true)}
+            onOwnerActionUpdated={loadCampaign}
           />
 
           <DonateDialog
@@ -140,9 +150,11 @@ export default function CampaignDetailPage() {
 function CampaignProgressPanel({
   campaign,
   onDonateClick,
+  onOwnerActionUpdated,
 }: {
   campaign: CampaignResponseDTO;
   onDonateClick: () => void;
+  onOwnerActionUpdated: () => void;
 }) {
   const pct = Math.min(
     100,
@@ -171,6 +183,7 @@ function CampaignProgressPanel({
       >
         Donar a esta campaña
       </Button>
+      <CampaignOwnerActions campaign={campaign} onUpdated={onOwnerActionUpdated} />
     </div>
   );
 }
