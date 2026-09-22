@@ -1,3 +1,12 @@
+export type CampaignStatus = "ACTIVE" | "COMPLETED" | "CLOSED";
+
+export type CampaignStatusHistoryResponseDTO = {
+  previousStatus: CampaignStatus | null;
+  newStatus: CampaignStatus;
+  changedByUserId: number;
+  changedAt: string; // ISO datetime
+};
+
 export type CampaignResponseDTO = {
   id: number;
   name: string;
@@ -5,6 +14,8 @@ export type CampaignResponseDTO = {
   amountGoal: number;
   amountRaised: number;
   userId: number;
+  categories: CategoryDTO[];
+  status: CampaignStatus;
 };
 
 export type UserInfo = {
