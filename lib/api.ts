@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { ApiError } from "@/lib/types";
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export class ApiClientError extends Error {
   status: number;
@@ -43,7 +43,7 @@ export async function apiFetch<T>(
   } catch {
     throw new ApiClientError(
       0,
-      "No pudimos conectar con el servidor. Verificá que localhost:8080 esté disponible."
+      "No pudimos conectar con el servidor. Verificá tu conexión."
     );
   }
 
