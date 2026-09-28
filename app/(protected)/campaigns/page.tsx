@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CampaignCard } from "@/components/campaign-card";
+import { CampaignGridSkeleton } from "@/components/campaign-grid-skeleton";
 import { CampaignSearchBar } from "@/components/campaign-search-bar";
 import { CategoryStrip } from "@/components/category-strip";
 import { EmptyState } from "@/components/empty-state";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ErrorCard } from "@/components/error-card";
 import { ApiClientError, apiFetch } from "@/lib/api";
 import { useCategories } from "@/lib/hooks/use-categories";
 import { useAuthStore } from "@/lib/store/auth-store";
@@ -119,38 +120,15 @@ export default function CampaignsPage() {
         />
       </div>
 
-      {loading && (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-[18px]">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-3 rounded-xl border border-border bg-card p-[22px]"
-            >
-              <Skeleton className="h-3 w-24" />
-              <Skeleton className="h-5 w-40" />
-              <Skeleton className="h-3.5 w-full" />
-              <Skeleton className="h-3.5 w-2/3" />
-              <Skeleton className="mt-4 h-[7px] w-full rounded-full" />
-              <Skeleton className="h-3.5 w-1/2" />
-            </div>
-          ))}
-        </div>
-      )}
+      {loading && <CampaignGridSkeleton />}
 
       {!loading && error && (
-        <div className="rounded-xl border border-[var(--danger-border)] bg-[var(--danger-bg)] p-6">
-          <h2 className="font-serif text-base text-destructive">
-            No pudimos cargar las campañas
-          </h2>
-          <p className="mt-1.5 text-[13.5px] text-destructive/90">{error}</p>
-          <button
-            type="button"
-            onClick={() => loadCampaigns(filterCategory)}
-            className="mt-4 rounded-md border border-[var(--accent-soft-border)] bg-white px-3 py-1.5 text-[13px] font-medium text-destructive"
-          >
-            Reintentar
-          </button>
-        </div>
+        <ErrorCard
+          title="No pudimos cargar las campañas"
+          message={error}
+          actionLabel="Reintentar"
+          onAction={() => loadCampaigns(filterCategory)}
+        />
       )}
 
       {emptyNoFilter && (
