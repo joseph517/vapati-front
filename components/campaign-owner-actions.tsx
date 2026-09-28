@@ -1,10 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { DeleteCampaignDialog } from "@/components/delete-campaign-dialog";
 import { ApiClientError, apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export function CampaignOwnerActions({
   campaign,
@@ -17,6 +20,7 @@ export function CampaignOwnerActions({
   const userInfo = useAuthStore((state) => state.userInfo);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   if (userInfo?.userId !== campaign.userId) return null;
 
@@ -49,22 +53,61 @@ export function CampaignOwnerActions({
           {error}
         </div>
       )}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-2.5">
         <Button
-          type="button"
-          variant={isClosed ? "default" : "outline"}
-          disabled={busy}
-          onClick={handleClick}
-          className="flex-1 py-[14px] text-[15px] font-semibold"
+          asChild
+          variant="outline"
+          size="sm"
+          className={cn(busy && "pointer-events-none opacity-50")}
         >
-          {isClosed ? "Reactivar campaña" : "Cerrar campaña"}
+          <Link
+            href={`/campaigns/${campaign.id}/edit`}
+            aria-disabled={busy || undefined}
+          >
+            Editar
+          </Link>
         </Button>
+        {isClosed ? (
+          <Button
+            type="button"
+            disabled={busy}
+            onClick={handleClick}
+            className="text-sm font-semibold"
+          >
+            Reactivar campaña
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={busy}
+            onClick={handleClick}
+          >
+            Cerrar campaña
+          </Button>
+        )}
         {busy && (
           <span className="animate-pulse text-[13px] text-muted-foreground opacity-85">
             procesando…
           </span>
         )}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={busy}
+          onClick={() => setDeleteOpen(true)}
+          className="ml-auto border-[var(--danger-border)] bg-white text-destructive hover:border-[var(--danger-border-strong)] hover:bg-[var(--danger-bg)] hover:text-destructive"
+        >
+          Borrar campaña
+        </Button>
       </div>
+      <DeleteCampaignDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        campaign={campaign}
+      />
     </div>
   );
 }
