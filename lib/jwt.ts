@@ -16,8 +16,8 @@ function decodePayload(token: string): Record<string, unknown> | null {
   }
 }
 
-// Si el token no se puede decodificar o no tiene exp, devuelve false:
-// el request sale igual y, si da 401, lo cubre el refresh reactivo.
+// Returns false when the token cannot be decoded or has no exp:
+// the request goes out anyway and a 401 is covered by the reactive refresh.
 export function isTokenExpired(token: string): boolean {
   const exp = decodePayload(token)?.exp;
   if (typeof exp !== "number") return false;

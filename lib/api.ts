@@ -18,19 +18,43 @@ type ApiFetchOptions = Omit<RequestInit, "body"> & {
   accessToken?: string | null;
 };
 
+type RequestOptions = Omit<ApiFetchOptions, "accessToken">;
+
 export async function apiFetch<T>(
   path: string,
   options: ApiFetchOptions = {}
 ): Promise<T> {
-  const { body, accessToken, headers, ...rest } = options;
+  const { accessToken, ...requestOptions } = options;
+
+  try {
+    return await request<T>(path, requestOptions, accessToken ?? null);
+  } catch (error) {
+    if (
+      error instanceof ApiClientError &&
+      error.status === 401 &&
+      accessToken
+    ) {
+      useAuthStore.getState().expireSession();
+    }
+    throw error;
+  }
+}
+
+// fetch + body parsing + typed error. No auth logic here.
+async function request<T>(
+  path: string,
+  options: RequestOptions,
+  bearer: string | null
+): Promise<T> {
+  const { body, headers, ...rest } = options;
 
   const requestHeaders = new Headers(headers);
   requestHeaders.set("Accept", "application/json");
   if (body !== undefined) {
     requestHeaders.set("Content-Type", "application/json");
   }
-  if (accessToken) {
-    requestHeaders.set("Authorization", `Bearer ${accessToken}`);
+  if (bearer) {
+    requestHeaders.set("Authorization", `Bearer ${bearer}`);
   }
 
   let response: Response;
@@ -55,20 +79,22 @@ export async function apiFetch<T>(
   const parsedBody = rawBody ? safeJsonParse(rawBody) : null;
 
   if (!response.ok) {
-    const apiError = parsedBody as ApiError | null;
-    const message =
-      apiError?.message ??
-      apiError?.error ??
-      "Ocurrió un error inesperado. Intentá de nuevo.";
-
-    if (response.status === 401 && accessToken) {
-      useAuthStore.getState().expireSession();
-    }
-
-    throw new ApiClientError(response.status, message);
+    throw toApiClientError(response.status, parsedBody as ApiError | null);
   }
 
   return parsedBody as T;
+}
+
+// Single place that builds an ApiClientError from a response body.
+function toApiClientError(
+  status: number,
+  apiError: ApiError | null
+): ApiClientError {
+  const message =
+    apiError?.message ??
+    apiError?.error ??
+    "Ocurrió un error inesperado. Intentá de nuevo.";
+  return new ApiClientError(status, message);
 }
 
 function safeJsonParse(raw: string): unknown {
