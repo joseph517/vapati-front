@@ -19,13 +19,15 @@ const dateFormatter = new Intl.DateTimeFormat("es-CO", {
 
 export function CampaignStatusHistoryPanel({
   campaign,
+  defaultOpen = false,
 }: {
   campaign: CampaignResponseDTO;
+  defaultOpen?: boolean;
 }) {
   const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [history, setHistory] = useState<
     CampaignStatusHistoryResponseDTO[] | null
   >(null);
@@ -116,12 +118,14 @@ export function CampaignStatusHistoryPanel({
             <ul className="flex flex-col gap-2">
               {history.map((entry, index) => {
                 const changedByLabel =
-                  entry.changedByUserId === userInfo?.userId
-                    ? userInfo.userName
-                    : `usuario ${entry.changedByUserId}`;
+                  entry.changedByUserId === null
+                    ? "automático"
+                    : entry.changedByUserId === userInfo?.userId
+                      ? userInfo.userName
+                      : `usuario ${entry.changedByUserId}`;
                 return (
                   <li key={index} className="text-[13.5px] text-[var(--ink-body)]">
-                    {entry.previousStatus ?? "—"} → {entry.newStatus} ·{" "}
+                    {entry.previousStatus ?? "—"} {entry.newStatus} ·{" "}
                     {dateFormatter.format(new Date(entry.changedAt))} ·{" "}
                     {changedByLabel}
                   </li>

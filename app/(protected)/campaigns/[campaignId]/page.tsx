@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CampaignOwnerActions } from "@/components/campaign-owner-actions";
 import { CampaignStatusHistoryPanel } from "@/components/campaign-status-history-panel";
@@ -17,7 +17,18 @@ import type { CampaignResponseDTO } from "@/lib/types";
 import { formatCurrencyCOP } from "@/lib/utils";
 
 export default function CampaignDetailPage() {
+  return (
+    <Suspense fallback={null}>
+      <CampaignDetail />
+    </Suspense>
+  );
+}
+
+function CampaignDetail() {
   const params = useParams<{ campaignId: string }>();
+  const searchParams = useSearchParams();
+  // Set by the edit page after saving, so the history shows the new transitions.
+  const historyOpen = searchParams.get("history") === "open";
   const accessToken = useAuthStore((state) => state.accessToken);
   const [campaign, setCampaign] = useState<CampaignResponseDTO | null>(null);
   const [loading, setLoading] = useState(true);
@@ -134,7 +145,10 @@ export default function CampaignDetailPage() {
             onOwnerActionUpdated={loadCampaign}
           />
 
-          <CampaignStatusHistoryPanel campaign={campaign} />
+          <CampaignStatusHistoryPanel
+            campaign={campaign}
+            defaultOpen={historyOpen}
+          />
 
           <DonateDialog
             open={isDonateOpen}

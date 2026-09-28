@@ -6,11 +6,17 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export class ApiClientError extends Error {
   status: number;
+  fields?: Record<string, string>; // per-field messages of a "Validation failed" 400
 
-  constructor(status: number, message: string) {
+  constructor(
+    status: number,
+    message: string,
+    fields?: Record<string, string>
+  ) {
     super(message);
     this.name = "ApiClientError";
     this.status = status;
+    this.fields = fields;
   }
 }
 
@@ -194,7 +200,7 @@ function toApiClientError(
     apiError?.message ??
     apiError?.error ??
     "Ocurrió un error inesperado. Intentá de nuevo.";
-  return new ApiClientError(status, message);
+  return new ApiClientError(status, message, apiError?.fields);
 }
 
 function safeJsonParse(raw: string): unknown {
