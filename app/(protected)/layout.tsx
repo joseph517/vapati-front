@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { LogoutButton } from "@/components/logout-button";
 import { useAuthHydrated, useAuthStore } from "@/lib/store/auth-store";
 
 export default function ProtectedLayout({
@@ -16,7 +16,6 @@ export default function ProtectedLayout({
   const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
   const sessionExpired = useAuthStore((state) => state.sessionExpired);
-  const clearSession = useAuthStore((state) => state.clearSession);
 
   useEffect(() => {
     if (!hasHydrated) return;
@@ -26,11 +25,6 @@ export default function ProtectedLayout({
       );
     }
   }, [hasHydrated, accessToken, sessionExpired, router]);
-
-  function handleLogout() {
-    clearSession();
-    router.replace("/login?flash=logged-out");
-  }
 
   if (!hasHydrated || !accessToken) {
     return null;
@@ -64,9 +58,7 @@ export default function ProtectedLayout({
             <span className="text-[13px] text-muted-foreground">
               {userInfo?.fullName}
             </span>
-            <Button type="button" variant="outline" size="sm" onClick={handleLogout}>
-              Salir
-            </Button>
+            <LogoutButton />
           </div>
         </div>
       </header>
