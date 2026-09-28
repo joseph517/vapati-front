@@ -9,13 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ApiClientError, apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { UserInfo } from "@/lib/types";
-
-type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-  userInfo: UserInfo;
-};
+import type { AuthResponse } from "@/lib/types";
 
 const FLASH_MESSAGES: Record<string, string> = {
   "logged-out": "Cerraste sesión.",
@@ -53,11 +47,11 @@ function LoginForm() {
     setFormError(null);
     setSubmitting(true);
     try {
-      const data = await apiFetch<LoginResponse>("/auth/login", {
+      const data = await apiFetch<AuthResponse>("/auth/login", {
         method: "POST",
         body: { email, password },
       });
-      setSession(data.accessToken, data.userInfo);
+      setSession(data);
       router.replace("/campaigns");
     } catch (error) {
       setFormError(

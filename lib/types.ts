@@ -29,6 +29,12 @@ export type UserInfo = {
   fullName: string;
 };
 
+export type AuthResponse = {
+  accessToken: string; // 1 hora. Va en Authorization: Bearer
+  refreshToken: string; // 7 días. Solo para refresh y logout
+  userInfo: UserInfo;
+};
+
 export type ApiError = {
   error: string;
   message: string;

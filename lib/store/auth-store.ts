@@ -1,16 +1,20 @@
 import { useEffect } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { UserInfo } from "@/lib/types";
+import type { AuthResponse, UserInfo } from "@/lib/types";
 
 type AuthState = {
   accessToken: string | null;
+  refreshToken: string | null;
   userInfo: UserInfo | null;
+  blockedMessage: string | null;
   hasHydrated: boolean;
   sessionExpired: boolean;
-  setSession: (accessToken: string, userInfo: UserInfo) => void;
+  setSession: (auth: AuthResponse) => void;
   clearSession: () => void;
   expireSession: () => void;
+  blockSession: (message: string) => void;
+  clearBlockedMessage: () => void;
   setHasHydrated: (hasHydrated: boolean) => void;
 };
 
@@ -18,15 +22,43 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       accessToken: null,
+      refreshToken: null,
       userInfo: null,
+      blockedMessage: null,
       hasHydrated: false,
       sessionExpired: false,
-      setSession: (accessToken, userInfo) =>
-        set({ accessToken, userInfo, sessionExpired: false }),
+      setSession: ({ accessToken, refreshToken, userInfo }) =>
+        set({
+          accessToken,
+          refreshToken,
+          userInfo,
+          sessionExpired: false,
+          blockedMessage: null,
+        }),
       clearSession: () =>
-        set({ accessToken: null, userInfo: null, sessionExpired: false }),
+        set({
+          accessToken: null,
+          refreshToken: null,
+          userInfo: null,
+          sessionExpired: false,
+          blockedMessage: null,
+        }),
       expireSession: () =>
-        set({ accessToken: null, userInfo: null, sessionExpired: true }),
+        set({
+          accessToken: null,
+          refreshToken: null,
+          userInfo: null,
+          sessionExpired: true,
+        }),
+      blockSession: (message) =>
+        set({
+          accessToken: null,
+          refreshToken: null,
+          userInfo: null,
+          sessionExpired: false,
+          blockedMessage: message,
+        }),
+      clearBlockedMessage: () => set({ blockedMessage: null }),
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {
@@ -35,6 +67,7 @@ export const useAuthStore = create<AuthState>()(
       skipHydration: true,
       partialize: (state) => ({
         accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
         userInfo: state.userInfo,
       }),
       onRehydrateStorage: () => (state) => {
