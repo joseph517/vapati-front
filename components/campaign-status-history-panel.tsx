@@ -123,7 +123,7 @@ export function CampaignStatusHistoryPanel({
                       : `usuario ${entry.changedByUserId}`;
                 return (
                   <li key={index} className="text-[13.5px] text-[var(--ink-body)]">
-                    {entry.previousStatus ?? "—"} → {entry.newStatus} ·{" "}
+                    {entry.previousStatus ?? "—"} {entry.newStatus} ·{" "}
                     {dateFormatter.format(new Date(entry.changedAt))} ·{" "}
                     {changedByLabel}
                   </li>
