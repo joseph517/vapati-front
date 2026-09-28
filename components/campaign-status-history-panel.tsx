@@ -116,9 +116,11 @@ export function CampaignStatusHistoryPanel({
             <ul className="flex flex-col gap-2">
               {history.map((entry, index) => {
                 const changedByLabel =
-                  entry.changedByUserId === userInfo?.userId
-                    ? userInfo.userName
-                    : `usuario ${entry.changedByUserId}`;
+                  entry.changedByUserId === null
+                    ? "automático"
+                    : entry.changedByUserId === userInfo?.userId
+                      ? userInfo.userName
+                      : `usuario ${entry.changedByUserId}`;
                 return (
                   <li key={index} className="text-[13.5px] text-[var(--ink-body)]">
                     {entry.previousStatus ?? "—"} → {entry.newStatus} ·{" "}
