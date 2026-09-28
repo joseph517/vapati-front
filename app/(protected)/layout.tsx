@@ -53,6 +53,12 @@ export default function ProtectedLayout({
               Campañas
             </Link>
             <Link
+              href="/campaigns/mine"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              Mis campañas
+            </Link>
+            <Link
               href="/campaigns/new"
               className="text-sm font-medium text-muted-foreground hover:text-foreground"
             >
