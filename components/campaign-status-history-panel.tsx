@@ -19,13 +19,15 @@ const dateFormatter = new Intl.DateTimeFormat("es-CO", {
 
 export function CampaignStatusHistoryPanel({
   campaign,
+  defaultOpen = false,
 }: {
   campaign: CampaignResponseDTO;
+  defaultOpen?: boolean;
 }) {
   const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [history, setHistory] = useState<
     CampaignStatusHistoryResponseDTO[] | null
   >(null);
