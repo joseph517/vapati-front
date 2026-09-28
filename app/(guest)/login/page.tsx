@@ -3,19 +3,14 @@
 import Link from "next/link";
 import { Suspense, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { BlockedAccountAlert } from "@/components/blocked-account-alert";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ApiClientError, apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { UserInfo } from "@/lib/types";
-
-type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-  userInfo: UserInfo;
-};
+import type { AuthResponse } from "@/lib/types";
 
 const FLASH_MESSAGES: Record<string, string> = {
   "logged-out": "Cerraste sesión.",
@@ -35,8 +30,14 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const setSession = useAuthStore((state) => state.setSession);
+  const blockedMessage = useAuthStore((state) => state.blockedMessage);
+  const clearBlockedMessage = useAuthStore(
+    (state) => state.clearBlockedMessage
+  );
 
-  const flash = FLASH_MESSAGES[searchParams.get("flash") ?? ""];
+  const flash = blockedMessage
+    ? undefined
+    : FLASH_MESSAGES[searchParams.get("flash") ?? ""];
   const [email, setEmail] = useState(searchParams.get("email") ?? "");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -51,13 +52,14 @@ function LoginForm() {
     }
 
     setFormError(null);
+    clearBlockedMessage();
     setSubmitting(true);
     try {
-      const data = await apiFetch<LoginResponse>("/auth/login", {
+      const data = await apiFetch<AuthResponse>("/auth/login", {
         method: "POST",
         body: { email, password },
       });
-      setSession(data.accessToken, data.userInfo);
+      setSession(data);
       router.replace("/campaigns");
     } catch (error) {
       setFormError(
@@ -79,6 +81,8 @@ function LoginForm() {
         <p className="mt-2 mb-7 text-sm text-muted-foreground">
           Entrá para ver las campañas y aportar a las que te importan.
         </p>
+
+        {blockedMessage && <BlockedAccountAlert message={blockedMessage} />}
 
         {flash && (
           <Alert className="mb-3.5 border-[var(--notice-border)] bg-[var(--notice-bg)]">
