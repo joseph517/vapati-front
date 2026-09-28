@@ -8,6 +8,7 @@ import { CategorySelectChips } from "@/components/category-select-chips";
 import { FieldError } from "@/components/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NoticeAlert } from "@/components/notice-alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { ApiClientError } from "@/lib/api";
@@ -63,6 +64,12 @@ export function CampaignForm({
   const [serverFieldKeys, setServerFieldKeys] = useState<string[]>([]);
 
   const goalValue = Number(values.amountGoal);
+  // Edit-only: warns that changing the goal may move the campaign between statuses.
+  const showGoalNotice =
+    currentCampaign !== undefined &&
+    currentCampaign.status !== "CLOSED" &&
+    values.amountGoal !== "" &&
+    goalValue !== currentCampaign.amountGoal;
 
   function updateField<K extends keyof CampaignFormValues>(
     key: K,
@@ -200,7 +207,15 @@ export function CampaignForm({
             {values.amountGoal && goalValue > 0
               ? `Meta: ${formatCurrencyCOP(goalValue)}`
               : "Escribí el monto en pesos, sin puntos."}
+            {currentCampaign &&
+              ` · Recaudado hasta ahora: ${formatCurrencyCOP(currentCampaign.amountRaised)}`}
           </p>
+          {showGoalNotice && (
+            <NoticeAlert className="mt-2.5 text-[13px]">
+              Si cambiás la meta, la campaña puede pasar a Completada o volver
+              a Activa según lo recaudado.
+            </NoticeAlert>
+          )}
           <FieldError message={fieldErrors.amountGoal} />
         </div>
 

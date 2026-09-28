@@ -18,11 +18,11 @@ export function NoticeAlert({
     <Alert
       role={role ?? "alert"}
       className={cn(
-        "border-[var(--notice-border)] bg-[var(--notice-bg)]",
+        "border-[var(--notice-border)] bg-[var(--notice-bg)] text-[13.5px]",
         className
       )}
     >
-      <AlertDescription className="flex items-center gap-2 text-[13.5px] text-[var(--notice-ink)]">
+      <AlertDescription className="flex items-center gap-2 text-[length:inherit] text-[var(--notice-ink)]">
         <span className="size-1.5 shrink-0 rounded-full bg-primary" />
         {onDismiss ? <span className="flex-1">{children}</span> : children}
         {onDismiss && (
