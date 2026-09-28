@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Suspense, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { BlockedAccountAlert } from "@/components/blocked-account-alert";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,8 +30,14 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const setSession = useAuthStore((state) => state.setSession);
+  const blockedMessage = useAuthStore((state) => state.blockedMessage);
+  const clearBlockedMessage = useAuthStore(
+    (state) => state.clearBlockedMessage
+  );
 
-  const flash = FLASH_MESSAGES[searchParams.get("flash") ?? ""];
+  const flash = blockedMessage
+    ? undefined
+    : FLASH_MESSAGES[searchParams.get("flash") ?? ""];
   const [email, setEmail] = useState(searchParams.get("email") ?? "");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -45,6 +52,7 @@ function LoginForm() {
     }
 
     setFormError(null);
+    clearBlockedMessage();
     setSubmitting(true);
     try {
       const data = await apiFetch<AuthResponse>("/auth/login", {
@@ -73,6 +81,8 @@ function LoginForm() {
         <p className="mt-2 mb-7 text-sm text-muted-foreground">
           Entrá para ver las campañas y aportar a las que te importan.
         </p>
+
+        {blockedMessage && <BlockedAccountAlert message={blockedMessage} />}
 
         {flash && (
           <Alert className="mb-3.5 border-[var(--notice-border)] bg-[var(--notice-bg)]">
