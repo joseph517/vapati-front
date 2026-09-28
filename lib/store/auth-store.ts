@@ -10,6 +10,7 @@ type AuthState = {
   blockedMessage: string | null;
   hasHydrated: boolean;
   sessionExpired: boolean;
+  loggedOut: boolean;
   setSession: (auth: AuthResponse) => void;
   clearSession: () => void;
   expireSession: () => void;
@@ -27,12 +28,14 @@ export const useAuthStore = create<AuthState>()(
       blockedMessage: null,
       hasHydrated: false,
       sessionExpired: false,
+      loggedOut: false,
       setSession: ({ accessToken, refreshToken, userInfo }) =>
         set({
           accessToken,
           refreshToken,
           userInfo,
           sessionExpired: false,
+          loggedOut: false,
           blockedMessage: null,
         }),
       clearSession: () =>
@@ -41,6 +44,7 @@ export const useAuthStore = create<AuthState>()(
           refreshToken: null,
           userInfo: null,
           sessionExpired: false,
+          loggedOut: true,
           blockedMessage: null,
         }),
       expireSession: () =>
@@ -49,6 +53,7 @@ export const useAuthStore = create<AuthState>()(
           refreshToken: null,
           userInfo: null,
           sessionExpired: true,
+          loggedOut: false,
         }),
       blockSession: (message) =>
         set({
@@ -56,6 +61,7 @@ export const useAuthStore = create<AuthState>()(
           refreshToken: null,
           userInfo: null,
           sessionExpired: false,
+          loggedOut: false,
           blockedMessage: message,
         }),
       clearBlockedMessage: () => set({ blockedMessage: null }),

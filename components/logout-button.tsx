@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 
 export function LogoutButton() {
-  const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
 
   async function handleLogout() {
@@ -32,8 +30,8 @@ export function LogoutButton() {
     } catch {
       // Logout always succeeds locally, even if the backend call fails.
     } finally {
+      // The protected layout redirects to /login?flash=logged-out once the session is cleared.
       clearSession();
-      router.replace("/login?flash=logged-out");
     }
   }
 
