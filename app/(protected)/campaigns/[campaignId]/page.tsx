@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { CampaignDonationsPanel } from "@/components/campaign-donations-panel";
 import { CampaignProgressPanel } from "@/components/campaign-progress-panel";
 import { CampaignStatusHistoryPanel } from "@/components/campaign-status-history-panel";
 import { CategoryChips } from "@/components/category-chips";
@@ -36,6 +37,7 @@ function CampaignDetail() {
   const [isDonateOpen, setIsDonateOpen] = useState(false);
   const [receipt, setReceipt] = useState<DonationReceipt | null>(null);
   const statistics = useCampaignStatistics(params.campaignId);
+  const [donationsReloadKey, setDonationsReloadKey] = useState(0);
 
   function loadCampaign() {
     setLoading(true);
@@ -64,6 +66,8 @@ function CampaignDetail() {
   function handleDonated(donation: DonationReceipt) {
     setReceipt(donation);
     loadCampaign();
+    statistics.reload();
+    setDonationsReloadKey((key) => key + 1);
   }
 
   return (
@@ -151,6 +155,11 @@ function CampaignDetail() {
           <CampaignStatusHistoryPanel
             campaign={campaign}
             defaultOpen={historyOpen}
+          />
+
+          <CampaignDonationsPanel
+            campaignId={campaign.id}
+            reloadKey={donationsReloadKey}
           />
 
           <DonateDialog
