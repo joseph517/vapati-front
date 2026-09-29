@@ -8,14 +8,7 @@ import type {
   CampaignResponseDTO,
   CampaignStatusHistoryResponseDTO,
 } from "@/lib/types";
-
-const dateFormatter = new Intl.DateTimeFormat("es-CO", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
+import { formatDateTime } from "@/lib/utils";
 
 export function CampaignStatusHistoryPanel({
   campaign,
@@ -126,7 +119,7 @@ export function CampaignStatusHistoryPanel({
                 return (
                   <li key={index} className="text-[13.5px] text-[var(--ink-body)]">
                     {entry.previousStatus ?? "—"} {entry.newStatus} ·{" "}
-                    {dateFormatter.format(new Date(entry.changedAt))} ·{" "}
+                    {formatDateTime(entry.changedAt)} ·{" "}
                     {changedByLabel}
                   </li>
                 );
