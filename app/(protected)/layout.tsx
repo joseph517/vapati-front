@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LogoutButton } from "@/components/logout-button";
+import { MainNav } from "@/components/main-nav";
 import { useAuthHydrated, useAuthStore } from "@/lib/store/auth-store";
 
 export default function ProtectedLayout({
@@ -45,26 +46,7 @@ export default function ProtectedLayout({
           >
             VaPaTi
           </Link>
-          <nav className="flex flex-wrap gap-[18px]">
-            <Link
-              href="/campaigns"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Campañas
-            </Link>
-            <Link
-              href="/campaigns/mine"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Mis campañas
-            </Link>
-            <Link
-              href="/campaigns/new"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Crear campaña
-            </Link>
-          </nav>
+          <MainNav />
           <div className="ml-auto flex items-center gap-4">
             <span className="text-[13px] text-muted-foreground">
               {userInfo?.fullName}
