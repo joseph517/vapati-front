@@ -4,14 +4,14 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { CampaignOwnerActions } from "@/components/campaign-owner-actions";
+import { CampaignProgressPanel } from "@/components/campaign-progress-panel";
 import { CampaignStatusHistoryPanel } from "@/components/campaign-status-history-panel";
 import { CategoryChips } from "@/components/category-chips";
 import { DonateDialog, type DonationReceipt } from "@/components/donate-dialog";
-import { ProgressBar } from "@/components/progress-bar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/status-badge";
 import { ApiClientError, apiFetch } from "@/lib/api";
+import { useCampaignStatistics } from "@/lib/hooks/use-campaign-statistics";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
 import { formatCurrencyCOP } from "@/lib/utils";
@@ -35,6 +35,7 @@ function CampaignDetail() {
   const [error, setError] = useState<string | null>(null);
   const [isDonateOpen, setIsDonateOpen] = useState(false);
   const [receipt, setReceipt] = useState<DonationReceipt | null>(null);
+  const statistics = useCampaignStatistics(params.campaignId);
 
   function loadCampaign() {
     setLoading(true);
@@ -141,6 +142,8 @@ function CampaignDetail() {
 
           <CampaignProgressPanel
             campaign={campaign}
+            statistics={statistics.statistics}
+            statisticsStatus={statistics.status}
             onDonateClick={() => setIsDonateOpen(true)}
             onOwnerActionUpdated={loadCampaign}
           />
@@ -160,46 +163,5 @@ function CampaignDetail() {
         </>
       )}
     </main>
-  );
-}
-
-function CampaignProgressPanel({
-  campaign,
-  onDonateClick,
-  onOwnerActionUpdated,
-}: {
-  campaign: CampaignResponseDTO;
-  onDonateClick: () => void;
-  onOwnerActionUpdated: () => void;
-}) {
-  const pct = Math.min(
-    100,
-    Math.round((campaign.amountRaised / campaign.amountGoal) * 100)
-  );
-  const remaining = Math.max(0, campaign.amountGoal - campaign.amountRaised);
-
-  return (
-    <div className="rounded-2xl border border-border bg-card p-[26px]">
-      <div className="flex flex-wrap items-baseline gap-2">
-        <span className="font-serif text-[34px] leading-none text-foreground">
-          {formatCurrencyCOP(campaign.amountRaised)}
-        </span>
-        <span className="text-sm text-muted-foreground">
-          de {formatCurrencyCOP(campaign.amountGoal)}
-        </span>
-      </div>
-      <ProgressBar value={pct} className="mt-4 h-[9px]" />
-      <div className="mt-2.5 flex items-center justify-between text-[13px] text-[var(--ink-label)]">
-        <span>{pct}% de la meta</span>
-        <span>Faltan {formatCurrencyCOP(remaining)}</span>
-      </div>
-      <Button
-        onClick={onDonateClick}
-        className="mt-6 w-full py-[14px] text-[15px] font-semibold"
-      >
-        Donar a esta campaña
-      </Button>
-      <CampaignOwnerActions campaign={campaign} onUpdated={onOwnerActionUpdated} />
-    </div>
   );
 }
