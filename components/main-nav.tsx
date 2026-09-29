@@ -31,6 +31,11 @@ const NAV_LINKS: NavLink[] = [
     label: "Crear campaña",
     isActive: (pathname) => pathname === "/campaigns/new",
   },
+  {
+    href: "/my-donations",
+    label: "Mis donaciones",
+    isActive: (pathname) => pathname === "/my-donations",
+  },
 ];
 
 export function MainNav() {
