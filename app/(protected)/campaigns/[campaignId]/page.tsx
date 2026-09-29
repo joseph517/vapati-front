@@ -39,8 +39,10 @@ function CampaignDetail() {
   const statistics = useCampaignStatistics(params.campaignId);
   const [donationsReloadKey, setDonationsReloadKey] = useState(0);
 
-  function loadCampaign() {
-    setLoading(true);
+  // In the background the skeleton isn't shown, so the panels below stay
+  // mounted and keep their state (e.g. an open "Donaciones" section).
+  function loadCampaign({ background = false } = {}) {
+    if (!background) setLoading(true);
     setError(null);
     apiFetch<CampaignResponseDTO>(`/api/campaigns/${params.campaignId}`, {
       accessToken,
@@ -65,7 +67,7 @@ function CampaignDetail() {
 
   function handleDonated(donation: DonationReceipt) {
     setReceipt(donation);
-    loadCampaign();
+    loadCampaign({ background: true });
     statistics.reload();
     setDonationsReloadKey((key) => key + 1);
   }
