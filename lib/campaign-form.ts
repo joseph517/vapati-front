@@ -1,3 +1,5 @@
+import { checkAmountFormat } from "@/lib/amount";
+
 export type CampaignFieldKey =
   | "name"
   | "description"
@@ -19,9 +21,6 @@ export type CampaignFormErrors = {
 export const MAX_TEXT_LENGTH = 255;
 export const MAX_CATEGORIES = 5;
 
-const MAX_GOAL_DECIMALS = 2;
-const MAX_GOAL_INTEGER_DIGITS = 13;
-
 // Labels for the "Revisá estos campos: …" summary. They match the form's labels.
 export const CAMPAIGN_FIELD_LABELS: Record<CampaignFieldKey, string> = {
   name: "Nombre",
@@ -31,14 +30,14 @@ export const CAMPAIGN_FIELD_LABELS: Record<CampaignFieldKey, string> = {
 };
 
 export function checkGoalFormat(raw: string): string | null {
-  const [integerPart = "", decimalPart = ""] = raw.split(".");
-  if (decimalPart.length > MAX_GOAL_DECIMALS) {
-    return "La meta admite hasta 2 decimales.";
+  switch (checkAmountFormat(raw)) {
+    case "too-many-decimals":
+      return "La meta admite hasta 2 decimales.";
+    case "too-large":
+      return "La meta es demasiado grande.";
+    default:
+      return null;
   }
-  if (integerPart.replace(/^0+/, "").length > MAX_GOAL_INTEGER_DIGITS) {
-    return "La meta es demasiado grande.";
-  }
-  return null;
 }
 
 // Returns null when the form is valid. The first failing rule wins.

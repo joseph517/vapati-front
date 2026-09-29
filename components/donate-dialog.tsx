@@ -13,16 +13,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ApiClientError, apiFetch } from "@/lib/api";
-import type { CampaignResponseDTO, DonationResponseDTO } from "@/lib/types";
+import { validateDonationAmount } from "@/lib/donations";
+import type {
+  CampaignResponseDTO,
+  CreateDonationRequest,
+  CreateDonationResponse,
+  DonationResponseDTO,
+} from "@/lib/types";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
 
 const SUGGESTED_AMOUNTS = [10000, 25000, 50000, 100000];
-
-type DonationApiResponse = {
-  message: string;
-  donation: DonationResponseDTO;
-  status: string;
-};
 
 export type DonationReceipt = DonationResponseDTO & { message: string };
 
@@ -55,28 +55,35 @@ export function DonateDialog({
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const amountValue = Number(amount);
-    if (!amount || amountValue <= 0) {
-      setError("Ingresá un monto mayor a 0.");
+    const amountError = validateDonationAmount(amount);
+    if (amountError) {
+      setError(amountError);
       return;
     }
 
     setError(null);
     setSubmitting(true);
     try {
-      const data = await apiFetch<DonationApiResponse>("/api/donations", {
+      const body: CreateDonationRequest = {
+        campaignId: campaign.id,
+        amount: Number(amount),
+      };
+      const data = await apiFetch<CreateDonationResponse>("/api/donations", {
         method: "POST",
         accessToken,
-        body: { campaignId: campaign.id, amount: amountValue },
+        body,
       });
       onDonated({ ...data.donation, message: data.message });
       onOpenChange(false);
     } catch (err) {
-      setError(
-        err instanceof ApiClientError
-          ? err.message
-          : "Ocurrió un error inesperado. Intentá de nuevo."
-      );
+      if (!(err instanceof ApiClientError)) {
+        setError("Ocurrió un error inesperado. Intentá de nuevo.");
+      } else if (err.fields && Object.keys(err.fields).length > 0) {
+        // A "Validation failed" 400: show the field message, not the generic one.
+        setError(err.fields.amount ?? Object.values(err.fields)[0]);
+      } else {
+        setError(err.message);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -118,7 +125,11 @@ export function DonateDialog({
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          className="flex flex-col gap-4"
+        >
           <div className="flex flex-col gap-1.5">
             <Label
               htmlFor="donation-amount"
@@ -129,6 +140,8 @@ export function DonateDialog({
             <Input
               id="donation-amount"
               type="number"
+              step="0.01"
+              min="0"
               value={amount}
               onChange={(event) => setAmount(event.target.value)}
               className="h-auto bg-secondary py-3 text-[17px]"
