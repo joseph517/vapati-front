@@ -30,7 +30,7 @@ export function MyDonationRow({ donation }: { donation: DonationResponseDTO }) {
       </div>
 
       <div className="flex flex-col items-end gap-1.5">
-        <span className="font-serif text-xl tracking-[-0.01em] text-foreground">
+        <span className="font-serif text-xl font-medium tracking-[-0.01em] text-foreground">
           {formatCurrencyCOP(donation.amount)}
         </span>
         {donation.transactionId && (

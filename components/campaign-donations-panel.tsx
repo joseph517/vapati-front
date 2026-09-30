@@ -62,7 +62,7 @@ export function CampaignDonationsPanel({
     <div className="mt-5 rounded-2xl border border-border bg-card p-[26px]">
       <div className="flex items-center justify-between">
         <div className="flex items-baseline gap-2">
-          <h2 className="font-serif text-lg text-foreground">Donaciones</h2>
+          <h2 className="font-serif text-lg font-medium text-foreground">Donaciones</h2>
           {data && (
             <span className="text-[13px] text-[var(--ink-faint)]">
               {data.total}

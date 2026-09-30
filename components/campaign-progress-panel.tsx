@@ -45,7 +45,7 @@ export function CampaignProgressPanel({
   return (
     <div className="rounded-2xl border border-border bg-card p-[26px]">
       <div className="flex flex-wrap items-baseline gap-2">
-        <span className="font-serif text-[34px] leading-none text-foreground">
+        <span className="font-serif text-[34px] leading-none font-medium text-foreground">
           {formatCurrencyCOP(campaign.amountRaised)}
         </span>
         <span className="text-sm text-muted-foreground">
