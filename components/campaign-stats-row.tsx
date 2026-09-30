@@ -57,7 +57,7 @@ function StatCell({
       <p className="text-[11.5px] tracking-[.07em] text-[var(--ink-label)] uppercase">
         {label}
       </p>
-      <div className="mt-1 font-serif text-xl tracking-[-0.01em] text-foreground">
+      <div className="mt-1 flex min-h-7 items-center font-serif text-xl leading-[1.25] font-medium tracking-[-0.01em] text-foreground">
         {children}
       </div>
     </div>

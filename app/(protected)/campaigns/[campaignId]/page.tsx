@@ -9,13 +9,13 @@ import { CampaignProgressPanel } from "@/components/campaign-progress-panel";
 import { CampaignStatusHistoryPanel } from "@/components/campaign-status-history-panel";
 import { CategoryChips } from "@/components/category-chips";
 import { DonateDialog, type DonationReceipt } from "@/components/donate-dialog";
+import { DonationReceiptCard } from "@/components/donation-receipt-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/status-badge";
 import { ApiClientError, apiFetch } from "@/lib/api";
 import { useCampaignStatistics } from "@/lib/hooks/use-campaign-statistics";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
-import { formatCurrencyCOP } from "@/lib/utils";
 
 export default function CampaignDetailPage() {
   return (
@@ -104,31 +104,7 @@ function CampaignDetail() {
 
       {!loading && !error && campaign && (
         <>
-          {receipt && (
-            <div className="mb-[26px] rounded-xl border border-[var(--success-border)] bg-[var(--success-bg)] px-[22px] py-5">
-              <div className="flex items-center gap-2">
-                <span className="size-2 shrink-0 rounded-full bg-[var(--success)]" />
-                <h2 className="font-serif text-[17px] font-medium text-[var(--success-ink)]">
-                  {receipt.message}
-                </h2>
-              </div>
-              <p className="mt-1.5 text-[13.5px] text-[var(--success-ink-soft)]">
-                Tu aporte de {formatCurrencyCOP(receipt.amount)} quedó
-                aprobado al instante. Gracias.
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2 font-mono text-xs">
-                <span className="rounded-md border border-[var(--success-pill-border)] px-2.5 py-1.5">
-                  {receipt.status}
-                </span>
-                <span className="rounded-md border border-[var(--success-pill-border)] px-2.5 py-1.5">
-                  {receipt.transactionId}
-                </span>
-                <span className="rounded-md border border-[var(--success-pill-border)] px-2.5 py-1.5">
-                  {receipt.id}
-                </span>
-              </div>
-            </div>
-          )}
+          {receipt && <DonationReceiptCard receipt={receipt} />}
 
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs font-medium tracking-[.08em] text-[var(--ink-eyebrow)] uppercase">
