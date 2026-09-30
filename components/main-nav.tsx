@@ -14,12 +14,13 @@ const NAV_LINKS: NavLink[] = [
   {
     href: "/campaigns",
     label: "Campañas",
-    // Also active on a campaign's detail and edit pages.
+    // Also active on a campaign's detail and edit pages, and on a public profile.
     isActive: (pathname) =>
       pathname === "/campaigns" ||
       (pathname.startsWith("/campaigns/") &&
         pathname !== "/campaigns/mine" &&
-        pathname !== "/campaigns/new"),
+        pathname !== "/campaigns/new") ||
+      pathname.startsWith("/users/"),
   },
   {
     href: "/campaigns/mine",
