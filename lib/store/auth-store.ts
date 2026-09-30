@@ -3,6 +3,8 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { AuthResponse, UserInfo } from "@/lib/types";
 
+export const DEFAULT_LOGOUT_REDIRECT = "/login?flash=logged-out";
+
 type AuthState = {
   accessToken: string | null;
   refreshToken: string | null;
@@ -10,9 +12,9 @@ type AuthState = {
   blockedMessage: string | null;
   hasHydrated: boolean;
   sessionExpired: boolean;
-  loggedOut: boolean;
+  logoutRedirect: string | null; // where the protected layout goes after clearSession. Not persisted
   setSession: (auth: AuthResponse) => void;
-  clearSession: () => void;
+  clearSession: (redirectTo?: string) => void;
   expireSession: () => void;
   blockSession: (message: string) => void;
   clearBlockedMessage: () => void;
@@ -28,23 +30,23 @@ export const useAuthStore = create<AuthState>()(
       blockedMessage: null,
       hasHydrated: false,
       sessionExpired: false,
-      loggedOut: false,
+      logoutRedirect: null,
       setSession: ({ accessToken, refreshToken, userInfo }) =>
         set({
           accessToken,
           refreshToken,
           userInfo,
           sessionExpired: false,
-          loggedOut: false,
+          logoutRedirect: null,
           blockedMessage: null,
         }),
-      clearSession: () =>
+      clearSession: (redirectTo = DEFAULT_LOGOUT_REDIRECT) =>
         set({
           accessToken: null,
           refreshToken: null,
           userInfo: null,
           sessionExpired: false,
-          loggedOut: true,
+          logoutRedirect: redirectTo,
           blockedMessage: null,
         }),
       expireSession: () =>
@@ -53,7 +55,7 @@ export const useAuthStore = create<AuthState>()(
           refreshToken: null,
           userInfo: null,
           sessionExpired: true,
-          loggedOut: false,
+          logoutRedirect: null,
         }),
       blockSession: (message) =>
         set({
@@ -61,7 +63,7 @@ export const useAuthStore = create<AuthState>()(
           refreshToken: null,
           userInfo: null,
           sessionExpired: false,
-          loggedOut: false,
+          logoutRedirect: null,
           blockedMessage: message,
         }),
       clearBlockedMessage: () => set({ blockedMessage: null }),

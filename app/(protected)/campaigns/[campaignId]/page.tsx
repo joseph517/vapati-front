@@ -108,7 +108,13 @@ function CampaignDetail() {
 
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs font-medium tracking-[.08em] text-[var(--ink-eyebrow)] uppercase">
-              creada por {campaign.userName}
+              creada por{" "}
+              <Link
+                href={`/users/${campaign.userId}`}
+                className="text-primary underline decoration-[var(--accent-soft-border)] underline-offset-[3px] hover:text-[var(--accent-hover)] hover:decoration-[var(--accent-hover)]"
+              >
+                {campaign.userName}
+              </Link>
             </span>
             <StatusBadge status={campaign.status} />
           </div>
