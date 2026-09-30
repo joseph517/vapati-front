@@ -80,7 +80,7 @@ export function CampaignDonationsPanel({
 
       {open && (
         <div className="mt-4">
-          {loading && <DonationRowsSkeleton />}
+          {loading && <DonationRowsSkeleton variant="flush" />}
 
           {!loading && error && (
             <div className="rounded-lg border border-[var(--danger-border)] bg-[var(--danger-bg)] px-3 py-2.5 text-[13.5px] text-destructive">
