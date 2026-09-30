@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { apiFetch } from "@/lib/api";
+import { revokeRefreshToken } from "@/lib/session";
 import { useAuthStore } from "@/lib/store/auth-store";
 
 export function LogoutButton() {
@@ -12,27 +12,9 @@ export function LogoutButton() {
     if (loggingOut) return;
     setLoggingOut(true);
 
-    const { accessToken, refreshToken, clearSession } =
-      useAuthStore.getState();
-
-    try {
-      // Sent as a public request (no `accessToken` option) so a failure never
-      // triggers a refresh or expires the session; the bearer goes as a plain header.
-      if (refreshToken) {
-        await apiFetch("/auth/logout", {
-          method: "POST",
-          body: { refreshToken },
-          headers: accessToken
-            ? { Authorization: `Bearer ${accessToken}` }
-            : undefined,
-        });
-      }
-    } catch {
-      // Logout always succeeds locally, even if the backend call fails.
-    } finally {
-      // The protected layout redirects to /login?flash=logged-out once the session is cleared.
-      clearSession();
-    }
+    await revokeRefreshToken();
+    // The protected layout redirects to /login?flash=logged-out once the session is cleared.
+    useAuthStore.getState().clearSession();
   }
 
   return (

@@ -1,3 +1,4 @@
+import { CategoryPill } from "@/components/category-pill";
 import type { CategoryDTO } from "@/lib/types";
 
 const MAX_VISIBLE = 3;
@@ -11,17 +12,10 @@ export function CategoryChips({ categories }: { categories: CategoryDTO[] }) {
   return (
     <div className="flex flex-wrap gap-2">
       {visible.map((category) => (
-        <span
-          key={category.id}
-          className="rounded-full border border-input bg-white px-3.5 py-2 text-[13px] font-medium text-muted-foreground"
-        >
-          {category.name}
-        </span>
+        <CategoryPill key={category.id}>{category.name}</CategoryPill>
       ))}
       {extraCount > 0 && (
-        <span className="rounded-full border border-input bg-white px-3.5 py-2 text-[13px] font-medium text-muted-foreground">
-          +{extraCount}
-        </span>
+        <CategoryPill>+{extraCount}</CategoryPill>
       )}
     </div>
   );

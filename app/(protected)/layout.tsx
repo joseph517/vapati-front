@@ -17,7 +17,7 @@ export default function ProtectedLayout({
   const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
   const sessionExpired = useAuthStore((state) => state.sessionExpired);
-  const loggedOut = useAuthStore((state) => state.loggedOut);
+  const logoutRedirect = useAuthStore((state) => state.logoutRedirect);
 
   useEffect(() => {
     if (!hasHydrated) return;
@@ -25,12 +25,10 @@ export default function ProtectedLayout({
       router.replace(
         sessionExpired
           ? "/login?flash=session-expired"
-          : loggedOut
-            ? "/login?flash=logged-out"
-            : "/login"
+          : (logoutRedirect ?? "/login")
       );
     }
-  }, [hasHydrated, accessToken, sessionExpired, loggedOut, router]);
+  }, [hasHydrated, accessToken, sessionExpired, logoutRedirect, router]);
 
   if (!hasHydrated || !accessToken) {
     return null;

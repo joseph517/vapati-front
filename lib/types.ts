@@ -131,3 +131,51 @@ export type DeleteCampaignResponse = {
   message: string;
   campaignId: number;
 };
+
+// Also used by the user/bankaccount step. Not shown while that step is postponed.
+export interface BankAccountDTO {
+  id: number;
+  userId: number;
+  bankName: string;
+  accountNumber: string;
+  accountType: string;
+  accountHolder: string;
+}
+
+export interface UserInfoDTO {
+  firstName: string;
+  lastName: string;
+  email: string;
+  userName: string;
+  phone: string;
+  description: string;
+  profilePicture: string | null; // null or "" without a photo
+}
+
+// Full profile: only for the user's own id
+export interface UserDTO {
+  id: number;
+  verified: boolean; // not shown
+  categories: string[]; // category NAMES, not ids
+  userInfo: UserInfoDTO;
+  bankAccounts: BankAccountDTO[]; // not shown
+}
+
+// Another user's profile
+export interface PublicUserProfileDTO {
+  id: number;
+  categories: string[]; // names
+  firstName: string;
+  lastName: string;
+  userName: string;
+  description: string;
+  profilePicture: string | null; // null or "" without a photo
+}
+
+// GET /api/users/{id}. It is a UserDTO when it has "userInfo".
+export type UserProfileResponse = UserDTO | PublicUserProfileDTO;
+
+export interface DeleteUserResponse {
+  message: string; // "User deleted successfully"
+  success: "true"; // a string, not a boolean
+}

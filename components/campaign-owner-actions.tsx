@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { DangerOutlineButton } from "@/components/danger-outline-button";
 import { DeleteCampaignDialog } from "@/components/delete-campaign-dialog";
 import { ApiClientError, apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
@@ -92,16 +93,14 @@ export function CampaignOwnerActions({
             procesando…
           </span>
         )}
-        <Button
+        <DangerOutlineButton
           type="button"
-          variant="outline"
-          size="sm"
           disabled={busy}
           onClick={() => setDeleteOpen(true)}
-          className="ml-auto border-[var(--danger-border)] bg-white text-destructive hover:border-[var(--danger-border-strong)] hover:bg-[var(--danger-bg)] hover:text-destructive"
+          className="ml-auto"
         >
           Borrar campaña
-        </Button>
+        </DangerOutlineButton>
       </div>
       <DeleteCampaignDialog
         open={deleteOpen}
