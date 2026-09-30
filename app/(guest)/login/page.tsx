@@ -16,6 +16,8 @@ const FLASH_MESSAGES: Record<string, string> = {
   "logged-out": "Cerraste sesión.",
   registered: "Tu cuenta quedó creada. Entrá con tu email y contraseña.",
   "session-expired": "Tu sesión expiró. Volvé a entrar.",
+  "account-deleted":
+    "Borraste tu cuenta. Si volvés a entrar con tu email y contraseña, se restaura.",
 };
 
 export default function LoginPage() {
