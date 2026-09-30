@@ -179,3 +179,34 @@ export interface DeleteUserResponse {
   message: string; // "User deleted successfully"
   success: "true"; // a string, not a boolean
 }
+
+// POST /api/users/create. Does not return a token
+export interface CreateUserRequest {
+  user: {
+    categoryIds: number[]; // 1 to 6. Always an array: null responds 500
+  };
+  userInfo: {
+    firstName: string; // max 255
+    lastName: string; // max 255
+    email: string; // max 254, unique. Sent trimmed
+    userName: string; // 3 to 50: letters, numbers, ".", "_", "-". Unique. Sent trimmed
+    password: string;
+    phone: string; // required, max 20, unique. Sent trimmed
+    description: string; // accepts "", max 255
+    profilePicture?: string; // URL, max 255
+  };
+}
+
+// PUT /api/users/update. All optional: only the fields that change are sent
+export interface UpdateUserRequest {
+  categoryIds?: number[]; // 1 to 6: replaces them all
+  firstName?: string;
+  lastName?: string;
+  email?: string; // if it changes, requires currentPassword
+  userName?: string;
+  password?: string; // if present, requires currentPassword
+  phone?: string;
+  description?: string; // "" clears it
+  profilePicture?: string; // "" clears it
+  currentPassword?: string; // only when email or password change
+}

@@ -18,6 +18,8 @@ type AuthState = {
   expireSession: () => void;
   blockSession: (message: string) => void;
   clearBlockedMessage: () => void;
+  // Merges into the current userInfo and recomputes fullName. Does nothing without a userInfo.
+  updateUserInfo: (partial: Partial<Omit<UserInfo, "fullName">>) => void;
   setHasHydrated: (hasHydrated: boolean) => void;
 };
 
@@ -67,6 +69,17 @@ export const useAuthStore = create<AuthState>()(
           blockedMessage: message,
         }),
       clearBlockedMessage: () => set({ blockedMessage: null }),
+      updateUserInfo: (partial) =>
+        set((state) => {
+          if (!state.userInfo) return {};
+          const userInfo = { ...state.userInfo, ...partial };
+          return {
+            userInfo: {
+              ...userInfo,
+              fullName: `${userInfo.firstName} ${userInfo.lastName}`,
+            },
+          };
+        }),
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {

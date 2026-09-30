@@ -18,6 +18,8 @@ const FLASH_MESSAGES: Record<string, string> = {
   "session-expired": "Tu sesión expiró. Volvé a entrar.",
   "account-deleted":
     "Borraste tu cuenta. Si volvés a entrar con tu email y contraseña, se restaura.",
+  "credentials-changed":
+    "Actualizaste tu email o tu contraseña. Entrá de nuevo con los datos nuevos.",
 };
 
 export default function LoginPage() {
@@ -40,7 +42,8 @@ function LoginForm() {
   const flash = blockedMessage
     ? undefined
     : FLASH_MESSAGES[searchParams.get("flash") ?? ""];
-  const [email, setEmail] = useState(searchParams.get("email") ?? "");
+  const initialEmail = searchParams.get("email") ?? "";
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -136,6 +139,8 @@ function LoginForm() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="current-password"
+              // The email is already filled in: what is missing is the password.
+              autoFocus={initialEmail !== ""}
               className="bg-secondary"
             />
           </div>

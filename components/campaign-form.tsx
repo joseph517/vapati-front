@@ -20,16 +20,10 @@ import {
   type CampaignFieldKey,
   type CampaignFormValues,
 } from "@/lib/campaign-form";
+import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import { useCategories } from "@/lib/hooks/use-categories";
 import type { CampaignResponseDTO, CreateCampaignRequest } from "@/lib/types";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
-
-const FIELD_LABEL_CLASSES =
-  "text-[11.5px] font-medium tracking-[.07em] text-[var(--ink-label)] uppercase";
-
-// Error border from the design, without shadcn's aria-invalid ring.
-const INVALID_FIELD_CLASSES =
-  "aria-invalid:border-[var(--danger-border-strong)] aria-invalid:ring-0 aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-ring/50";
 
 type FieldErrors = Partial<Record<CampaignFieldKey, string>>;
 
