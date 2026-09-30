@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { HeaderProfileLink } from "@/components/header-profile-link";
 import { LogoutButton } from "@/components/logout-button";
 import { MainNav } from "@/components/main-nav";
 import { useAuthHydrated, useAuthStore } from "@/lib/store/auth-store";
@@ -15,7 +16,6 @@ export default function ProtectedLayout({
   const router = useRouter();
   const hasHydrated = useAuthHydrated();
   const accessToken = useAuthStore((state) => state.accessToken);
-  const userInfo = useAuthStore((state) => state.userInfo);
   const sessionExpired = useAuthStore((state) => state.sessionExpired);
   const logoutRedirect = useAuthStore((state) => state.logoutRedirect);
 
@@ -46,9 +46,7 @@ export default function ProtectedLayout({
           </Link>
           <MainNav />
           <div className="ml-auto flex items-center gap-4">
-            <span className="text-[13px] text-muted-foreground">
-              {userInfo?.fullName}
-            </span>
+            <HeaderProfileLink />
             <LogoutButton />
           </div>
         </div>
