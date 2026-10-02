@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FollowCounterButton } from "@/components/follow-counter-button";
+import { FollowListDialog } from "@/components/follow-list-dialog";
 import {
   FOLLOW_LIST_TITLES,
   type FollowAudience,
@@ -16,13 +17,14 @@ interface ProfileFollowStatsProps {
   following: FollowCount;
 }
 
-// Followers and following counters. Each one opens its list.
+// Followers and following counters. Each one opens its list in a dialog.
 export function ProfileFollowStats({
+  userId,
+  audience,
   followers,
   following,
 }: ProfileFollowStatsProps) {
-  // The list dialog arrives in step 4 of SPEC 11
-  const [, setOpenKind] = useState<FollowListKind | null>(null);
+  const [openKind, setOpenKind] = useState<FollowListKind | null>(null);
 
   return (
     <div className="flex flex-wrap gap-[18px]">
@@ -35,6 +37,12 @@ export function ProfileFollowStats({
         label={FOLLOW_LIST_TITLES.following}
         count={following}
         onClick={() => setOpenKind("following")}
+      />
+      <FollowListDialog
+        userId={userId}
+        audience={audience}
+        kind={openKind}
+        onClose={() => setOpenKind(null)}
       />
     </div>
   );
