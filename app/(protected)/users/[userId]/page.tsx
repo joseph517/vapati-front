@@ -14,6 +14,7 @@ import { UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
 import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
 import { useFollowStatus } from "@/lib/hooks/use-follow-status";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
+import { useIsAdmin } from "@/lib/roles";
 import { useAuthStore } from "@/lib/store/auth-store";
 import { isUserNotFound, toProfileSummary } from "@/lib/user-profile";
 
@@ -21,6 +22,7 @@ export default function PublicProfilePage() {
   const params = useParams<{ userId: string }>();
   const router = useRouter();
   const userInfo = useAuthStore((state) => state.userInfo);
+  const isAdmin = useIsAdmin();
 
   // The own id goes to /profile without fetching. A non-numeric id is left to the backend (400).
   const isOwnProfile = Number(params.userId) === userInfo?.userId;
@@ -103,12 +105,22 @@ export default function PublicProfilePage() {
 
   return (
     <main className="mx-auto max-w-[760px] px-6 pt-9 pb-20">
-      <Link
-        href="/campaigns"
-        className="mb-6 block text-[13.5px] text-muted-foreground hover:text-foreground"
-      >
-        ← Todas las campañas
-      </Link>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <Link
+          href="/campaigns"
+          className="text-[13.5px] text-muted-foreground hover:text-foreground"
+        >
+          ← Todas las campañas
+        </Link>
+        {isAdmin && profile && !loading && !error && (
+          <Link
+            href={`/admin/users/${profile.id}`}
+            className="text-[13.5px] font-medium text-primary hover:text-[var(--accent-hover)]"
+          >
+            Ver en administración
+          </Link>
+        )}
+      </div>
       {content}
     </main>
   );
