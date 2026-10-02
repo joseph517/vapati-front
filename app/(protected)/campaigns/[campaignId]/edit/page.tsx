@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { CampaignForm } from "@/components/campaign-form";
 import { CampaignFormSkeleton } from "@/components/campaign-form-skeleton";
 import { ErrorCard } from "@/components/error-card";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
+import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type {
   CampaignResponseDTO,
@@ -15,46 +16,18 @@ import type {
 } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-type LoadError = { status: number; message: string };
-
 export default function EditCampaignPage() {
   const router = useRouter();
   const params = useParams<{ campaignId: string }>();
   const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
 
-  const [campaign, setCampaign] = useState<CampaignResponseDTO | null>(null);
-  const [loadError, setLoadError] = useState<LoadError | null>(null);
+  const { data: campaign, error: loadError } = useApiQuery<CampaignResponseDTO>(
+    `/api/campaigns/${params.campaignId}`
+  );
   const [saving, setSaving] = useState(false);
 
   const campaignHref = `/campaigns/${params.campaignId}`;
-
-  useEffect(() => {
-    let cancelled = false;
-
-    apiFetch<CampaignResponseDTO>(`/api/campaigns/${params.campaignId}`, {
-      accessToken,
-    })
-      .then((data) => {
-        if (!cancelled) setCampaign(data);
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        setLoadError(
-          err instanceof ApiClientError
-            ? { status: err.status, message: err.message }
-            : {
-                status: 0,
-                message: "Ocurrió un error inesperado. Intentá de nuevo.",
-              }
-        );
-      });
-
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.campaignId]);
 
   // Keeps `saving` on after a successful PUT until the navigation happens.
   async function updateCampaign(payload: CreateCampaignRequest) {

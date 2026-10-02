@@ -10,6 +10,7 @@ import { ProfileAboutCard } from "@/components/profile-about-card";
 import { ProfileFollowStats } from "@/components/profile-follow-stats";
 import { ProfileHeader } from "@/components/profile-header";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
+import { UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
 import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
 import { useFollowStatus } from "@/lib/hooks/use-follow-status";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
@@ -54,9 +55,7 @@ export default function PublicProfilePage() {
     content = (
       <ErrorCard
         title="No pudimos cargar este perfil"
-        message={
-          error?.message ?? "Ocurrió un error inesperado. Intentá de nuevo."
-        }
+        message={error?.message ?? UNEXPECTED_ERROR_MESSAGE}
         actionLabel="Reintentar"
         onAction={reload}
       />

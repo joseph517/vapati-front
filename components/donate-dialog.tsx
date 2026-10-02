@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { ApiClientError, apiFetch, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
 import { validateDonationAmount } from "@/lib/donations";
 import type {
   CampaignResponseDTO,
@@ -77,7 +77,7 @@ export function DonateDialog({
       onOpenChange(false);
     } catch (err) {
       if (!(err instanceof ApiClientError)) {
-        setError("Ocurrió un error inesperado. Intentá de nuevo.");
+        setError(UNEXPECTED_ERROR_MESSAGE);
       } else if (err.fields && Object.keys(err.fields).length > 0) {
         // A "Validation failed" 400: show the field message, not the generic one.
         setError(err.fields.amount ?? Object.values(err.fields)[0]);

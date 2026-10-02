@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CampaignCard } from "@/components/campaign-card";
@@ -9,8 +9,7 @@ import { CampaignGridSkeleton } from "@/components/campaign-grid-skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { NoticeAlert } from "@/components/notice-alert";
-import { ApiClientError, apiFetch } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/auth-store";
+import { useApiQuery } from "@/lib/hooks/use-api-query";
 import type { CampaignResponseDTO, MyCampaignsResponse } from "@/lib/types";
 
 const FLASH_MESSAGES: Record<string, string> = {
@@ -28,50 +27,16 @@ export default function MyCampaignsPage() {
 function MyCampaigns() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const accessToken = useAuthStore((state) => state.accessToken);
 
   const flash = FLASH_MESSAGES[searchParams.get("flash") ?? ""];
-  const [items, setItems] = useState<CampaignResponseDTO[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [reloadToken, setReloadToken] = useState(0);
-
-  // Runs on mount and on "Reintentar" only: dismissing the flash doesn't refetch.
-  useEffect(() => {
-    let cancelled = false;
-
-    apiFetch<MyCampaignsResponse>("/api/campaigns/my-campaigns", {
-      accessToken,
-    })
-      .then((data) => {
-        if (!cancelled) {
-          setItems([...data.campaigns].sort((a, b) => b.id - a.id));
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          setError(
-            err instanceof ApiClientError
-              ? err.message
-              : "Ocurrió un error inesperado. Intentá de nuevo."
-          );
-        }
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reloadToken]);
-
-  function reload() {
-    setLoading(true);
-    setError(null);
-    setReloadToken((token) => token + 1);
-  }
+  // Fetched on mount and on "Reintentar" only: dismissing the flash doesn't refetch.
+  const { data, loading, error, reload } = useApiQuery<
+    MyCampaignsResponse,
+    CampaignResponseDTO[]
+  >("/api/campaigns/my-campaigns", {
+    select: (response) => [...response.campaigns].sort((a, b) => b.id - a.id),
+  });
+  const items = data ?? [];
 
   let countLine: string;
   if (loading) {
@@ -123,9 +88,9 @@ function MyCampaigns() {
       {!loading && error && (
         <ErrorCard
           title="No pudimos cargar tus campañas"
-          message={error}
+          message={error.message}
           actionLabel="Reintentar"
-          onAction={reload}
+          onAction={() => reload()}
         />
       )}
 

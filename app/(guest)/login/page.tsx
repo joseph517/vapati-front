@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toErrorMessage } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { AuthResponse } from "@/lib/types";
 
@@ -67,11 +67,7 @@ function LoginForm() {
       setSession(data);
       router.replace("/campaigns");
     } catch (error) {
-      setFormError(
-        error instanceof ApiClientError
-          ? error.message
-          : "Ocurrió un error inesperado. Intentá de nuevo."
-      );
+      setFormError(toErrorMessage(error));
     } finally {
       setSubmitting(false);
     }

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DangerOutlineButton } from "@/components/danger-outline-button";
 import { DeleteCampaignDialog } from "@/components/delete-campaign-dialog";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toErrorMessage } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -37,11 +37,7 @@ export function CampaignOwnerActions({
       );
       onUpdated();
     } catch (err) {
-      setError(
-        err instanceof ApiClientError
-          ? err.message
-          : "Ocurrió un error inesperado. Intentá de nuevo."
-      );
+      setError(toErrorMessage(err));
     } finally {
       setBusy(false);
     }

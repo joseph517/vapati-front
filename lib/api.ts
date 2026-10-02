@@ -33,6 +33,23 @@ const SESSION_EXPIRED_MESSAGE = "Tu sesión expiró. Volvé a entrar.";
 export const UNEXPECTED_ERROR_MESSAGE =
   "Ocurrió un error inesperado. Intentá de nuevo.";
 
+// Error shape exposed to the UI by reads (useApiQuery) and mutation catches.
+export type QueryError = {
+  status: number; // ApiClientError.status (0 without a connection or on an unexpected exception)
+  message: string;
+};
+
+export function toQueryError(err: unknown): QueryError {
+  if (err instanceof ApiClientError) {
+    return { status: err.status, message: err.message };
+  }
+  return { status: 0, message: UNEXPECTED_ERROR_MESSAGE };
+}
+
+export function toErrorMessage(err: unknown): string {
+  return toQueryError(err).message;
+}
+
 // Message prefixes the backend uses for a 403 caused by a banned or suspended account.
 const BLOCKED_PREFIXES = [
   "Your account has been banned",
@@ -201,9 +218,7 @@ function toApiClientError(
   apiError: ApiError | null
 ): ApiClientError {
   const message =
-    apiError?.message ??
-    apiError?.error ??
-    "Ocurrió un error inesperado. Intentá de nuevo.";
+    apiError?.message ?? apiError?.error ?? UNEXPECTED_ERROR_MESSAGE;
   return new ApiClientError(status, message, apiError?.fields);
 }
 

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { ApiClientError, apiFetch, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
 import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
 import { useCategories } from "@/lib/hooks/use-categories";
 import {
@@ -134,7 +134,7 @@ export default function RegisterPage() {
           reloadCategories();
         }
       } else {
-        setFormErrors(["Ocurrió un error inesperado. Intentá de nuevo."]);
+        setFormErrors([UNEXPECTED_ERROR_MESSAGE]);
       }
     } finally {
       setSubmitting(false);

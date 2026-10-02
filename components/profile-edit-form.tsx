@@ -13,7 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ApiClientError } from "@/lib/api";
+import { ApiClientError, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
 import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import {
   buildUpdateUserRequest,
@@ -116,7 +116,7 @@ export function ProfileEditForm({
         setFieldErrors(error.fields ?? {});
         setServerFieldKeys(Object.keys(error.fields ?? {}));
       } else {
-        setFormError("Ocurrió un error inesperado. Intentá de nuevo.");
+        setFormError(UNEXPECTED_ERROR_MESSAGE);
       }
       setSubmitting(false);
     }

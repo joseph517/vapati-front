@@ -1,65 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { MyDonationRow } from "@/components/my-donation-row";
-import { ApiClientError, apiFetch } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/auth-store";
-import type { DonationListResponse, DonationResponseDTO } from "@/lib/types";
+import { useApiQuery } from "@/lib/hooks/use-api-query";
+import type { DonationListResponse } from "@/lib/types";
 
 const LIST_CARD_CLASS =
   "overflow-hidden rounded-xl border border-border bg-card";
 
 export default function MyDonationsPage() {
-  const accessToken = useAuthStore((state) => state.accessToken);
-
-  const [items, setItems] = useState<DonationResponseDTO[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [reloadToken, setReloadToken] = useState(0);
-
-  // Runs on mount and on "Reintentar". The backend already sends newest first.
-  useEffect(() => {
-    let cancelled = false;
-
-    apiFetch<DonationListResponse>("/api/donations/my-donations", {
-      accessToken,
-    })
-      .then((data) => {
-        if (!cancelled) {
-          setItems(data.donations);
-          setTotal(data.total);
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          setError(
-            err instanceof ApiClientError
-              ? err.message
-              : "Ocurrió un error inesperado. Intentá de nuevo."
-          );
-        }
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reloadToken]);
-
-  function reload() {
-    setLoading(true);
-    setError(null);
-    setReloadToken((token) => token + 1);
-  }
+  // Fetched on mount and on "Reintentar". The backend already sends newest first.
+  const { data, loading, error, reload } = useApiQuery<DonationListResponse>(
+    "/api/donations/my-donations"
+  );
+  const items = data?.donations ?? [];
+  const total = data?.total ?? 0;
 
   let countLine: string;
   if (loading) {
@@ -96,9 +55,9 @@ export default function MyDonationsPage() {
       {!loading && error && (
         <ErrorCard
           title="No pudimos cargar tus donaciones"
-          message={error}
+          message={error.message}
           actionLabel="Reintentar"
-          onAction={reload}
+          onAction={() => reload()}
         />
       )}
 
