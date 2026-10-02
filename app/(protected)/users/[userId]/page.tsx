@@ -4,11 +4,14 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ErrorCard } from "@/components/error-card";
+import { FollowButton } from "@/components/follow-button";
+import { NoticeAlert } from "@/components/notice-alert";
 import { ProfileAboutCard } from "@/components/profile-about-card";
 import { ProfileFollowStats } from "@/components/profile-follow-stats";
 import { ProfileHeader } from "@/components/profile-header";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
 import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
+import { useFollowStatus } from "@/lib/hooks/use-follow-status";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
 import { useAuthStore } from "@/lib/store/auth-store";
 import { isUserNotFound, toProfileSummary } from "@/lib/user-profile";
@@ -24,6 +27,10 @@ export default function PublicProfilePage() {
   const targetUserId = isOwnProfile ? null : params.userId;
   const { profile, loading, error, reload } = useUserProfile(targetUserId);
   const followCounts = useFollowCounts(targetUserId);
+  const followStatus = useFollowStatus(targetUserId, {
+    adjust: followCounts.adjustFollowers,
+    refetch: followCounts.refetchFollowers,
+  });
 
   useEffect(() => {
     if (isOwnProfile) router.replace("/profile");
@@ -68,7 +75,24 @@ export default function PublicProfilePage() {
               following={followCounts.following}
             />
           }
+          action={
+            <FollowButton
+              status={followStatus.status}
+              following={followStatus.following}
+              pending={followStatus.pending}
+              onToggle={followStatus.toggle}
+            />
+          }
         />
+        {followStatus.error && (
+          <NoticeAlert
+            tone="danger"
+            className="mt-6"
+            onDismiss={followStatus.dismissError}
+          >
+            {followStatus.error}
+          </NoticeAlert>
+        )}
         <ProfileAboutCard
           aboutTitle={`Sobre ${summary.firstName}`}
           description={summary.description}
