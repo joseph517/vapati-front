@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { apiFetch, toErrorMessage } from "@/lib/api";
+import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type {
   CampaignResponseDTO,
@@ -17,54 +17,27 @@ export function CampaignStatusHistoryPanel({
   campaign: CampaignResponseDTO;
   defaultOpen?: boolean;
 }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
 
   const [open, setOpen] = useState(defaultOpen);
-  const [history, setHistory] = useState<
-    CampaignStatusHistoryResponseDTO[] | null
-  >(null);
-  const [error, setError] = useState<string | null>(null);
 
-  // Invalidate any cached history when the campaign's status changes
-  // (see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes).
-  const [invalidatedForStatus, setInvalidatedForStatus] = useState(
-    campaign.status
+  // A status change discards the loaded history. Oldest transition first.
+  const {
+    data: history,
+    loading,
+    error,
+  } = useApiQuery<CampaignStatusHistoryResponseDTO[]>(
+    `/api/campaigns/${campaign.id}/status-history`,
+    {
+      enabled: open,
+      resetKeys: [campaign.status],
+      select: (entries) =>
+        [...entries].sort(
+          (a, b) =>
+            new Date(a.changedAt).getTime() - new Date(b.changedAt).getTime()
+        ),
+    }
   );
-  if (invalidatedForStatus !== campaign.status) {
-    setInvalidatedForStatus(campaign.status);
-    setHistory(null);
-    setError(null);
-  }
-
-  const loading = open && history === null && error === null;
-
-  useEffect(() => {
-    if (!open || history !== null || error !== null) return;
-    let cancelled = false;
-
-    apiFetch<CampaignStatusHistoryResponseDTO[]>(
-      `/api/campaigns/${campaign.id}/status-history`,
-      { accessToken }
-    )
-      .then((data) => {
-        if (cancelled) return;
-        setHistory(
-          [...data].sort(
-            (a, b) =>
-              new Date(a.changedAt).getTime() - new Date(b.changedAt).getTime()
-          )
-        );
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        setError(toErrorMessage(err));
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [open, history, error, campaign.id, accessToken]);
 
   if (userInfo?.userId !== campaign.userId) return null;
 
@@ -95,7 +68,7 @@ export function CampaignStatusHistoryPanel({
 
           {!loading && error && (
             <div className="rounded-lg border border-[var(--danger-border)] bg-[var(--danger-bg)] px-3 py-2.5 text-[13.5px] text-destructive">
-              {error}
+              {error.message}
             </div>
           )}
 

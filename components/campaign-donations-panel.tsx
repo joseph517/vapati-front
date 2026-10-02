@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CampaignDonationRow } from "@/components/campaign-donation-row";
 import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
-import { apiFetch, toErrorMessage } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/auth-store";
+import { useApiQuery } from "@/lib/hooks/use-api-query";
 import type { DonationListResponse } from "@/lib/types";
 
 // Collapsible "Donaciones" section of the campaign detail, visible to anyone.
@@ -16,43 +15,14 @@ export function CampaignDonationsPanel({
   campaignId: number;
   reloadKey: number;
 }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
-
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState<DonationListResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  // Discard the loaded list when a donation invalidates it: refetched now if
-  // open, or on the next open if closed
-  // (see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes).
-  const [invalidatedForKey, setInvalidatedForKey] = useState(reloadKey);
-  if (invalidatedForKey !== reloadKey) {
-    setInvalidatedForKey(reloadKey);
-    setData(null);
-    setError(null);
-  }
-
-  const loading = open && data === null && error === null;
-
-  useEffect(() => {
-    if (!open || data !== null || error !== null) return;
-    let cancelled = false;
-
-    apiFetch<DonationListResponse>(`/api/donations/campaign/${campaignId}`, {
-      accessToken,
-    })
-      .then((response) => {
-        if (!cancelled) setData(response);
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        setError(toErrorMessage(err));
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [open, data, error, campaignId, accessToken]);
+  // A donation (new `reloadKey`) discards the loaded list: refetched now if
+  // open, or on the next open if closed.
+  const { data, loading, error } = useApiQuery<DonationListResponse>(
+    `/api/donations/campaign/${campaignId}`,
+    { enabled: open, resetKeys: [reloadKey] }
+  );
 
   return (
     <div className="mt-5 rounded-2xl border border-border bg-card p-[26px]">
@@ -80,7 +50,7 @@ export function CampaignDonationsPanel({
 
           {!loading && error && (
             <div className="rounded-lg border border-[var(--danger-border)] bg-[var(--danger-bg)] px-3 py-2.5 text-[13.5px] text-destructive">
-              {error}
+              {error.message}
             </div>
           )}
 
