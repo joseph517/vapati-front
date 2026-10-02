@@ -19,10 +19,12 @@ export type CampaignResponseDTO = {
   status: CampaignStatus;
 };
 
+export type UserRole = "USER" | "ADMIN";
+
 export type UserInfo = {
   userId: number;
   email: string;
-  role: string;
+  role: UserRole;
   firstName: string;
   lastName: string;
   userName: string;
