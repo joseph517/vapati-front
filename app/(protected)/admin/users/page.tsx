@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { AdminUsersSortControls } from "@/components/admin-users-sort-controls";
+import { AdminUsersTable } from "@/components/admin-users-table";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { PaginationControls } from "@/components/pagination-controls";
@@ -69,7 +70,7 @@ function AdminUsers() {
         <AdminUsersSortControls query={query} onChange={goTo} />
       </div>
 
-      {loading && <p className="text-sm text-muted-foreground">Cargando…</p>}
+      {loading && <AdminUsersTable users={[]} query={query} loading />}
 
       {!loading && error && (
         <ErrorCard
@@ -103,14 +104,7 @@ function AdminUsers() {
 
       {!loading && !error && users.length > 0 && (
         <>
-          {/* Step 5 replaces this list with the users table */}
-          <ul className="flex flex-col gap-2">
-            {users.map((user) => (
-              <li key={user.id} className="text-sm text-foreground">
-                {user.id} · {user.userInfo.firstName} {user.userInfo.lastName}
-              </li>
-            ))}
-          </ul>
+          <AdminUsersTable users={users} query={query} loading={false} />
           <PaginationControls
             page={query.page}
             totalPages={Math.max(1, data?.totalPages ?? 1)}
