@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { CampaignForm } from "@/components/campaign-form";
 import { CampaignFormSkeleton } from "@/components/campaign-form-skeleton";
 import { ErrorCard } from "@/components/error-card";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toQueryError } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type {
   CampaignResponseDTO,
@@ -40,14 +40,7 @@ export default function EditCampaignPage() {
       })
       .catch((err) => {
         if (cancelled) return;
-        setLoadError(
-          err instanceof ApiClientError
-            ? { status: err.status, message: err.message }
-            : {
-                status: 0,
-                message: "Ocurrió un error inesperado. Intentá de nuevo.",
-              }
-        );
+        setLoadError(toQueryError(err));
       });
 
     return () => {

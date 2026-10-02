@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toErrorMessage } from "@/lib/api";
 import type { CategoryDTO } from "@/lib/types";
 
 export function useCategories() {
@@ -23,11 +23,7 @@ export function useCategories() {
       })
       .catch((err) => {
         if (!cancelled) {
-          setError(
-            err instanceof ApiClientError
-              ? err.message
-              : "Ocurrió un error inesperado. Intentá de nuevo."
-          );
+          setError(toErrorMessage(err));
         }
       })
       .finally(() => {

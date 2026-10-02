@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toErrorMessage } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type {
   CampaignResponseDTO,
@@ -58,11 +58,7 @@ export function CampaignStatusHistoryPanel({
       })
       .catch((err) => {
         if (cancelled) return;
-        setError(
-          err instanceof ApiClientError
-            ? err.message
-            : "Ocurrió un error inesperado. Intentá de nuevo."
-        );
+        setError(toErrorMessage(err));
       });
 
     return () => {

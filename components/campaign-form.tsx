@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { NoticeAlert } from "@/components/notice-alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
-import { ApiClientError } from "@/lib/api";
+import { ApiClientError, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
 import {
   CAMPAIGN_FIELD_LABELS,
   MAX_CATEGORIES,
@@ -116,7 +116,7 @@ export function CampaignForm({
         setFieldErrors(error.fields ?? {});
         setServerFieldKeys(Object.keys(error.fields ?? {}));
       } else {
-        setFormError("Ocurrió un error inesperado. Intentá de nuevo.");
+        setFormError(UNEXPECTED_ERROR_MESSAGE);
       }
       setSubmitting(false);
     }

@@ -9,7 +9,7 @@ import { CampaignSearchBar } from "@/components/campaign-search-bar";
 import { CategoryStrip } from "@/components/category-strip";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toErrorMessage } from "@/lib/api";
 import { useCategories } from "@/lib/hooks/use-categories";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
@@ -43,11 +43,7 @@ export default function CampaignsPage() {
     })
       .then((data) => setItems(data))
       .catch((err) => {
-        setError(
-          err instanceof ApiClientError
-            ? err.message
-            : "Ocurrió un error inesperado. Intentá de nuevo."
-        );
+        setError(toErrorMessage(err));
       })
       .finally(() => setLoading(false));
   }

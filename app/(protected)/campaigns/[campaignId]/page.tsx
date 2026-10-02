@@ -12,7 +12,7 @@ import { DonateDialog, type DonationReceipt } from "@/components/donate-dialog";
 import { DonationReceiptCard } from "@/components/donation-receipt-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/status-badge";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toErrorMessage } from "@/lib/api";
 import { useCampaignStatistics } from "@/lib/hooks/use-campaign-statistics";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
@@ -49,11 +49,7 @@ function CampaignDetail() {
     })
       .then((data) => setCampaign(data))
       .catch((err) => {
-        setError(
-          err instanceof ApiClientError
-            ? err.message
-            : "Ocurrió un error inesperado. Intentá de nuevo."
-        );
+        setError(toErrorMessage(err));
       })
       .finally(() => setLoading(false));
   }

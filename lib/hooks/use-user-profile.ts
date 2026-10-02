@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toQueryError } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { UserProfileResponse } from "@/lib/types";
 
@@ -47,14 +47,7 @@ export function useUserProfile(userId: string | null) {
       })
       .catch((err) => {
         if (cancelled) return;
-        setError(
-          err instanceof ApiClientError
-            ? { status: err.status, message: err.message }
-            : {
-                status: 0,
-                message: "Ocurrió un error inesperado. Intentá de nuevo.",
-              }
-        );
+        setError(toQueryError(err));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);

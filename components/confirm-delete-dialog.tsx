@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ApiClientError } from "@/lib/api";
+import { toErrorMessage } from "@/lib/api";
 
 interface ConfirmDeleteDialogProps {
   open: boolean;
@@ -55,11 +55,7 @@ export function ConfirmDeleteDialog({
     try {
       await onConfirm();
     } catch (err) {
-      setError(
-        err instanceof ApiClientError
-          ? err.message
-          : "Ocurrió un error inesperado. Intentá de nuevo."
-      );
+      setError(toErrorMessage(err));
       setDeleting(false);
     }
   }

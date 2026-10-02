@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ErrorCard } from "@/components/error-card";
 import { ProfileEditForm } from "@/components/profile-edit-form";
 import { ProfileEditSkeleton } from "@/components/profile-edit-skeleton";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
 import { useCategories } from "@/lib/hooks/use-categories";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
 import type { CredentialsChange } from "@/lib/profile-form";
@@ -14,8 +14,6 @@ import { useAuthStore } from "@/lib/store/auth-store";
 import type { UpdateUserRequest, UserDTO } from "@/lib/types";
 import { isFullUserProfile } from "@/lib/user-profile";
 import { cn } from "@/lib/utils";
-
-const UNEXPECTED_ERROR_MESSAGE = "Ocurrió un error inesperado. Intentá de nuevo.";
 
 export default function EditProfilePage() {
   const router = useRouter();

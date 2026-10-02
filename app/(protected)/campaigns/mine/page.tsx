@@ -9,7 +9,7 @@ import { CampaignGridSkeleton } from "@/components/campaign-grid-skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { NoticeAlert } from "@/components/notice-alert";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toErrorMessage } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO, MyCampaignsResponse } from "@/lib/types";
 
@@ -50,11 +50,7 @@ function MyCampaigns() {
       })
       .catch((err) => {
         if (!cancelled) {
-          setError(
-            err instanceof ApiClientError
-              ? err.message
-              : "Ocurrió un error inesperado. Intentá de nuevo."
-          );
+          setError(toErrorMessage(err));
         }
       })
       .finally(() => {

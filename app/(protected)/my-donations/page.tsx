@@ -7,7 +7,7 @@ import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { MyDonationRow } from "@/components/my-donation-row";
-import { ApiClientError, apiFetch } from "@/lib/api";
+import { apiFetch, toErrorMessage } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { DonationListResponse, DonationResponseDTO } from "@/lib/types";
 
@@ -38,11 +38,7 @@ export default function MyDonationsPage() {
       })
       .catch((err) => {
         if (!cancelled) {
-          setError(
-            err instanceof ApiClientError
-              ? err.message
-              : "Ocurrió un error inesperado. Intentá de nuevo."
-          );
+          setError(toErrorMessage(err));
         }
       })
       .finally(() => {
