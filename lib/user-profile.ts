@@ -10,7 +10,7 @@ export interface ProfileSummary {
   categories: string[];
 }
 
-// GET /api/users/{id} returns a UserDTO only for the user's own id
+// GET /api/users/{id} returns a UserDTO for the user's own id and for an ADMIN
 export function isFullUserProfile(
   profile: UserProfileResponse
 ): profile is UserDTO {

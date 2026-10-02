@@ -154,7 +154,7 @@ export interface UserInfoDTO {
   profilePicture: string | null; // null or "" without a photo
 }
 
-// Full profile: only for the user's own id
+// Full profile: for the user's own id and for an ADMIN
 export interface UserDTO {
   id: number;
   verified: boolean; // not shown
@@ -246,3 +246,16 @@ export interface UnfollowResponseDTO {
 }
 
 // The count endpoints respond a plain number; is-following, a plain boolean.
+
+// Spring Data Page as serialized by Spring Boot 3.2 (PageImpl). Only the fields we read.
+export interface SpringPage<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number; // current page, 0-based
+  size: number;
+}
+
+// GET /api/users/list/paginated: any other sortBy or sortDirection responds 400
+export type AdminUserSortBy = "id" | "createdAt";
+export type SortDirection = "asc" | "desc";

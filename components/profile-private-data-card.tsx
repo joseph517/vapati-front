@@ -1,6 +1,7 @@
 interface ProfilePrivateDataCardProps {
   email: string;
   phone: string;
+  note?: string; // next to the title
 }
 
 interface PrivateFieldProps {
@@ -21,10 +22,11 @@ function PrivateField({ label, value }: PrivateFieldProps) {
   );
 }
 
-// Email and phone. Only on the user's own profile.
+// Email and phone. On the user's own profile and in the admin user detail.
 export function ProfilePrivateDataCard({
   email,
   phone,
+  note = "Solo los ves vos. No aparecen en tu perfil público.",
 }: ProfilePrivateDataCardProps) {
   return (
     <section className="mt-[18px] rounded-xl border border-border bg-card p-6">
@@ -32,9 +34,7 @@ export function ProfilePrivateDataCard({
         <h2 className="text-[11.5px] font-medium tracking-[.09em] text-[var(--ink-eyebrow)] uppercase">
           Datos privados
         </h2>
-        <p className="text-[12.5px] text-[var(--ink-faint)]">
-          Solo los ves vos. No aparecen en tu perfil público.
-        </p>
+        <p className="text-[12.5px] text-[var(--ink-faint)]">{note}</p>
       </div>
       <div className="mt-[18px] grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[18px]">
         <PrivateField label="Email" value={email} />
