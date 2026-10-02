@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CampaignCard } from "@/components/campaign-card";
 import { CampaignGridSkeleton } from "@/components/campaign-grid-skeleton";
@@ -9,44 +9,27 @@ import { CampaignSearchBar } from "@/components/campaign-search-bar";
 import { CategoryStrip } from "@/components/category-strip";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
-import { apiFetch, toErrorMessage } from "@/lib/api";
+import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { useCategories } from "@/lib/hooks/use-categories";
-import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO } from "@/lib/types";
 
 export default function CampaignsPage() {
-  const accessToken = useAuthStore((state) => state.accessToken);
   const {
     categories,
     loading: categoriesLoading,
     error: categoriesError,
   } = useCategories();
 
-  const [items, setItems] = useState<CampaignResponseDTO[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [filterCategory, setFilterCategory] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [searchDraft, setSearchDraft] = useState("");
 
-  useEffect(() => {
-    loadCampaigns(filterCategory);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterCategory]);
-
-  function loadCampaigns(categoryId: number | null) {
-    setLoading(true);
-    setError(null);
-    const query = categoryId ? `?categoryId=${categoryId}` : "";
-    apiFetch<CampaignResponseDTO[]>(`/api/campaigns/list${query}`, {
-      accessToken,
-    })
-      .then((data) => setItems(data))
-      .catch((err) => {
-        setError(toErrorMessage(err));
-      })
-      .finally(() => setLoading(false));
-  }
+  // A new filter is a new path: the list starts over with the skeleton.
+  const query = filterCategory ? `?categoryId=${filterCategory}` : "";
+  const { data, loading, error, reload } = useApiQuery<CampaignResponseDTO[]>(
+    `/api/campaigns/list${query}`
+  );
+  const items = data ?? [];
 
   function toggleCategoryFilter(categoryId: number) {
     setFilterCategory((current) => (current === categoryId ? null : categoryId));
@@ -121,9 +104,9 @@ export default function CampaignsPage() {
       {!loading && error && (
         <ErrorCard
           title="No pudimos cargar las campañas"
-          message={error}
+          message={error.message}
           actionLabel="Reintentar"
-          onAction={() => loadCampaigns(filterCategory)}
+          onAction={() => reload()}
         />
       )}
 
