@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { DeleteAccountSection } from "@/components/delete-account-section";
 import { ErrorCard } from "@/components/error-card";
 import { ProfileAboutCard } from "@/components/profile-about-card";
+import { ProfileFollowStats } from "@/components/profile-follow-stats";
 import { ProfileHeader } from "@/components/profile-header";
 import { ProfilePrivateDataCard } from "@/components/profile-private-data-card";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
+import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
 import { useAuthStore } from "@/lib/store/auth-store";
 import { isFullUserProfile, toProfileSummary } from "@/lib/user-profile";
@@ -15,9 +17,9 @@ import { isFullUserProfile, toProfileSummary } from "@/lib/user-profile";
 export default function ProfilePage() {
   // The protected layout guarantees the session.
   const userInfo = useAuthStore((state) => state.userInfo);
-  const { profile, loading, error, reload } = useUserProfile(
-    userInfo ? String(userInfo.userId) : null
-  );
+  const userId = userInfo ? String(userInfo.userId) : null;
+  const { profile, loading, error, reload } = useUserProfile(userId);
+  const followCounts = useFollowCounts(userId);
 
   let content: React.ReactNode;
   if (loading) {
@@ -39,6 +41,14 @@ export default function ProfilePage() {
       <>
         <ProfileHeader
           summary={toProfileSummary(profile)}
+          stats={
+            <ProfileFollowStats
+              userId={String(profile.id)}
+              audience="own"
+              followers={followCounts.followers}
+              following={followCounts.following}
+            />
+          }
           action={
             <Button asChild variant="outline">
               <Link href="/profile/edit">Editar perfil</Link>

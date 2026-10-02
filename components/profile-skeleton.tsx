@@ -21,6 +21,10 @@ export function ProfileSkeleton({ variant }: ProfileSkeletonProps) {
               isOwn ? "w-[110px]" : "w-[130px]"
             )}
           />
+          <div className="mt-0.5 flex gap-[18px]">
+            <Skeleton className="h-3.5 w-[92px] bg-[var(--track-soft)]" />
+            <Skeleton className="h-3.5 w-[84px] bg-[var(--track-soft)]" />
+          </div>
         </div>
       </div>
 

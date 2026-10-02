@@ -29,6 +29,10 @@ type RequestOptions = Omit<ApiFetchOptions, "accessToken">;
 
 const SESSION_EXPIRED_MESSAGE = "Tu sesión expiró. Volvé a entrar.";
 
+// For failures that carry no ApiError (network, unexpected exceptions)
+export const UNEXPECTED_ERROR_MESSAGE =
+  "Ocurrió un error inesperado. Intentá de nuevo.";
+
 // Message prefixes the backend uses for a 403 caused by a banned or suspended account.
 const BLOCKED_PREFIXES = [
   "Your account has been banned",

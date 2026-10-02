@@ -4,7 +4,7 @@ import { useState } from "react";
 import { getInitials } from "@/lib/user-profile";
 import { cn } from "@/lib/utils";
 
-type UserAvatarSize = "lg" | "sm";
+type UserAvatarSize = "lg" | "md" | "sm";
 
 interface UserAvatarProps {
   firstName: string;
@@ -13,9 +13,10 @@ interface UserAvatarProps {
   size?: UserAvatarSize;
 }
 
-// lg: 88px (profile header). sm: 32px (photo preview in edit profile).
+// lg: 88px (profile header). md: 40px (follower list rows). sm: 32px (photo preview in edit profile).
 const SIZE_CLASSES: Record<UserAvatarSize, { box: string; initials: string }> = {
   lg: { box: "size-[88px]", initials: "text-[32px]" },
+  md: { box: "size-10", initials: "text-[15px]" },
   sm: { box: "size-8", initials: "text-[13px]" },
 };
 

@@ -20,3 +20,14 @@ const dateTimeFormatter = new Intl.DateTimeFormat("es-CO", {
 export function formatDateTime(iso: string): string {
   return dateTimeFormatter.format(new Date(iso));
 }
+
+const dateFormatter = new Intl.DateTimeFormat("es-CO", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
+// e.g. "2 de oct de 2026"
+export function formatDate(iso: string): string {
+  return dateFormatter.format(new Date(iso));
+}
