@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CategoryChips } from "@/components/category-chips";
 import { ProgressBar } from "@/components/progress-bar";
 import { StatusBadge } from "@/components/status-badge";
-import type { CampaignResponseDTO } from "@/lib/types";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import { formatCurrencyCOP } from "@/lib/utils";
 
 function truncateDescription(text: string): string {

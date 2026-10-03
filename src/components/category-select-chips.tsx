@@ -1,5 +1,5 @@
+import type { CategoryDTO } from "@/domain/categories/category.types";
 import { cn } from "@/lib/utils";
-import type { CategoryDTO } from "@/lib/types";
 
 export function CategorySelectChips({
   categories,

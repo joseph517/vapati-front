@@ -1,5 +1,5 @@
 import { CategoryPill } from "@/components/category-pill";
-import type { CategoryDTO } from "@/lib/types";
+import type { CategoryDTO } from "@/domain/categories/category.types";
 
 const MAX_VISIBLE = 3;
 

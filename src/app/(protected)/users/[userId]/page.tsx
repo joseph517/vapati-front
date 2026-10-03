@@ -10,7 +10,7 @@ import { ProfileAboutCard } from "@/components/profile-about-card";
 import { ProfileFollowStats } from "@/components/profile-follow-stats";
 import { ProfileHeader } from "@/components/profile-header";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
-import { UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
+import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
 import { useFollowStatus } from "@/lib/hooks/use-follow-status";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";

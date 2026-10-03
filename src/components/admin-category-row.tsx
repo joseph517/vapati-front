@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { DangerOutlineButton } from "@/components/danger-outline-button";
-import type { CategoryDTO } from "@/lib/types";
+import type { CategoryDTO } from "@/domain/categories/category.types";
 
 // Shared by the rows, the edit form and the skeleton so the spacing lines up.
 export const ADMIN_CATEGORY_ROW_CLASS =

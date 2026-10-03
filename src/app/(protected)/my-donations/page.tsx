@@ -6,8 +6,8 @@ import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { MyDonationRow } from "@/components/my-donation-row";
+import type { DonationListResponse } from "@/domain/donations/donation.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import type { DonationListResponse } from "@/lib/types";
 
 const LIST_CARD_CLASS =
   "overflow-hidden rounded-xl border border-border bg-card";

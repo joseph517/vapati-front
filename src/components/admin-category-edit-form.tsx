@@ -6,6 +6,8 @@ import { FormTextField } from "@/components/form-text-field";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import type { CategoryDTO } from "@/domain/categories/category.types";
+import { toErrorMessage } from "@/domain/shared/errors";
 import {
   CATEGORY_NAME_REQUIRED_MESSAGE,
   CATEGORY_TEXT_MAX_LENGTH,
@@ -15,10 +17,9 @@ import {
   toUpdateCategoryRequest,
   type CategoryFormValues,
 } from "@/lib/admin-categories";
-import { apiFetch, toErrorMessage } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
 import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { CategoryDTO } from "@/lib/types";
 
 // Edit mode of a row. Name errors stay under the field and the row stays open.
 // A 404 goes to `onNotFound` (the caller closes it); any other error to `onError`.

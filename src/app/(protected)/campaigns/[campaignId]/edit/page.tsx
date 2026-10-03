@@ -6,14 +6,14 @@ import { useParams, useRouter } from "next/navigation";
 import { CampaignForm } from "@/components/campaign-form";
 import { CampaignFormSkeleton } from "@/components/campaign-form-skeleton";
 import { ErrorCard } from "@/components/error-card";
-import { apiFetch } from "@/lib/api";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
-import { useAuthStore } from "@/lib/store/auth-store";
 import type {
   CampaignResponseDTO,
   CreateCampaignRequest,
   UpdateCampaignRequest,
-} from "@/lib/types";
+} from "@/domain/campaigns/campaign.types";
+import { apiFetch } from "@/lib/api";
+import { useApiQuery } from "@/lib/hooks/use-api-query";
+import { useAuthStore } from "@/lib/store/auth-store";
 import { cn } from "@/lib/utils";
 
 export default function EditCampaignPage() {

@@ -9,6 +9,8 @@ import { AdminUsersTable } from "@/components/admin-users-table";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { PaginationControls } from "@/components/pagination-controls";
+import type { SpringPage } from "@/domain/shared/shared.types";
+import type { UserDTO } from "@/domain/users/user.types";
 import {
   adminUsersApiPath,
   adminUsersHref,
@@ -16,7 +18,6 @@ import {
   type AdminUsersQuery,
 } from "@/lib/admin-users";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import type { SpringPage, UserDTO } from "@/lib/types";
 
 export default function AdminUsersPage() {
   return (

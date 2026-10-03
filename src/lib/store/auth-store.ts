@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { AuthResponse, UserInfo } from "@/lib/types";
+import type { AuthResponse, UserInfo } from "@/domain/auth/auth.types";
 
 export const DEFAULT_LOGOUT_REDIRECT = "/login?flash=logged-out";
 

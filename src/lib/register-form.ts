@@ -1,4 +1,4 @@
-import type { ApiClientError } from "@/lib/api";
+import type { ApiClientError } from "@/domain/shared/errors";
 import {
   INTERESTS_RULE_MESSAGE,
   isValidEmail,

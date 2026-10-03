@@ -9,8 +9,11 @@ import { CampaignGridSkeleton } from "@/components/campaign-grid-skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { NoticeAlert } from "@/components/notice-alert";
+import type {
+  CampaignResponseDTO,
+  MyCampaignsResponse,
+} from "@/domain/campaigns/campaign.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import type { CampaignResponseDTO, MyCampaignsResponse } from "@/lib/types";
 
 const FLASH_MESSAGES: Record<string, string> = {
   "campaign-deleted": "La campaña se borró.",

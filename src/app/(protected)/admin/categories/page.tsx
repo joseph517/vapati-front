@@ -9,9 +9,9 @@ import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { DeleteCategoryDialog } from "@/components/delete-category-dialog";
 import { NoticeAlert } from "@/components/notice-alert";
+import type { CategoryDTO } from "@/domain/categories/category.types";
 import { categoryCountLabel, sortCategoriesByName } from "@/lib/admin-categories";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import type { CategoryDTO } from "@/lib/types";
 
 // The list is public: a non-admin who spoofs the role sees it, but the mutations answer 403.
 export default function AdminCategoriesPage() {

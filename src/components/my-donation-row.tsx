@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { TransactionIdPill } from "@/components/transaction-id-pill";
-import type { DonationResponseDTO } from "@/lib/types";
+import type { DonationResponseDTO } from "@/domain/donations/donation.types";
 import { formatCurrencyCOP, formatDateTime } from "@/lib/utils";
 
 export function MyDonationRow({ donation }: { donation: DonationResponseDTO }) {

@@ -1,4 +1,5 @@
-import type { AdminUserSortBy, SortDirection } from "@/lib/types";
+import type { AdminUserSortBy } from "@/domain/admin/admin.types";
+import type { SortDirection } from "@/domain/shared/shared.types";
 
 export const ADMIN_USERS_PAGE_SIZE = 10;
 

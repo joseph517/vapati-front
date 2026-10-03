@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
 import type {
   CampaignStatisticsDTO,
   CampaignStatisticsResponse,
-} from "@/lib/types";
+} from "@/domain/donations/donation.types";
+import { useApiQuery } from "@/lib/hooks/use-api-query";
 
 export type CampaignStatisticsStatus = "loading" | "ready" | "error";
 

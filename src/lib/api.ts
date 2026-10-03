@@ -1,24 +1,13 @@
+import type { AuthResponse } from "@/domain/auth/auth.types";
+import {
+  ApiClientError,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "@/domain/shared/errors";
+import type { ApiError } from "@/domain/shared/shared.types";
 import { isTokenExpired } from "@/lib/jwt";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { ApiError, AuthResponse } from "@/lib/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-export class ApiClientError extends Error {
-  status: number;
-  fields?: Record<string, string>; // per-field messages of a "Validation failed" 400
-
-  constructor(
-    status: number,
-    message: string,
-    fields?: Record<string, string>
-  ) {
-    super(message);
-    this.name = "ApiClientError";
-    this.status = status;
-    this.fields = fields;
-  }
-}
 
 type ApiFetchOptions = Omit<RequestInit, "body"> & {
   body?: unknown;
@@ -28,27 +17,6 @@ type ApiFetchOptions = Omit<RequestInit, "body"> & {
 type RequestOptions = Omit<ApiFetchOptions, "accessToken">;
 
 const SESSION_EXPIRED_MESSAGE = "Tu sesión expiró. Volvé a entrar.";
-
-// For failures that carry no ApiError (network, unexpected exceptions)
-export const UNEXPECTED_ERROR_MESSAGE =
-  "Ocurrió un error inesperado. Intentá de nuevo.";
-
-// Error shape exposed to the UI by reads (useApiQuery) and mutation catches.
-export type QueryError = {
-  status: number; // ApiClientError.status (0 without a connection or on an unexpected exception)
-  message: string;
-};
-
-export function toQueryError(err: unknown): QueryError {
-  if (err instanceof ApiClientError) {
-    return { status: err.status, message: err.message };
-  }
-  return { status: 0, message: UNEXPECTED_ERROR_MESSAGE };
-}
-
-export function toErrorMessage(err: unknown): string {
-  return toQueryError(err).message;
-}
 
 // Message prefixes the backend uses for a 403 caused by a banned or suspended account.
 const BLOCKED_PREFIXES = [

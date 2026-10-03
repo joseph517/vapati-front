@@ -12,19 +12,21 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ApiClientError, apiFetch, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
-import { validateDonationAmount } from "@/lib/donations";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type {
-  CampaignResponseDTO,
   CreateDonationRequest,
   CreateDonationResponse,
-  DonationResponseDTO,
-} from "@/lib/types";
+  DonationReceipt,
+} from "@/domain/donations/donation.types";
+import {
+  ApiClientError,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "@/domain/shared/errors";
+import { apiFetch } from "@/lib/api";
+import { validateDonationAmount } from "@/lib/donations";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
 
 const SUGGESTED_AMOUNTS = [10000, 25000, 50000, 100000];
-
-export type DonationReceipt = DonationResponseDTO & { message: string };
 
 export function DonateDialog({
   open,

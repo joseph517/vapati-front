@@ -1,4 +1,4 @@
-import type { UserDTO, UserProfileResponse } from "@/lib/types";
+import type { UserDTO, UserProfileResponse } from "@/domain/users/user.types";
 
 // The fields shared by the own profile (UserDTO) and another user's (PublicUserProfileDTO)
 export interface ProfileSummary {

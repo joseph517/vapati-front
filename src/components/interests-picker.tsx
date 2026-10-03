@@ -1,6 +1,6 @@
 import { CategorySelectChips } from "@/components/category-select-chips";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { CategoryDTO } from "@/lib/types";
+import type { CategoryDTO } from "@/domain/categories/category.types";
 import { getInterestsHint, MAX_INTERESTS } from "@/lib/validation/user";
 
 interface InterestsPickerProps {

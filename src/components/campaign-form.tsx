@@ -11,7 +11,14 @@ import { Label } from "@/components/ui/label";
 import { NoticeAlert } from "@/components/notice-alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
-import { ApiClientError, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
+import type {
+  CampaignResponseDTO,
+  CreateCampaignRequest,
+} from "@/domain/campaigns/campaign.types";
+import {
+  ApiClientError,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "@/domain/shared/errors";
 import {
   CAMPAIGN_FIELD_LABELS,
   MAX_CATEGORIES,
@@ -22,7 +29,6 @@ import {
 } from "@/lib/campaign-form";
 import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import { useCategories } from "@/lib/hooks/use-categories";
-import type { CampaignResponseDTO, CreateCampaignRequest } from "@/lib/types";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
 
 type FieldErrors = Partial<Record<CampaignFieldKey, string>>;

@@ -5,9 +5,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DangerOutlineButton } from "@/components/danger-outline-button";
 import { DeleteCampaignDialog } from "@/components/delete-campaign-dialog";
-import { apiFetch, toErrorMessage } from "@/lib/api";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import { toErrorMessage } from "@/domain/shared/errors";
+import { apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { CampaignResponseDTO } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function CampaignOwnerActions({

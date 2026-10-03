@@ -1,7 +1,7 @@
 import { ADMIN_USERS_GRID, AdminUserRow } from "@/components/admin-user-row";
 import { AdminUsersSkeleton } from "@/components/admin-users-skeleton";
+import type { UserDTO } from "@/domain/users/user.types";
 import type { AdminUsersQuery } from "@/lib/admin-users";
-import type { UserDTO } from "@/lib/types";
 
 const COLUMNS = ["ID", "Nombre", "Usuario", "Email", "Teléfono", "Intereses"];
 

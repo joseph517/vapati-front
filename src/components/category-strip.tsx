@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { CategoryScrollButton } from "@/components/category-scroll-button";
 import { CategoryStripItem } from "@/components/category-strip-item";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { CategoryDTO } from "@/lib/types";
+import type { CategoryDTO } from "@/domain/categories/category.types";
 
 const SCROLL_DISTANCE = 280;
 

@@ -13,7 +13,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ApiClientError, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
+import type { CategoryDTO } from "@/domain/categories/category.types";
+import {
+  ApiClientError,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "@/domain/shared/errors";
+import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
 import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import {
   buildUpdateUserRequest,
@@ -26,7 +31,6 @@ import {
   type ProfileFieldKey,
   type ProfileFormValues,
 } from "@/lib/profile-form";
-import type { CategoryDTO, UpdateUserRequest, UserDTO } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { MAX_INTERESTS, USER_MAX_LENGTHS } from "@/lib/validation/user";
 

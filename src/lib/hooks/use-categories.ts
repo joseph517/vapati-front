@@ -1,6 +1,6 @@
 import { useCallback } from "react";
+import type { CategoryDTO } from "@/domain/categories/category.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import type { CategoryDTO } from "@/lib/types";
 
 export function useCategories() {
   const { data, loading, error, reload: reloadQuery } = useApiQuery<

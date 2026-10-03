@@ -1,5 +1,5 @@
+import type { UserInfo } from "@/domain/auth/auth.types";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { UserInfo } from "@/lib/types";
 
 // The role is not validated at runtime: any value other than "ADMIN" counts as non-admin.
 export function isAdmin(userInfo: UserInfo | null): boolean {

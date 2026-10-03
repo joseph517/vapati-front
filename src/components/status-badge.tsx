@@ -1,5 +1,5 @@
+import type { CampaignStatus } from "@/domain/campaigns/campaign.types";
 import { STATUS_META } from "@/lib/campaign-status";
-import type { CampaignStatus } from "@/lib/types";
 
 export function StatusBadge({ status }: { status: CampaignStatus }) {
   const meta = STATUS_META[status];

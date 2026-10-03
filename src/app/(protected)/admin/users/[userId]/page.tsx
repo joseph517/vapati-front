@@ -10,8 +10,8 @@ import { ProfileHeader } from "@/components/profile-header";
 import { ProfilePrivateDataCard } from "@/components/profile-private-data-card";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
 import { UserIdPill } from "@/components/user-id-pill";
+import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { adminUsersBackHref } from "@/lib/admin-users";
-import { UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
 import {
   isFullUserProfile,

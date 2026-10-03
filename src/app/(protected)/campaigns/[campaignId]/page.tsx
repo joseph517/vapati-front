@@ -3,20 +3,21 @@
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
+import { DonateDialog } from "@/components/donate-dialog";
 import { Button } from "@/components/ui/button";
 import { CampaignDonationsPanel } from "@/components/campaign-donations-panel";
 import { CampaignProgressPanel } from "@/components/campaign-progress-panel";
 import { CampaignPublicationsPanel } from "@/components/campaign-publications-panel";
 import { CampaignStatusHistoryPanel } from "@/components/campaign-status-history-panel";
 import { CategoryChips } from "@/components/category-chips";
-import { DonateDialog, type DonationReceipt } from "@/components/donate-dialog";
 import { DonationReceiptCard } from "@/components/donation-receipt-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/status-badge";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import type { DonationReceipt } from "@/domain/donations/donation.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { useCampaignStatistics } from "@/lib/hooks/use-campaign-statistics";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { CampaignResponseDTO } from "@/lib/types";
 
 export default function CampaignDetailPage() {
   return (

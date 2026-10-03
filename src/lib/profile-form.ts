@@ -1,4 +1,5 @@
-import type { CategoryDTO, UpdateUserRequest, UserDTO } from "@/lib/types";
+import type { CategoryDTO } from "@/domain/categories/category.types";
+import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
 import {
   INTERESTS_RULE_MESSAGE,
   isValidEmail,

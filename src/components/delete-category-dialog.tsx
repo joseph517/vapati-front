@@ -1,13 +1,17 @@
 "use client";
 
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+import type {
+  CategoryDTO,
+  DeleteCategoryResponse,
+} from "@/domain/categories/category.types";
+import { toErrorMessage } from "@/domain/shared/errors";
 import {
   categoryDeleteBlockedMessage,
   isCategoryNotFoundError,
 } from "@/lib/admin-categories";
-import { apiFetch, toErrorMessage } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { CategoryDTO, DeleteCategoryResponse } from "@/lib/types";
 
 // A rejected delete (400, the category is in use) leaves the dialog in blocked mode.
 // A 404 goes to `onNotFound`; any other error stays in the dialog and can be retried.

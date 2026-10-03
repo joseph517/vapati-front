@@ -1,13 +1,8 @@
-import type { FollowerUserDTO } from "@/lib/types";
-
-export type FollowListKind = "followers" | "following";
-export type FollowAudience = "own" | "public";
-export type LoadStatus = "loading" | "ready" | "error";
-
-export interface FollowCount {
-  status: LoadStatus;
-  value: number | null; // null while loading or on error
-}
+import type {
+  FollowAudience,
+  FollowerUserDTO,
+  FollowListKind,
+} from "@/domain/follows/follow.types";
 
 export const FOLLOW_LIST_TITLES: Record<FollowListKind, string> = {
   followers: "Seguidores",

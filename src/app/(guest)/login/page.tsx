@@ -8,9 +8,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { apiFetch, toErrorMessage } from "@/lib/api";
+import type { AuthResponse } from "@/domain/auth/auth.types";
+import { toErrorMessage } from "@/domain/shared/errors";
+import { apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { AuthResponse } from "@/lib/types";
 
 const FLASH_MESSAGES: Record<string, string> = {
   "logged-out": "Cerraste sesión.",

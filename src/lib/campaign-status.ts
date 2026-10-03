@@ -1,4 +1,4 @@
-import type { CampaignStatus } from "@/lib/types";
+import type { CampaignStatus } from "@/domain/campaigns/campaign.types";
 
 export const STATUS_META: Record<
   CampaignStatus,

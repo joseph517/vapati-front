@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
-import { ApiClientError, apiFetch, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
+import type {
+  FollowListKind,
+  FollowerUserDTO,
+  FollowersListResponseDTO,
+} from "@/domain/follows/follow.types";
 import {
-  followListPath,
-  sortByFollowedAtDesc,
-  type FollowListKind,
-  type LoadStatus,
-} from "@/lib/follow";
+  ApiClientError,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "@/domain/shared/errors";
+import type { LoadStatus } from "@/domain/shared/shared.types";
+import { apiFetch } from "@/lib/api";
+import { followListPath, sortByFollowedAtDesc } from "@/lib/follow";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { FollowerUserDTO, FollowersListResponseDTO } from "@/lib/types";
 
 // GET followers or followers/following. Lives inside the list dialog's content,
 // which mounts on every opening, so the list is fetched each time it opens.

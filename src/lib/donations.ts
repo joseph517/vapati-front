@@ -1,5 +1,5 @@
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import { checkAmountFormat } from "@/lib/amount";
-import type { CampaignResponseDTO } from "@/lib/types";
 
 export const ANONYMOUS_DONOR_LABEL = "Anónimo";
 

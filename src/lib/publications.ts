@@ -1,5 +1,8 @@
-import { ApiClientError } from "@/lib/api";
-import type { CampaignResponseDTO, PublicationResponseDTO } from "@/lib/types";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import type {
+  PublicationResponseDTO,
+} from "@/domain/publications/publication.types";
+import { ApiClientError } from "@/domain/shared/errors";
 
 export const PUBLICATION_MAX_LENGTH = 255;
 export const PUBLICATION_COUNTER_WARNING_AT = 230; // counter switches to the notice color

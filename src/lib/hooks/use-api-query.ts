@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { apiFetch, toQueryError, type QueryError } from "@/lib/api";
+import { toQueryError, type QueryError } from "@/domain/shared/errors";
+import { apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 
 type UseApiQueryOptions<TRaw, T> = {

@@ -7,10 +7,13 @@ import { NoticeAlert } from "@/components/notice-alert";
 import { PublicationComposer } from "@/components/publication-composer";
 import { PublicationRow } from "@/components/publication-row";
 import { PublicationRowsSkeleton } from "@/components/publication-rows-skeleton";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import type {
+  PublicationResponseDTO,
+} from "@/domain/publications/publication.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { canPublish, publicationsEmptyText } from "@/lib/publications";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { CampaignResponseDTO, PublicationResponseDTO } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 // "Novedades" section of the campaign detail, visible to anyone and always open.

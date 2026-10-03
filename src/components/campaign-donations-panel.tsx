@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { CampaignDonationRow } from "@/components/campaign-donation-row";
 import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
+import type { DonationListResponse } from "@/domain/donations/donation.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import type { DonationListResponse } from "@/lib/types";
 
 // Collapsible "Donaciones" section of the campaign detail, visible to anyone.
 // It loads on first open and `reloadKey` changes after a donation.

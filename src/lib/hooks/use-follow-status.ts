@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { ApiClientError, apiFetch, UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
-import { followPath, isFollowingPath, type LoadStatus } from "@/lib/follow";
+import type {
+  FollowResponseDTO,
+  UnfollowResponseDTO,
+} from "@/domain/follows/follow.types";
+import {
+  ApiClientError,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "@/domain/shared/errors";
+import type { LoadStatus } from "@/domain/shared/shared.types";
+import { apiFetch } from "@/lib/api";
+import { followPath, isFollowingPath } from "@/lib/follow";
 import { useAuthStore } from "@/lib/store/auth-store";
-import type { FollowResponseDTO, UnfollowResponseDTO } from "@/lib/types";
 
 interface FollowersCounter {
   adjust: (delta: 1 | -1) => void;

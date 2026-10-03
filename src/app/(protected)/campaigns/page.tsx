@@ -9,9 +9,9 @@ import { CampaignSearchBar } from "@/components/campaign-search-bar";
 import { CategoryStrip } from "@/components/category-strip";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { useCategories } from "@/lib/hooks/use-categories";
-import type { CampaignResponseDTO } from "@/lib/types";
 
 export default function CampaignsPage() {
   const {

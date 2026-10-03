@@ -1,9 +1,9 @@
-import { ApiClientError } from "@/lib/api";
 import type {
   CategoryDTO,
   CreateCategoryRequest,
   UpdateCategoryRequest,
-} from "@/lib/types";
+} from "@/domain/categories/category.types";
+import { ApiClientError } from "@/domain/shared/errors";
 
 export const CATEGORY_TEXT_MAX_LENGTH = 255;
 export const CATEGORY_NAME_REQUIRED_MESSAGE = "Escribí un nombre.";

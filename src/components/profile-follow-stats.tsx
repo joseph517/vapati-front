@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { FollowCounterButton } from "@/components/follow-counter-button";
 import { FollowListDialog } from "@/components/follow-list-dialog";
-import {
-  FOLLOW_LIST_TITLES,
-  type FollowAudience,
-  type FollowCount,
-  type FollowListKind,
-} from "@/lib/follow";
+import type {
+  FollowAudience,
+  FollowCount,
+  FollowListKind,
+} from "@/domain/follows/follow.types";
+import { FOLLOW_LIST_TITLES } from "@/lib/follow";
 
 interface ProfileFollowStatsProps {
   userId: string;

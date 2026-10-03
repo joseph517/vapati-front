@@ -9,7 +9,7 @@ import { ProfileFollowStats } from "@/components/profile-follow-stats";
 import { ProfileHeader } from "@/components/profile-header";
 import { ProfilePrivateDataCard } from "@/components/profile-private-data-card";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
-import { UNEXPECTED_ERROR_MESSAGE } from "@/lib/api";
+import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
 import { useAuthStore } from "@/lib/store/auth-store";

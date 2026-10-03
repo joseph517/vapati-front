@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { NoticeAlert } from "@/components/notice-alert";
-import { toErrorMessage } from "@/lib/api";
+import { toErrorMessage } from "@/domain/shared/errors";
 
 interface ConfirmDeleteDialogProps {
   open: boolean;
