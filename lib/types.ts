@@ -152,7 +152,7 @@ export type DeleteCampaignResponse = {
   campaignId: number;
 };
 
-// GET /api/publications/campaign/{campaignId} returns an array of these, newest first.
+// GET /api/campaigns/{campaignId}/publications returns an array of these, newest first.
 export type PublicationResponseDTO = {
   id: number;
   campaignId: number;
@@ -165,13 +165,12 @@ export type PublicationResponseDTO = {
   updatedAt: string; // ISO datetime. Not shown (no editing yet)
 };
 
-// POST /api/publications/create
+// POST /api/campaigns/{campaignId}/publications
 export type CreatePublicationRequest = {
-  campaignId: number;
   description: string; // trimmed, 1..255
 };
 
-// DELETE /api/publications/delete/{id}
+// DELETE /api/publications/{publicationId}
 export type DeletePublicationResponse = {
   message: string;
   publicationId: number;

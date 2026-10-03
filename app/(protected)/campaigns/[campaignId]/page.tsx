@@ -6,6 +6,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { CampaignDonationsPanel } from "@/components/campaign-donations-panel";
 import { CampaignProgressPanel } from "@/components/campaign-progress-panel";
+import { CampaignPublicationsPanel } from "@/components/campaign-publications-panel";
 import { CampaignStatusHistoryPanel } from "@/components/campaign-status-history-panel";
 import { CategoryChips } from "@/components/category-chips";
 import { DonateDialog, type DonationReceipt } from "@/components/donate-dialog";
@@ -124,6 +125,8 @@ function CampaignDetail() {
             onDonateClick={() => setIsDonateOpen(true)}
             onOwnerActionUpdated={() => reload()}
           />
+
+          <CampaignPublicationsPanel campaign={campaign} />
 
           <CampaignStatusHistoryPanel
             campaign={campaign}
