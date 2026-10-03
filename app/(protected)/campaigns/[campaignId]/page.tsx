@@ -126,7 +126,10 @@ function CampaignDetail() {
             onOwnerActionUpdated={() => reload()}
           />
 
-          <CampaignPublicationsPanel campaign={campaign} />
+          <CampaignPublicationsPanel
+            campaign={campaign}
+            onCampaignStale={() => reload({ background: true })}
+          />
 
           <CampaignStatusHistoryPanel
             campaign={campaign}

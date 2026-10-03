@@ -1,22 +1,29 @@
 "use client";
 
 import { InlineRetryAlert } from "@/components/inline-retry-alert";
+import { NoticeAlert } from "@/components/notice-alert";
+import { PublicationComposer } from "@/components/publication-composer";
 import { PublicationRow } from "@/components/publication-row";
 import { PublicationRowsSkeleton } from "@/components/publication-rows-skeleton";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import { publicationsEmptyText } from "@/lib/publications";
+import { canPublish, publicationsEmptyText } from "@/lib/publications";
 import { useAuthStore } from "@/lib/store/auth-store";
 import type { CampaignResponseDTO, PublicationResponseDTO } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 // "Novedades" section of the campaign detail, visible to anyone and always open.
 export function CampaignPublicationsPanel({
   campaign,
+  onCampaignStale,
 }: {
   campaign: CampaignResponseDTO;
+  onCampaignStale: () => void;
 }) {
   const userInfo = useAuthStore((state) => state.userInfo);
   const isOwner = userInfo?.userId === campaign.userId;
   const isClosed = campaign.status === "CLOSED";
+  const showComposer = canPublish(campaign, userInfo?.userId);
+  const showClosedNote = isOwner && isClosed;
 
   const {
     data: publications,
@@ -42,7 +49,24 @@ export function CampaignPublicationsPanel({
         )}
       </div>
 
-      <div className="mt-4">
+      {showComposer && (
+        <PublicationComposer
+          campaignId={campaign.id}
+          onPublished={() => reload({ background: true })}
+          onCampaignStale={onCampaignStale}
+        />
+      )}
+
+      {showClosedNote && (
+        <NoticeAlert role="status" className="mt-4">
+          No podés publicar mientras la campaña está cerrada. Las novedades
+          que ya publicaste se pueden borrar.
+        </NoticeAlert>
+      )}
+
+      <div
+        className={cn(showComposer || showClosedNote ? "mt-[22px]" : "mt-4")}
+      >
         {loading && <PublicationRowsSkeleton />}
 
         {!loading && error && (
