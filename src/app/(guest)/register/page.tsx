@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { apiFetch } from "@/data/providers/http-client";
+import { usersService } from "@/data/users/users.service";
 import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
@@ -128,7 +128,7 @@ export default function RegisterPage() {
     setFormErrors([]);
     setSubmitting(true);
     try {
-      await apiFetch("/api/users/create", { method: "POST", body });
+      await usersService.create(body);
       router.push(
         `/login?flash=registered&email=${encodeURIComponent(trimmedEmail)}`
       );

@@ -3,13 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CampaignForm } from "@/components/campaign-form";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
+import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type { CampaignFormValues } from "@/domain/campaigns/campaign-form";
-import type {
-  CreateCampaignRequest,
-  CreateCampaignResponse,
-} from "@/domain/campaigns/campaign.types";
+import type { CreateCampaignRequest } from "@/domain/campaigns/campaign.types";
 
 const EMPTY_VALUES: CampaignFormValues = {
   name: "",
@@ -20,13 +16,9 @@ const EMPTY_VALUES: CampaignFormValues = {
 
 export default function NewCampaignPage() {
   const router = useRouter();
-  const accessToken = useAuthStore((state) => state.accessToken);
 
   async function createCampaign(payload: CreateCampaignRequest) {
-    const data = await apiFetch<CreateCampaignResponse>(
-      "/api/campaigns/create",
-      { method: "POST", accessToken, body: payload }
-    );
+    const data = await campaignsService.create(payload);
     router.push(`/campaigns/${data.campaignId}`);
   }
 

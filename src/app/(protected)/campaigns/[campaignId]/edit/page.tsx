@@ -8,9 +8,7 @@ import { CampaignFormSkeleton } from "@/components/campaign-form-skeleton";
 import { ErrorCard } from "@/components/error-card";
 import { useAuthStore } from "@/data/auth/session-store";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
-import { apiFetch } from "@/data/providers/http-client";
 import type {
-  CampaignResponseDTO,
   CreateCampaignRequest,
   UpdateCampaignRequest,
 } from "@/domain/campaigns/campaign.types";
@@ -20,7 +18,6 @@ import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 export default function EditCampaignPage() {
   const router = useRouter();
   const params = useParams<{ campaignId: string }>();
-  const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
 
   const { data: campaign, error: loadError } = useApiQuery(
@@ -36,10 +33,7 @@ export default function EditCampaignPage() {
     setSaving(true);
     try {
       const body: UpdateCampaignRequest = payload;
-      await apiFetch<CampaignResponseDTO>(
-        `/api/campaigns/${params.campaignId}`,
-        { method: "PUT", accessToken, body }
-      );
+      await campaignsService.update(params.campaignId, body);
       router.replace(`${campaignHref}?history=open`);
     } catch (error) {
       setSaving(false);

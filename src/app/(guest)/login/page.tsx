@@ -8,9 +8,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authService } from "@/data/auth/auth.service";
 import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
-import type { AuthResponse } from "@/domain/auth/auth.types";
 import { toErrorMessage } from "@/domain/shared/errors";
 
 const FLASH_MESSAGES: Record<string, string> = {
@@ -61,10 +60,7 @@ function LoginForm() {
     clearBlockedMessage();
     setSubmitting(true);
     try {
-      const data = await apiFetch<AuthResponse>("/auth/login", {
-        method: "POST",
-        body: { email, password },
-      });
+      const data = await authService.login(email, password);
       setSession(data);
       router.replace("/campaigns");
     } catch (error) {

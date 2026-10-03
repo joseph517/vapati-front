@@ -7,11 +7,11 @@ import { ErrorCard } from "@/components/error-card";
 import { ProfileEditForm } from "@/components/profile-edit-form";
 import { ProfileEditSkeleton } from "@/components/profile-edit-skeleton";
 import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
 import { isFullUserProfile } from "@/data/users/user-profile.adapter";
+import { usersService } from "@/data/users/users.service";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import type { CredentialsChange } from "@/domain/users/profile-form";
-import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
+import type { UpdateUserRequest } from "@/domain/users/user.types";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/presentation/hooks/categories/use-categories";
 import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
@@ -19,7 +19,6 @@ import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 export default function EditProfilePage() {
   const router = useRouter();
   // The protected layout guarantees the session.
-  const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
   const clearSession = useAuthStore((state) => state.clearSession);
   const updateUserInfo = useAuthStore((state) => state.updateUserInfo);
@@ -42,11 +41,7 @@ export default function EditProfilePage() {
   ) {
     setSaving(true);
     try {
-      const updated = await apiFetch<UserDTO>("/api/users/update", {
-        method: "PUT",
-        accessToken,
-        body: request,
-      });
+      const updated = await usersService.update(request);
       if (change !== null) {
         // The tokens are no longer valid, so /auth/logout is not called.
         // The protected layout redirects to the login with the notice.
