@@ -152,6 +152,31 @@ export type DeleteCampaignResponse = {
   campaignId: number;
 };
 
+// GET /api/publications/campaign/{campaignId} returns an array of these, newest first.
+export type PublicationResponseDTO = {
+  id: number;
+  campaignId: number;
+  userId: number;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  description: string;
+  createdAt: string; // ISO datetime
+  updatedAt: string; // ISO datetime. Not shown (no editing yet)
+};
+
+// POST /api/publications/create
+export type CreatePublicationRequest = {
+  campaignId: number;
+  description: string; // trimmed, 1..255
+};
+
+// DELETE /api/publications/delete/{id}
+export type DeletePublicationResponse = {
+  message: string;
+  publicationId: number;
+};
+
 // Also used by the user/bankaccount step. Not shown while that step is postponed.
 export interface BankAccountDTO {
   id: number;
