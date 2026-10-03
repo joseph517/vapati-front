@@ -13,12 +13,14 @@ export function AdminCategoryList({
   editingId,
   editDisabled,
   onEdit,
+  onDelete,
   renderEditForm,
 }: {
   categories: CategoryDTO[];
   editingId: number | null;
   editDisabled: boolean;
   onEdit: (category: CategoryDTO) => void;
+  onDelete: (category: CategoryDTO) => void;
   renderEditForm: (category: CategoryDTO) => ReactNode;
 }) {
   return (
@@ -31,6 +33,7 @@ export function AdminCategoryList({
             key={category.id}
             category={category}
             onEdit={() => onEdit(category)}
+            onDelete={() => onDelete(category)}
             editDisabled={editDisabled}
           />
         )

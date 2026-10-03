@@ -10,10 +10,12 @@ export const ADMIN_CATEGORY_ROW_CLASS =
 export function AdminCategoryRow({
   category,
   onEdit,
+  onDelete,
   editDisabled,
 }: {
   category: CategoryDTO;
   onEdit: () => void;
+  onDelete: () => void;
   editDisabled: boolean; // while another row is saving
 }) {
   return (
@@ -44,7 +46,9 @@ export function AdminCategoryRow({
         >
           Editar
         </Button>
-        <DangerOutlineButton type="button">Borrar</DangerOutlineButton>
+        <DangerOutlineButton type="button" onClick={onDelete}>
+          Borrar
+        </DangerOutlineButton>
       </div>
     </div>
   );

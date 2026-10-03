@@ -7,6 +7,7 @@ import { AdminCategoryEditForm } from "@/components/admin-category-edit-form";
 import { AdminCategoryList } from "@/components/admin-category-list";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
+import { DeleteCategoryDialog } from "@/components/delete-category-dialog";
 import { NoticeAlert } from "@/components/notice-alert";
 import { categoryCountLabel, sortCategoriesByName } from "@/lib/admin-categories";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
@@ -25,6 +26,9 @@ export default function AdminCategoriesPage() {
   // At most one row in edit mode. Opening another one discards it without asking.
   const [editingId, setEditingId] = useState<number | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
+  // The target outlives `deleteOpen` so the title doesn't go blank while the dialog closes.
+  const [deleteTarget, setDeleteTarget] = useState<CategoryDTO | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   function clearErrorNotice() {
     setErrorNotice(null);
@@ -48,6 +52,24 @@ export default function AdminCategoriesPage() {
   // Another admin deleted it: drop the ghost row.
   function handleEditNotFound(message: string) {
     closeEdit();
+    setErrorNotice(message);
+    reload({ background: true });
+  }
+
+  function openDelete(category: CategoryDTO) {
+    setDeleteTarget(category);
+    setDeleteOpen(true);
+  }
+
+  function handleDeleted(category: CategoryDTO) {
+    setDeleteOpen(false);
+    if (editingId === category.id) closeEdit();
+    setSuccessNotice(`Borraste la categoría «${category.name}».`);
+    reload({ background: true });
+  }
+
+  function handleDeleteNotFound(message: string) {
+    setDeleteOpen(false);
     setErrorNotice(message);
     reload({ background: true });
   }
@@ -123,6 +145,7 @@ export default function AdminCategoriesPage() {
               editingId={editingId}
               editDisabled={savingEdit}
               onEdit={(category) => setEditingId(category.id)}
+              onDelete={openDelete}
               renderEditForm={(category) => (
                 <AdminCategoryEditForm
                   key={category.id}
@@ -139,6 +162,17 @@ export default function AdminCategoriesPage() {
           )}
         </div>
       </div>
+
+      {deleteTarget && (
+        <DeleteCategoryDialog
+          open={deleteOpen}
+          onOpenChange={setDeleteOpen}
+          category={deleteTarget}
+          onMutationStart={clearErrorNotice}
+          onDeleted={handleDeleted}
+          onNotFound={handleDeleteNotFound}
+        />
+      )}
     </>
   );
 }
