@@ -27,6 +27,13 @@ const TARGETS = {
   zustand: ["zustand", "zustand/*"],
 };
 
+// The patterns match the import text, so "../../data/..." would slip past them.
+// It goes in every block (not a block of its own) because of the replacement above.
+const NO_PARENT_IMPORTS = {
+  regex: "^\\.\\./",
+  message: 'Use the "@/" alias instead of "../" (layer rules in specs/16).',
+};
+
 function layer(dir, forbidden) {
   return {
     files: [`${dir}/**`],
@@ -34,10 +41,13 @@ function layer(dir, forbidden) {
       "no-restricted-imports": [
         "error",
         {
-          patterns: forbidden.map((target) => ({
-            group: TARGETS[target],
-            message: `${dir} cannot import ${TARGETS[target][0]} (layer rules in specs/16).`,
-          })),
+          patterns: [
+            ...forbidden.map((target) => ({
+              group: TARGETS[target],
+              message: `${dir} cannot import ${TARGETS[target][0]} (layer rules in specs/16).`,
+            })),
+            NO_PARENT_IMPORTS,
+          ],
         },
       ],
     },
@@ -65,6 +75,7 @@ const layerBoundaries = [
     "pages",
     "app",
   ]),
+  layer("src/presentation/utils", ["data", "hooks", "components", "pages", "app"]),
   layer("src/app", ["domain", "data"]),
 ];
 
