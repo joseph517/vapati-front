@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/data/auth/session-store";
 import {
   HeaderProfileLink,
 } from "@/presentation/components/organisms/shared/header-profile-link";
@@ -12,6 +11,7 @@ import {
 } from "@/presentation/components/organisms/shared/logout-button";
 import { MainNav } from "@/presentation/components/organisms/shared/main-nav";
 import { useAuthHydrated } from "@/presentation/hooks/auth/use-auth-hydrated";
+import { useSession } from "@/presentation/hooks/auth/use-session";
 
 export default function ProtectedLayout({
   children,
@@ -20,9 +20,9 @@ export default function ProtectedLayout({
 }) {
   const router = useRouter();
   const hasHydrated = useAuthHydrated();
-  const accessToken = useAuthStore((state) => state.accessToken);
-  const sessionExpired = useAuthStore((state) => state.sessionExpired);
-  const logoutRedirect = useAuthStore((state) => state.logoutRedirect);
+  const accessToken = useSession((state) => state.accessToken);
+  const sessionExpired = useSession((state) => state.sessionExpired);
+  const logoutRedirect = useSession((state) => state.logoutRedirect);
 
   useEffect(() => {
     if (!hasHydrated) return;

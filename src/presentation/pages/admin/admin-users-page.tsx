@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { adminUsersService } from "@/data/admin/admin-users.service";
 import {
@@ -23,15 +22,7 @@ import { Button } from "@/presentation/components/ui/button";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 import { adminUsersHref } from "@/presentation/utils/admin-routes";
 
-export default function AdminUsersPage() {
-  return (
-    <Suspense fallback={null}>
-      <AdminUsers />
-    </Suspense>
-  );
-}
-
-function AdminUsers() {
+export function AdminUsersPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = parseAdminUsersQuery(searchParams);

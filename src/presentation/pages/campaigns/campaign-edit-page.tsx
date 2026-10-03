@@ -19,7 +19,7 @@ import {
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 import { cn } from "@/presentation/utils/cn";
 
-export default function EditCampaignPage() {
+export function CampaignEditPage() {
   const router = useRouter();
   const params = useParams<{ campaignId: string }>();
   const userInfo = useAuthStore((state) => state.userInfo);

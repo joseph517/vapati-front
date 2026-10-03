@@ -16,7 +16,7 @@ const EMPTY_VALUES: CampaignFormValues = {
   categoryIds: [],
 };
 
-export default function NewCampaignPage() {
+export function CampaignCreatePage() {
   const router = useRouter();
 
   async function createCampaign(payload: CreateCampaignRequest) {

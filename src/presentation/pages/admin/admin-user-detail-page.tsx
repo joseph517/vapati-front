@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import {
   isFullUserProfile,
@@ -27,15 +26,7 @@ import { Button } from "@/presentation/components/ui/button";
 import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 import { adminUsersBackHref } from "@/presentation/utils/admin-routes";
 
-export default function AdminUserDetailPage() {
-  return (
-    <Suspense fallback={null}>
-      <AdminUserDetail />
-    </Suspense>
-  );
-}
-
-function AdminUserDetail() {
+export function AdminUserDetailPage() {
   const params = useParams<{ userId: string }>();
   const searchParams = useSearchParams();
   const backHref = adminUsersBackHref(searchParams.get("from"));

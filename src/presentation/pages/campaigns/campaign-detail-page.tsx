@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type { DonationReceipt } from "@/domain/donations/donation.types";
@@ -34,15 +34,7 @@ import {
 } from "@/presentation/hooks/donations/use-campaign-statistics";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
-export default function CampaignDetailPage() {
-  return (
-    <Suspense fallback={null}>
-      <CampaignDetail />
-    </Suspense>
-  );
-}
-
-function CampaignDetail() {
+export function CampaignDetailPage() {
   const params = useParams<{ campaignId: string }>();
   const searchParams = useSearchParams();
   // Set by the edit page after saving, so the history shows the new transitions.

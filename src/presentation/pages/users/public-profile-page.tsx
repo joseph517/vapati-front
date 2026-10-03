@@ -33,7 +33,7 @@ import {
 } from "@/presentation/hooks/follows/use-follow-status";
 import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 
-export default function PublicProfilePage() {
+export function PublicProfilePage() {
   const params = useParams<{ userId: string }>();
   const router = useRouter();
   const userInfo = useAuthStore((state) => state.userInfo);

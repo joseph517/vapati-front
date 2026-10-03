@@ -32,7 +32,7 @@ import {
 } from "@/presentation/hooks/follows/use-follow-counts";
 import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 
-export default function ProfilePage() {
+export function ProfilePage() {
   // The protected layout guarantees the session.
   const userInfo = useAuthStore((state) => state.userInfo);
   const userId = userInfo ? String(userInfo.userId) : null;

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authService } from "@/data/auth/auth.service";
 import { useAuthStore } from "@/data/auth/session-store";
@@ -24,15 +24,7 @@ const FLASH_MESSAGES: Record<string, string> = {
     "Actualizaste tu email o tu contraseña. Entrá de nuevo con los datos nuevos.",
 };
 
-export default function LoginPage() {
-  return (
-    <Suspense fallback={null}>
-      <LoginForm />
-    </Suspense>
-  );
-}
-
-function LoginForm() {
+export function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const setSession = useAuthStore((state) => state.setSession);

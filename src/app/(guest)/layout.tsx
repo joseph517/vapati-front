@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/data/auth/session-store";
 import { useAuthHydrated } from "@/presentation/hooks/auth/use-auth-hydrated";
+import { useSession } from "@/presentation/hooks/auth/use-session";
 
 export default function GuestLayout({
   children,
@@ -12,7 +12,7 @@ export default function GuestLayout({
 }) {
   const router = useRouter();
   const hasHydrated = useAuthHydrated();
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const accessToken = useSession((state) => state.accessToken);
 
   useEffect(() => {
     if (!hasHydrated) return;

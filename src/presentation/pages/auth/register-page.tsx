@@ -42,7 +42,7 @@ import { FIELD_LABEL_CLASSES } from "@/presentation/utils/form-classes";
 const STEP_LABELS = ["Datos personales", "Cuenta", "Intereses"] as const;
 const TOTAL_STEPS = STEP_LABELS.length;
 
-export default function RegisterPage() {
+export function RegisterPage() {
   const router = useRouter();
 
   const [firstName, setFirstName] = useState("");

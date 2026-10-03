@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
 import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
@@ -20,15 +19,7 @@ const FLASH_MESSAGES: Record<string, string> = {
   "campaign-deleted": "La campaña se borró.",
 };
 
-export default function MyCampaignsPage() {
-  return (
-    <Suspense fallback={null}>
-      <MyCampaigns />
-    </Suspense>
-  );
-}
-
-function MyCampaigns() {
+export function MyCampaignsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 

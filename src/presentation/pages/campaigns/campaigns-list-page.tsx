@@ -21,7 +21,7 @@ import { Button } from "@/presentation/components/ui/button";
 import { useCategories } from "@/presentation/hooks/categories/use-categories";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
-export default function CampaignsPage() {
+export function CampaignsListPage() {
   const {
     categories,
     loading: categoriesLoading,

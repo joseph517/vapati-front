@@ -20,7 +20,7 @@ import { useCategories } from "@/presentation/hooks/categories/use-categories";
 import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 import { cn } from "@/presentation/utils/cn";
 
-export default function EditProfilePage() {
+export function ProfileEditPage() {
   const router = useRouter();
   // The protected layout guarantees the session.
   const userInfo = useAuthStore((state) => state.userInfo);

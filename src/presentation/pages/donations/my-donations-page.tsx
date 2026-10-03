@@ -16,7 +16,7 @@ import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 const LIST_CARD_CLASS =
   "overflow-hidden rounded-xl border border-border bg-card";
 
-export default function MyDonationsPage() {
+export function MyDonationsPage() {
   // Fetched on mount and on "Reintentar". The backend already sends newest first.
   const { data, loading, error, reload } = useApiQuery(
     donationsService.keys.mine(),

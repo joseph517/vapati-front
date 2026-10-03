@@ -28,7 +28,7 @@ import {
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 // The list is public: a non-admin who spoofs the role sees it, but the mutations answer 403.
-export default function AdminCategoriesPage() {
+export function AdminCategoriesPage() {
   const { data: categories, loading, error, reload } = useApiQuery(
     categoriesService.keys.list(),
     categoriesService.list,
