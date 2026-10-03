@@ -1,0 +1,45 @@
+import type { ReactNode } from "react";
+import type { CategoryDTO } from "@/domain/categories/category.types";
+import {
+  AdminCategoryRow,
+} from "@/presentation/components/molecules/admin/admin-category-row";
+
+// Shared with the skeleton, which renders its own container.
+export const ADMIN_CATEGORY_LIST_CLASS =
+  "overflow-hidden rounded-xl border border-border bg-card";
+
+// Categories arrive already sorted by name. At most one row is in edit mode,
+// rendered by the caller through `renderEditForm`.
+export function AdminCategoryList({
+  categories,
+  editingId,
+  editDisabled,
+  onEdit,
+  onDelete,
+  renderEditForm,
+}: {
+  categories: CategoryDTO[];
+  editingId: number | null;
+  editDisabled: boolean;
+  onEdit: (category: CategoryDTO) => void;
+  onDelete: (category: CategoryDTO) => void;
+  renderEditForm: (category: CategoryDTO) => ReactNode;
+}) {
+  return (
+    <div className={ADMIN_CATEGORY_LIST_CLASS}>
+      {categories.map((category) =>
+        category.id === editingId ? (
+          renderEditForm(category)
+        ) : (
+          <AdminCategoryRow
+            key={category.id}
+            category={category}
+            onEdit={() => onEdit(category)}
+            onDelete={() => onDelete(category)}
+            editDisabled={editDisabled}
+          />
+        )
+      )}
+    </div>
+  );
+}

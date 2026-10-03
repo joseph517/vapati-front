@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VaPaTi front
 
-## Getting Started
+Frontend of VaPaTi, a crowdfunding and donations platform. Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + shadcn/ui + zustand. It talks to the REST API at `NEXT_PUBLIC_API_BASE_URL` (`http://localhost:8080` in development).
 
-First, run the development server:
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install      # dependencies
+npm run dev      # dev server on http://localhost:3000 (Turbopack)
+npm run lint     # ESLint, including the layer import rules
+npm run build    # production build
+npm run start    # serve the production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+There is no test runner yet.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+src/
+├── app/            # routes: thin page.tsx files and layouts with the session guards
+├── domain/         # per module: types, business rules, errors, permissions
+├── data/           # HTTP provider, session store, one service per module, adapters
+└── presentation/
+    ├── components/ # ui/ (shadcn CLI), atoms/, molecules/, organisms/
+    ├── pages/      # per module: client containers with the page state
+    ├── hooks/      # per module: reads (useApiQuery) and actions
+    └── utils/      # pure presentation helpers (cn, format, ...)
+```
 
-## Learn More
+Imports always use the `@/` alias (`@/*` → `src/*`). `npm run lint` enforces which layer can import which: for example, components never import `@/data`, and `src/app` only imports `@/presentation`. The full table is in `specs/16-arquitectura-por-capas.md`.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To add a shadcn/ui primitive, run `npx shadcn@latest add <component>`; `components.json` sends it to `src/presentation/components/ui/`.
