@@ -1,7 +1,7 @@
 import { TransactionIdPill } from "@/components/transaction-id-pill";
 import type { DonationResponseDTO } from "@/domain/donations/donation.types";
 import { ANONYMOUS_DONOR_LABEL } from "@/domain/donations/donations";
-import { formatCurrencyCOP, formatDateTime } from "@/lib/utils";
+import { formatCurrencyCOP, formatDateTime } from "@/presentation/utils/format";
 
 export function CampaignDonationRow({
   donation,

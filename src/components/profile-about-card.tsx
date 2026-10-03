@@ -1,5 +1,5 @@
 import { CategoryPill } from "@/components/category-pill";
-import { cn } from "@/lib/utils";
+import { cn } from "@/presentation/utils/cn";
 
 interface ProfileAboutCardProps {
   aboutTitle: string; // "Sobre vos" | "Sobre {firstName}"

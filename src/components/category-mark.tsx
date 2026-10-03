@@ -1,4 +1,4 @@
-import { CATEGORY_MARKS } from "@/lib/category-marks";
+import { CATEGORY_MARKS } from "@/presentation/utils/category-marks";
 
 export function CategoryMark({
   index,

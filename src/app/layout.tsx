@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Archivo } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
+import { cn } from "@/presentation/utils/cn";
 
 const newsreader = Newsreader({
   variable: "--font-newsreader",

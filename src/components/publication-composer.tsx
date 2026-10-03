@@ -7,12 +7,7 @@ import { FieldError } from "@/components/field-error";
 import { Label } from "@/components/ui/label";
 import { NoticeAlert } from "@/components/notice-alert";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
-import type {
-  CreatePublicationRequest,
-  PublicationResponseDTO,
-} from "@/domain/publications/publication.types";
+import type { CreatePublicationRequest } from "@/domain/publications/publication.types";
 import {
   PUBLICATION_COUNTER_WARNING_AT,
   PUBLICATION_MAX_LENGTH,
@@ -20,8 +15,12 @@ import {
   publicationDescriptionError,
 } from "@/domain/publications/publications";
 import { toErrorMessage } from "@/domain/shared/errors";
-import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
-import { cn } from "@/lib/utils";
+import { usePublicationActions } from "@/presentation/hooks/publications/use-publication-actions";
+import { cn } from "@/presentation/utils/cn";
+import {
+  FIELD_LABEL_CLASSES,
+  INVALID_FIELD_CLASSES,
+} from "@/presentation/utils/form-classes";
 
 // "Nueva publicación" box of the "Novedades" section, only for the campaign owner.
 export function PublicationComposer({
@@ -33,7 +32,7 @@ export function PublicationComposer({
   onPublished: () => void;
   onCampaignStale: () => void; // a 400 not from validation: the campaign may be closed now
 }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const publicationActions = usePublicationActions();
   const [draft, setDraft] = useState("");
   const [publishing, setPublishing] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
@@ -56,10 +55,7 @@ export function PublicationComposer({
     setPublishError(null);
     try {
       const body: CreatePublicationRequest = { description };
-      await apiFetch<PublicationResponseDTO>(
-        `/api/campaigns/${campaignId}/publications`,
-        { method: "POST", body, accessToken }
-      );
+      await publicationActions.create(campaignId, body);
       setDraft("");
       onPublished();
     } catch (err) {

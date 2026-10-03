@@ -1,16 +1,12 @@
 "use client";
 
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
-import type {
-  DeletePublicationResponse,
-  PublicationResponseDTO,
-} from "@/domain/publications/publication.types";
+import type { PublicationResponseDTO } from "@/domain/publications/publication.types";
 import {
   isPublicationNotFoundError,
   publicationExcerpt,
 } from "@/domain/publications/publications";
+import { usePublicationActions } from "@/presentation/hooks/publications/use-publication-actions";
 
 // A 404 means it was already deleted (e.g. in another tab), so it counts as deleted.
 // Any other error stays in the dialog and can be retried. The caller closes it on `onDeleted`.
@@ -25,14 +21,11 @@ export function DeletePublicationDialog({
   publication: PublicationResponseDTO;
   onDeleted: () => void;
 }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const publicationActions = usePublicationActions();
 
   async function handleConfirm() {
     try {
-      await apiFetch<DeletePublicationResponse>(
-        `/api/publications/${publication.id}`,
-        { method: "DELETE", accessToken }
-      );
+      await publicationActions.remove(publication.id);
     } catch (err) {
       if (!isPublicationNotFoundError(err)) throw err;
     }

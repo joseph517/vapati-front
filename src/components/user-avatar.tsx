@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { getInitials } from "@/lib/user-profile";
-import { cn } from "@/lib/utils";
+import { cn } from "@/presentation/utils/cn";
+import { getInitials } from "@/presentation/utils/initials";
 
 type UserAvatarSize = "lg" | "md" | "sm";
 

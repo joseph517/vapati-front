@@ -3,8 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserAvatar } from "@/components/user-avatar";
 import { USER_MAX_LENGTHS } from "@/domain/users/user-validation";
-import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
-import { cn } from "@/lib/utils";
+import { cn } from "@/presentation/utils/cn";
+import {
+  FIELD_LABEL_CLASSES,
+  INVALID_FIELD_CLASSES,
+} from "@/presentation/utils/form-classes";
 
 interface ProfilePictureFieldProps {
   value: string;

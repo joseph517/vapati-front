@@ -5,8 +5,6 @@ import { FormTextField } from "@/components/form-text-field";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
 import {
   CATEGORY_NAME_REQUIRED_MESSAGE,
   CATEGORY_TEXT_MAX_LENGTH,
@@ -16,8 +14,9 @@ import {
 } from "@/domain/categories/category-form";
 import type { CategoryDTO } from "@/domain/categories/category.types";
 import { toErrorMessage } from "@/domain/shared/errors";
-import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
-import { cn } from "@/lib/utils";
+import { useAdminCategoryActions } from "@/presentation/hooks/admin/use-admin-category-actions";
+import { cn } from "@/presentation/utils/cn";
+import { FIELD_LABEL_CLASSES } from "@/presentation/utils/form-classes";
 
 const EMPTY_VALUES: CategoryFormValues = { name: "", description: "" };
 
@@ -34,7 +33,7 @@ export function AdminCategoryCreateForm({
   onError: (message: string) => void;
   className?: string;
 }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const categoryActions = useAdminCategoryActions();
   const [values, setValues] = useState<CategoryFormValues>(EMPTY_VALUES);
   const [nameError, setNameError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -58,11 +57,7 @@ export function AdminCategoryCreateForm({
     setNameError(null);
     setSubmitting(true);
     try {
-      const category = await apiFetch<CategoryDTO>("/api/categories/create", {
-        method: "POST",
-        accessToken,
-        body: request,
-      });
+      const category = await categoryActions.create(request);
       setValues(EMPTY_VALUES);
       onCreated(category);
     } catch (err) {

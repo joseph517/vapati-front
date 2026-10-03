@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { UserAvatar } from "@/components/user-avatar";
 import type { FollowerUserDTO } from "@/domain/follows/follow.types";
-import { followerProfileHref } from "@/lib/follow";
-import { formatDate } from "@/lib/utils";
+import { followerProfileHref } from "@/presentation/utils/follow-texts";
+import { formatDate } from "@/presentation/utils/format";
 
 interface FollowListRowProps {
   user: FollowerUserDTO;

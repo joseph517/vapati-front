@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn } from "@/presentation/utils/cn";
 
 const ADMIN_SECTIONS = [
   { href: "/admin/users", label: "Usuarios" },

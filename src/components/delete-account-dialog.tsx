@@ -1,10 +1,9 @@
 "use client";
 
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
-import { authService } from "@/data/auth/auth.service";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
-import type { DeleteUserResponse } from "@/domain/users/user.types";
+import { useAuthActions } from "@/presentation/hooks/auth/use-auth-actions";
+import { useSessionActions } from "@/presentation/hooks/auth/use-session-actions";
+import { useAccountActions } from "@/presentation/hooks/users/use-account-actions";
 
 interface DeleteAccountDialogProps {
   open: boolean;
@@ -15,17 +14,16 @@ export function DeleteAccountDialog({
   open,
   onOpenChange,
 }: DeleteAccountDialogProps) {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const { deleteAccount } = useAccountActions();
+  const { revokeRefreshToken } = useAuthActions();
+  const { clearSession } = useSessionActions();
 
   async function handleConfirm() {
-    await apiFetch<DeleteUserResponse>("/api/users/delete", {
-      method: "DELETE",
-      accessToken,
-    });
+    await deleteAccount();
     // Revoked so the old tokens don't work again if the account is restored.
-    await authService.revokeRefreshToken();
+    await revokeRefreshToken();
     // The protected layout redirects once the session is cleared.
-    useAuthStore.getState().clearSession("/login?flash=account-deleted");
+    clearSession("/login?flash=account-deleted");
   }
 
   return (

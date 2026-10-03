@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { CampaignDonationRow } from "@/components/campaign-donation-row";
 import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
-import { donationsService } from "@/data/donations/donations.service";
-import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
+import { useCampaignDonations } from "@/presentation/hooks/donations/use-campaign-donations";
 
 // Collapsible "Donaciones" section of the campaign detail, visible to anyone.
 // It loads on first open and `reloadKey` changes after a donation.
@@ -19,10 +18,10 @@ export function CampaignDonationsPanel({
 
   // A donation (new `reloadKey`) discards the loaded list: refetched now if
   // open, or on the next open if closed.
-  const { data, loading, error } = useApiQuery(
-    donationsService.keys.byCampaign(campaignId),
-    () => donationsService.listByCampaign(campaignId),
-    { enabled: open, resetKeys: [reloadKey] }
+  const { data, loading, error } = useCampaignDonations(
+    campaignId,
+    open,
+    reloadKey
   );
 
   return (

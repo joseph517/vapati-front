@@ -12,8 +12,8 @@ import type {
   CreateCampaignRequest,
   UpdateCampaignRequest,
 } from "@/domain/campaigns/campaign.types";
-import { cn } from "@/lib/utils";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
+import { cn } from "@/presentation/utils/cn";
 
 export default function EditCampaignPage() {
   const router = useRouter();

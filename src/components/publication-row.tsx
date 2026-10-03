@@ -4,7 +4,7 @@ import type {
   PublicationResponseDTO,
 } from "@/domain/publications/publication.types";
 import { publicationAuthorName } from "@/domain/publications/publications";
-import { formatDateTime } from "@/lib/utils";
+import { formatDateTime } from "@/presentation/utils/format";
 
 // One entry of the campaign's "Novedades" list. "Borrar" only with `onDelete`.
 export function PublicationRow({

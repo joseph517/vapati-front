@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/presentation/utils/cn";
 
 // "{length}/{max}" under a text field. From `warnAt` on it switches to the notice color.
 export function CharCounter({

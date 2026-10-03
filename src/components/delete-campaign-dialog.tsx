@@ -2,12 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
-import type {
-  CampaignResponseDTO,
-  DeleteCampaignResponse,
-} from "@/domain/campaigns/campaign.types";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import { useCampaignActions } from "@/presentation/hooks/campaigns/use-campaign-actions";
 
 export function DeleteCampaignDialog({
   open,
@@ -19,13 +15,10 @@ export function DeleteCampaignDialog({
   campaign: CampaignResponseDTO;
 }) {
   const router = useRouter();
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const campaignActions = useCampaignActions();
 
   async function handleConfirm() {
-    await apiFetch<DeleteCampaignResponse>(`/api/campaigns/${campaign.id}`, {
-      method: "DELETE",
-      accessToken,
-    });
+    await campaignActions.remove(campaign.id);
     router.replace("/campaigns/mine?flash=campaign-deleted");
   }
 

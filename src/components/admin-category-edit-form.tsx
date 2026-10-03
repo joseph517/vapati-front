@@ -6,8 +6,6 @@ import { FormTextField } from "@/components/form-text-field";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
 import {
   CATEGORY_NAME_REQUIRED_MESSAGE,
   CATEGORY_TEXT_MAX_LENGTH,
@@ -19,7 +17,8 @@ import {
 } from "@/domain/categories/category-form";
 import type { CategoryDTO } from "@/domain/categories/category.types";
 import { toErrorMessage } from "@/domain/shared/errors";
-import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
+import { useAdminCategoryActions } from "@/presentation/hooks/admin/use-admin-category-actions";
+import { FIELD_LABEL_CLASSES } from "@/presentation/utils/form-classes";
 
 // Edit mode of a row. Name errors stay under the field and the row stays open.
 // A 404 goes to `onNotFound` (the caller closes it); any other error to `onError`.
@@ -40,7 +39,7 @@ export function AdminCategoryEditForm({
   onNotFound: (message: string) => void;
   onError: (message: string) => void;
 }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const categoryActions = useAdminCategoryActions();
   const [values, setValues] = useState<CategoryFormValues>({
     name: category.name,
     description: category.description ?? "",
@@ -72,11 +71,7 @@ export function AdminCategoryEditForm({
     setSaving(true);
     onSavingChange(true);
     try {
-      await apiFetch<CategoryDTO>(`/api/categories/update/${category.id}`, {
-        method: "PUT",
-        accessToken,
-        body: request,
-      });
+      await categoryActions.update(category.id, request);
       onSaved();
     } catch (err) {
       const message = categoryNameError(err);

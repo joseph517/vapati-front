@@ -2,19 +2,21 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { authService } from "@/data/auth/auth.service";
-import { useAuthStore } from "@/data/auth/session-store";
+import { useAuthActions } from "@/presentation/hooks/auth/use-auth-actions";
+import { useSessionActions } from "@/presentation/hooks/auth/use-session-actions";
 
 export function LogoutButton() {
+  const { revokeRefreshToken } = useAuthActions();
+  const { clearSession } = useSessionActions();
   const [loggingOut, setLoggingOut] = useState(false);
 
   async function handleLogout() {
     if (loggingOut) return;
     setLoggingOut(true);
 
-    await authService.revokeRefreshToken();
+    await revokeRefreshToken();
     // The protected layout redirects to /login?flash=logged-out once the session is cleared.
-    useAuthStore.getState().clearSession();
+    clearSession();
   }
 
   return (

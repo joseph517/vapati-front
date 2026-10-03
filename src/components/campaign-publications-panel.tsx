@@ -7,18 +7,15 @@ import { NoticeAlert } from "@/components/notice-alert";
 import { PublicationComposer } from "@/components/publication-composer";
 import { PublicationRow } from "@/components/publication-row";
 import { PublicationRowsSkeleton } from "@/components/publication-rows-skeleton";
-import { useAuthStore } from "@/data/auth/session-store";
-import { publicationsService } from "@/data/publications/publications.service";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
-import type {
-  PublicationResponseDTO,
-} from "@/domain/publications/publication.types";
+import type { PublicationResponseDTO } from "@/domain/publications/publication.types";
 import {
   canPublish,
   publicationsEmptyText,
 } from "@/domain/publications/publications";
-import { cn } from "@/lib/utils";
-import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
+import { useSession } from "@/presentation/hooks/auth/use-session";
+import { useCampaignPublications } from "@/presentation/hooks/publications/use-campaign-publications";
+import { cn } from "@/presentation/utils/cn";
 
 // "Novedades" section of the campaign detail, visible to anyone and always open.
 export function CampaignPublicationsPanel({
@@ -28,7 +25,7 @@ export function CampaignPublicationsPanel({
   campaign: CampaignResponseDTO;
   onCampaignStale: () => void;
 }) {
-  const userInfo = useAuthStore((state) => state.userInfo);
+  const userInfo = useSession((state) => state.userInfo);
   const isOwner = userInfo?.userId === campaign.userId;
   const isClosed = campaign.status === "CLOSED";
   const showComposer = canPublish(campaign, userInfo?.userId);
@@ -39,9 +36,7 @@ export function CampaignPublicationsPanel({
     loading,
     error,
     reload,
-  } = useApiQuery(publicationsService.keys.byCampaign(campaign.id), () =>
-    publicationsService.listByCampaign(campaign.id)
-  );
+  } = useCampaignPublications(campaign.id);
 
   const loaded = !loading && !error && publications !== null;
 

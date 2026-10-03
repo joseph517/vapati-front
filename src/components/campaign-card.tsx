@@ -3,7 +3,7 @@ import { CategoryChips } from "@/components/category-chips";
 import { ProgressBar } from "@/components/progress-bar";
 import { StatusBadge } from "@/components/status-badge";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
-import { formatCurrencyCOP } from "@/lib/utils";
+import { formatCurrencyCOP } from "@/presentation/utils/format";
 
 function truncateDescription(text: string): string {
   return text.length > 130 ? `${text.slice(0, 130)}…` : text;

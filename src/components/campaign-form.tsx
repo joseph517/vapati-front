@@ -27,9 +27,13 @@ import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
-import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
-import { cn, formatCurrencyCOP } from "@/lib/utils";
 import { useCategories } from "@/presentation/hooks/categories/use-categories";
+import { cn } from "@/presentation/utils/cn";
+import {
+  FIELD_LABEL_CLASSES,
+  INVALID_FIELD_CLASSES,
+} from "@/presentation/utils/form-classes";
+import { formatCurrencyCOP } from "@/presentation/utils/format";
 
 type FieldErrors = Partial<Record<CampaignFieldKey, string>>;
 

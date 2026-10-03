@@ -4,14 +4,17 @@ import { DialogClose, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ErrorCard } from "@/components/error-card";
 import { FollowListRow } from "@/components/follow-list-row";
 import { FollowListSkeleton } from "@/components/follow-list-skeleton";
-import { useAuthStore } from "@/data/auth/session-store";
 import type {
   FollowAudience,
   FollowListKind,
 } from "@/domain/follows/follow.types";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
-import { FOLLOW_LIST_EMPTY_TEXTS, FOLLOW_LIST_TITLES } from "@/lib/follow";
+import { useSession } from "@/presentation/hooks/auth/use-session";
 import { useFollowList } from "@/presentation/hooks/follows/use-follow-list";
+import {
+  FOLLOW_LIST_EMPTY_TEXTS,
+  FOLLOW_LIST_TITLES,
+} from "@/presentation/utils/follow-texts";
 
 interface FollowListPanelProps {
   userId: string;
@@ -27,7 +30,7 @@ export function FollowListPanel({
   kind,
   onNavigate,
 }: FollowListPanelProps) {
-  const sessionUserId = useAuthStore((state) => state.userInfo?.userId);
+  const sessionUserId = useSession((state) => state.userInfo?.userId);
   const { status, users, total, error, retry } = useFollowList(userId, kind);
 
   let body: React.ReactNode;

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { DonationReceipt } from "@/domain/donations/donation.types";
-import { formatCurrencyCOP } from "@/lib/utils";
+import { formatCurrencyCOP } from "@/presentation/utils/format";
 
 // Confirmation shown on the campaign detail right after a donation.
 export function DonationReceiptCard({ receipt }: { receipt: DonationReceipt }) {

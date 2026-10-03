@@ -8,7 +8,7 @@ import type {
   FollowCount,
   FollowListKind,
 } from "@/domain/follows/follow.types";
-import { FOLLOW_LIST_TITLES } from "@/lib/follow";
+import { FOLLOW_LIST_TITLES } from "@/presentation/utils/follow-texts";
 
 interface ProfileFollowStatsProps {
   userId: string;

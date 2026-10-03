@@ -6,12 +6,12 @@ import { CampaignStatsRow } from "@/components/campaign-stats-row";
 import { NoticeAlert } from "@/components/notice-alert";
 import { ProgressBar } from "@/components/progress-bar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuthStore } from "@/data/auth/session-store";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type { CampaignStatisticsDTO } from "@/domain/donations/donation.types";
 import { getDonationBlockReason } from "@/domain/donations/donations";
 import type { LoadStatus } from "@/domain/shared/shared.types";
-import { formatCurrencyCOP } from "@/lib/utils";
+import { useSession } from "@/presentation/hooks/auth/use-session";
+import { formatCurrencyCOP } from "@/presentation/utils/format";
 
 export function CampaignProgressPanel({
   campaign,
@@ -26,7 +26,7 @@ export function CampaignProgressPanel({
   onDonateClick: () => void;
   onOwnerActionUpdated: () => void;
 }) {
-  const userInfo = useAuthStore((state) => state.userInfo);
+  const userInfo = useSession((state) => state.userInfo);
   const donationBlockReason = getDonationBlockReason(
     campaign,
     userInfo?.userId

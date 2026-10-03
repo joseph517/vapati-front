@@ -13,7 +13,6 @@ import { CategoryChips } from "@/components/category-chips";
 import { DonationReceiptCard } from "@/components/donation-receipt-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/status-badge";
-import { useAuthStore } from "@/data/auth/session-store";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type { DonationReceipt } from "@/domain/donations/donation.types";
 import {
@@ -34,7 +33,6 @@ function CampaignDetail() {
   const searchParams = useSearchParams();
   // Set by the edit page after saving, so the history shows the new transitions.
   const historyOpen = searchParams.get("history") === "open";
-  const accessToken = useAuthStore((state) => state.accessToken);
   const {
     data: campaign,
     loading,
@@ -150,7 +148,6 @@ function CampaignDetail() {
             open={isDonateOpen}
             onOpenChange={setIsDonateOpen}
             campaign={campaign}
-            accessToken={accessToken}
             onDonated={handleDonated}
           />
         </>

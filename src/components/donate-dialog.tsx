@@ -12,11 +12,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { apiFetch } from "@/data/providers/http-client";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type {
   CreateDonationRequest,
-  CreateDonationResponse,
   DonationReceipt,
 } from "@/domain/donations/donation.types";
 import { validateDonationAmount } from "@/domain/donations/donations";
@@ -24,7 +22,9 @@ import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
-import { cn, formatCurrencyCOP } from "@/lib/utils";
+import { useDonationActions } from "@/presentation/hooks/donations/use-donation-actions";
+import { cn } from "@/presentation/utils/cn";
+import { formatCurrencyCOP } from "@/presentation/utils/format";
 
 const SUGGESTED_AMOUNTS = [10000, 25000, 50000, 100000];
 
@@ -32,15 +32,14 @@ export function DonateDialog({
   open,
   onOpenChange,
   campaign,
-  accessToken,
   onDonated,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   campaign: CampaignResponseDTO;
-  accessToken: string | null;
   onDonated: (receipt: DonationReceipt) => void;
 }) {
+  const donationActions = useDonationActions();
   const [amount, setAmount] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -70,11 +69,7 @@ export function DonateDialog({
         campaignId: campaign.id,
         amount: Number(amount),
       };
-      const data = await apiFetch<CreateDonationResponse>("/api/donations", {
-        method: "POST",
-        accessToken,
-        body,
-      });
+      const data = await donationActions.donate(body);
       onDonated({ ...data.donation, message: data.message });
       onOpenChange(false);
     } catch (err) {

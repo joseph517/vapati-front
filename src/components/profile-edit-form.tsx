@@ -34,8 +34,11 @@ import {
   USER_MAX_LENGTHS,
 } from "@/domain/users/user-validation";
 import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
-import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
-import { cn } from "@/lib/utils";
+import { cn } from "@/presentation/utils/cn";
+import {
+  FIELD_LABEL_CLASSES,
+  INVALID_FIELD_CLASSES,
+} from "@/presentation/utils/form-classes";
 
 const FIELDS_GRID_CLASSES =
   "grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3.5";

@@ -5,11 +5,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DangerOutlineButton } from "@/components/danger-outline-button";
 import { DeleteCampaignDialog } from "@/components/delete-campaign-dialog";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import { toErrorMessage } from "@/domain/shared/errors";
-import { cn } from "@/lib/utils";
+import { useSession } from "@/presentation/hooks/auth/use-session";
+import { useCampaignActions } from "@/presentation/hooks/campaigns/use-campaign-actions";
+import { cn } from "@/presentation/utils/cn";
 
 export function CampaignOwnerActions({
   campaign,
@@ -18,8 +18,8 @@ export function CampaignOwnerActions({
   campaign: CampaignResponseDTO;
   onUpdated: () => void;
 }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
-  const userInfo = useAuthStore((state) => state.userInfo);
+  const userInfo = useSession((state) => state.userInfo);
+  const campaignActions = useCampaignActions();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -32,10 +32,11 @@ export function CampaignOwnerActions({
     setBusy(true);
     setError(null);
     try {
-      await apiFetch(
-        `/api/campaigns/${campaign.id}/${isClosed ? "activate" : "close"}`,
-        { method: "PUT", accessToken }
-      );
+      if (isClosed) {
+        await campaignActions.activate(campaign.id);
+      } else {
+        await campaignActions.close(campaign.id);
+      }
       onUpdated();
     } catch (err) {
       setError(toErrorMessage(err));

@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuthStore } from "@/data/auth/session-store";
-import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
-import { formatDateTime } from "@/lib/utils";
-import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
+import { useSession } from "@/presentation/hooks/auth/use-session";
+import { useCampaignStatusHistory } from "@/presentation/hooks/campaigns/use-campaign-status-history";
+import { formatDateTime } from "@/presentation/utils/format";
 
 export function CampaignStatusHistoryPanel({
   campaign,
@@ -15,7 +14,7 @@ export function CampaignStatusHistoryPanel({
   campaign: CampaignResponseDTO;
   defaultOpen?: boolean;
 }) {
-  const userInfo = useAuthStore((state) => state.userInfo);
+  const userInfo = useSession((state) => state.userInfo);
 
   const [open, setOpen] = useState(defaultOpen);
 
@@ -24,19 +23,7 @@ export function CampaignStatusHistoryPanel({
     data: history,
     loading,
     error,
-  } = useApiQuery(
-    campaignsService.keys.statusHistory(campaign.id),
-    () => campaignsService.statusHistory(campaign.id),
-    {
-      enabled: open,
-      resetKeys: [campaign.status],
-      select: (entries) =>
-        [...entries].sort(
-          (a, b) =>
-            new Date(a.changedAt).getTime() - new Date(b.changedAt).getTime()
-        ),
-    }
-  );
+  } = useCampaignStatusHistory(campaign, open);
 
   if (userInfo?.userId !== campaign.userId) return null;
 

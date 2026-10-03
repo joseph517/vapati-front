@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { CampaignStatisticsDTO } from "@/domain/donations/donation.types";
 import type { LoadStatus } from "@/domain/shared/shared.types";
-import { cn, formatCurrencyCOP } from "@/lib/utils";
+import { cn } from "@/presentation/utils/cn";
+import { formatCurrencyCOP } from "@/presentation/utils/format";
 
 export function CampaignStatsRow({
   statistics,

@@ -27,9 +27,9 @@ import {
   USER_MAX_LENGTHS,
 } from "@/domain/users/user-validation";
 import type { CreateUserRequest } from "@/domain/users/user.types";
-import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
-import { cn } from "@/lib/utils";
 import { useCategories } from "@/presentation/hooks/categories/use-categories";
+import { cn } from "@/presentation/utils/cn";
+import { FIELD_LABEL_CLASSES } from "@/presentation/utils/form-classes";
 
 const STEP_LABELS = ["Datos personales", "Cuenta", "Intereses"] as const;
 const TOTAL_STEPS = STEP_LABELS.length;

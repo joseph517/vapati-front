@@ -14,8 +14,8 @@ import {
   parseAdminUsersQuery,
   type AdminUsersQuery,
 } from "@/domain/admin/admin-users-query";
-import { adminUsersHref } from "@/lib/admin-users";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
+import { adminUsersHref } from "@/presentation/utils/admin-routes";
 
 export default function AdminUsersPage() {
   return (

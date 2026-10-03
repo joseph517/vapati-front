@@ -1,17 +1,13 @@
 "use client";
 
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
 import {
   categoryDeleteBlockedMessage,
   isCategoryNotFoundError,
 } from "@/domain/categories/category-form";
-import type {
-  CategoryDTO,
-  DeleteCategoryResponse,
-} from "@/domain/categories/category.types";
+import type { CategoryDTO } from "@/domain/categories/category.types";
 import { toErrorMessage } from "@/domain/shared/errors";
+import { useAdminCategoryActions } from "@/presentation/hooks/admin/use-admin-category-actions";
 
 // A rejected delete (400, the category is in use) leaves the dialog in blocked mode.
 // A 404 goes to `onNotFound`; any other error stays in the dialog and can be retried.
@@ -31,15 +27,12 @@ export function DeleteCategoryDialog({
   onDeleted: (category: CategoryDTO) => void;
   onNotFound: (message: string) => void;
 }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const categoryActions = useAdminCategoryActions();
 
   async function handleConfirm() {
     onMutationStart();
     try {
-      await apiFetch<DeleteCategoryResponse>(
-        `/api/categories/delete/${category.id}`,
-        { method: "DELETE", accessToken }
-      );
+      await categoryActions.remove(category.id);
     } catch (err) {
       if (isCategoryNotFoundError(err)) {
         onNotFound(toErrorMessage(err));
