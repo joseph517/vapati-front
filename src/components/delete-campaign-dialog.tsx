@@ -2,12 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import type {
   CampaignResponseDTO,
   DeleteCampaignResponse,
 } from "@/domain/campaigns/campaign.types";
-import { apiFetch } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 export function DeleteCampaignDialog({
   open,

@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthHydrated, useAuthStore } from "@/lib/store/auth-store";
+import { useAuthStore } from "@/data/auth/session-store";
+import { useAuthHydrated } from "@/presentation/hooks/auth/use-auth-hydrated";
 
 export default function Home() {
   const router = useRouter();

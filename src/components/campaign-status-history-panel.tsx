@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuthStore } from "@/data/auth/session-store";
 import type {
   CampaignResponseDTO,
   CampaignStatusHistoryResponseDTO,
 } from "@/domain/campaigns/campaign.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import { useAuthStore } from "@/lib/store/auth-store";
 import { formatDateTime } from "@/lib/utils";
 
 export function CampaignStatusHistoryPanel({

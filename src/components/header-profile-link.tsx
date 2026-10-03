@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuthStore } from "@/lib/store/auth-store";
+import { useAuthStore } from "@/data/auth/session-store";
 
 // The user's name in the header, as the link to "Mi perfil"
 export function HeaderProfileLink() {

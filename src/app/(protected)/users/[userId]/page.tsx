@@ -10,20 +10,20 @@ import { ProfileAboutCard } from "@/components/profile-about-card";
 import { ProfileFollowStats } from "@/components/profile-follow-stats";
 import { ProfileHeader } from "@/components/profile-header";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
+import { useAuthStore } from "@/data/auth/session-store";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { isUserNotFound } from "@/domain/users/user-profile";
 import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
 import { useFollowStatus } from "@/lib/hooks/use-follow-status";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
-import { useIsAdmin } from "@/lib/roles";
-import { useAuthStore } from "@/lib/store/auth-store";
 import { toProfileSummary } from "@/lib/user-profile";
+import { useCanAccess } from "@/presentation/hooks/auth/use-can-access";
 
 export default function PublicProfilePage() {
   const params = useParams<{ userId: string }>();
   const router = useRouter();
   const userInfo = useAuthStore((state) => state.userInfo);
-  const isAdmin = useIsAdmin();
+  const canAccessAdmin = useCanAccess("admin");
 
   // The own id goes to /profile without fetching. A non-numeric id is left to the backend (400).
   const isOwnProfile = Number(params.userId) === userInfo?.userId;
@@ -113,7 +113,7 @@ export default function PublicProfilePage() {
         >
           ← Todas las campañas
         </Link>
-        {isAdmin && profile && !loading && !error && (
+        {canAccessAdmin && profile && !loading && !error && (
           <Link
             href={`/admin/users/${profile.id}`}
             className="text-[13.5px] font-medium text-primary hover:text-[var(--accent-hover)]"

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AdminSectionTabs } from "@/components/admin-section-tabs";
-import { useIsAdmin } from "@/lib/roles";
+import { useCanAccess } from "@/presentation/hooks/auth/use-can-access";
 
 // UI-only guard: the real authorization is the backend's @PreAuthorize on the admin endpoints.
 // The protected layout already waited for the store to hydrate, so the role is final here.
@@ -13,13 +13,13 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const isAdmin = useIsAdmin();
+  const canAccessAdmin = useCanAccess("admin");
 
   useEffect(() => {
-    if (!isAdmin) router.replace("/campaigns");
-  }, [isAdmin, router]);
+    if (!canAccessAdmin) router.replace("/campaigns");
+  }, [canAccessAdmin, router]);
 
-  if (!isAdmin) {
+  if (!canAccessAdmin) {
     return null;
   }
 

@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CampaignForm } from "@/components/campaign-form";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import type { CampaignFormValues } from "@/domain/campaigns/campaign-form";
 import type {
   CreateCampaignRequest,
   CreateCampaignResponse,
 } from "@/domain/campaigns/campaign.types";
-import { apiFetch } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 const EMPTY_VALUES: CampaignFormValues = {
   name: "",

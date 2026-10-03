@@ -7,6 +7,8 @@ import { FieldError } from "@/components/field-error";
 import { Label } from "@/components/ui/label";
 import { NoticeAlert } from "@/components/notice-alert";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import type {
   CreatePublicationRequest,
   PublicationResponseDTO,
@@ -18,9 +20,7 @@ import {
   publicationDescriptionError,
 } from "@/domain/publications/publications";
 import { toErrorMessage } from "@/domain/shared/errors";
-import { apiFetch } from "@/lib/api";
 import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
-import { useAuthStore } from "@/lib/store/auth-store";
 import { cn } from "@/lib/utils";
 
 // "Nueva publicación" box of the "Novedades" section, only for the campaign owner.

@@ -1,11 +1,11 @@
+import { useAuthStore } from "@/data/auth/session-store";
+import { isTokenExpired } from "@/data/providers/jwt";
 import type { AuthResponse } from "@/domain/auth/auth.types";
 import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
 import type { ApiError } from "@/domain/shared/shared.types";
-import { isTokenExpired } from "@/lib/jwt";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 

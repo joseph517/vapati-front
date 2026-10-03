@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { AuthResponse, UserInfo } from "@/domain/auth/auth.types";
 
 export const DEFAULT_LOGOUT_REDIRECT = "/login?flash=logged-out";
 
-type AuthState = {
+export type AuthState = {
   accessToken: string | null;
   refreshToken: string | null;
   userInfo: UserInfo | null;
@@ -98,10 +97,7 @@ export const useAuthStore = create<AuthState>()(
   )
 );
 
-export function useAuthHydrated() {
-  useEffect(() => {
-    useAuthStore.persist.rehydrate();
-  }, []);
-
-  return useAuthStore((state) => state.hasHydrated);
+// Read at call time, so services always send the current token.
+export function getAccessToken(): string | null {
+  return useAuthStore.getState().accessToken;
 }

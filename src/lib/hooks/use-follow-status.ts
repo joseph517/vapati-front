@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import type {
   FollowResponseDTO,
   UnfollowResponseDTO,
@@ -8,9 +10,7 @@ import {
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
 import type { LoadStatus } from "@/domain/shared/shared.types";
-import { apiFetch } from "@/lib/api";
 import { followPath, isFollowingPath } from "@/lib/follow";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 interface FollowersCounter {
   adjust: (delta: 1 | -1) => void;

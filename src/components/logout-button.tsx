@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/data/auth/session-store";
 import { revokeRefreshToken } from "@/lib/session";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 export function LogoutButton() {
   const [loggingOut, setLoggingOut] = useState(false);

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import type {
   FollowCount,
   FollowListKind,
 } from "@/domain/follows/follow.types";
-import { apiFetch } from "@/lib/api";
 import { followCountPath } from "@/lib/follow";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 const LOADING_COUNT: FollowCount = { status: "loading", value: null };
 

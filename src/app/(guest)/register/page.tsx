@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { apiFetch } from "@/data/providers/http-client";
 import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
@@ -26,7 +27,6 @@ import {
   USER_MAX_LENGTHS,
 } from "@/domain/users/user-validation";
 import type { CreateUserRequest } from "@/domain/users/user.types";
-import { apiFetch } from "@/lib/api";
 import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
 import { useCategories } from "@/lib/hooks/use-categories";
 import { cn } from "@/lib/utils";

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useIsAdmin } from "@/lib/roles";
 import { cn } from "@/lib/utils";
+import { useCanAccess } from "@/presentation/hooks/auth/use-can-access";
 
 type NavLink = {
   href: string;
@@ -65,14 +65,14 @@ function NavItem({ link, pathname }: { link: NavLink; pathname: string }) {
 
 export function MainNav() {
   const pathname = usePathname();
-  const isAdmin = useIsAdmin();
+  const canAccessAdmin = useCanAccess("admin");
 
   return (
     <nav className="flex flex-wrap items-center gap-[18px]">
       {NAV_LINKS.map((link) => (
         <NavItem key={link.href} link={link} pathname={pathname} />
       ))}
-      {isAdmin && (
+      {canAccessAdmin && (
         <>
           <span aria-hidden="true" className="h-4 w-px bg-border" />
           <NavItem link={ADMIN_LINK} pathname={pathname} />

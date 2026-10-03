@@ -1,10 +1,10 @@
 "use client";
 
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import type { DeleteUserResponse } from "@/domain/users/user.types";
-import { apiFetch } from "@/lib/api";
 import { revokeRefreshToken } from "@/lib/session";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 interface DeleteAccountDialogProps {
   open: boolean;

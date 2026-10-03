@@ -5,6 +5,8 @@ import { FormTextField } from "@/components/form-text-field";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import {
   CATEGORY_NAME_REQUIRED_MESSAGE,
   CATEGORY_TEXT_MAX_LENGTH,
@@ -14,9 +16,7 @@ import {
 } from "@/domain/categories/category-form";
 import type { CategoryDTO } from "@/domain/categories/category.types";
 import { toErrorMessage } from "@/domain/shared/errors";
-import { apiFetch } from "@/lib/api";
 import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
-import { useAuthStore } from "@/lib/store/auth-store";
 import { cn } from "@/lib/utils";
 
 const EMPTY_VALUES: CategoryFormValues = { name: "", description: "" };

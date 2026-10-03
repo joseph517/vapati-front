@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import { toQueryError, type QueryError } from "@/domain/shared/errors";
-import { apiFetch } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 type UseApiQueryOptions<TRaw, T> = {
   enabled?: boolean; // default true. false = no request, keeps what was loaded

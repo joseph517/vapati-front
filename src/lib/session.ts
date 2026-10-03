@@ -1,5 +1,5 @@
-import { apiFetch } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/auth-store";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 
 // POST /auth/logout with the stored refreshToken. Skipped without a refreshToken.
 // Never throws, and it does NOT clear the local session: callers do that.

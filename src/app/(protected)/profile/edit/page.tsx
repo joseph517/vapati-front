@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 import { ErrorCard } from "@/components/error-card";
 import { ProfileEditForm } from "@/components/profile-edit-form";
 import { ProfileEditSkeleton } from "@/components/profile-edit-skeleton";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import type { CredentialsChange } from "@/domain/users/profile-form";
 import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
-import { apiFetch } from "@/lib/api";
 import { useCategories } from "@/lib/hooks/use-categories";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
-import { useAuthStore } from "@/lib/store/auth-store";
 import { isFullUserProfile } from "@/lib/user-profile";
 import { cn } from "@/lib/utils";
 

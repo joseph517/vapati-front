@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { HeaderProfileLink } from "@/components/header-profile-link";
 import { LogoutButton } from "@/components/logout-button";
 import { MainNav } from "@/components/main-nav";
-import { useAuthHydrated, useAuthStore } from "@/lib/store/auth-store";
+import { useAuthStore } from "@/data/auth/session-store";
+import { useAuthHydrated } from "@/presentation/hooks/auth/use-auth-hydrated";
 
 export default function ProtectedLayout({
   children,

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { apiFetch } from "@/data/providers/http-client";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type {
   CreateDonationRequest,
@@ -23,7 +24,6 @@ import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
-import { apiFetch } from "@/lib/api";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
 
 const SUGGESTED_AMOUNTS = [10000, 25000, 50000, 100000];

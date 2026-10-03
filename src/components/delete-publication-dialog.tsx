@@ -1,6 +1,8 @@
 "use client";
 
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+import { useAuthStore } from "@/data/auth/session-store";
+import { apiFetch } from "@/data/providers/http-client";
 import type {
   DeletePublicationResponse,
   PublicationResponseDTO,
@@ -9,8 +11,6 @@ import {
   isPublicationNotFoundError,
   publicationExcerpt,
 } from "@/domain/publications/publications";
-import { apiFetch } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 // A 404 means it was already deleted (e.g. in another tab), so it counts as deleted.
 // Any other error stays in the dialog and can be retried. The caller closes it on `onDeleted`.

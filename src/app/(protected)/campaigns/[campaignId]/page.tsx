@@ -13,11 +13,11 @@ import { CategoryChips } from "@/components/category-chips";
 import { DonationReceiptCard } from "@/components/donation-receipt-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/status-badge";
+import { useAuthStore } from "@/data/auth/session-store";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type { DonationReceipt } from "@/domain/donations/donation.types";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { useCampaignStatistics } from "@/lib/hooks/use-campaign-statistics";
-import { useAuthStore } from "@/lib/store/auth-store";
 
 export default function CampaignDetailPage() {
   return (
