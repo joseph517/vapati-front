@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AdminCategoriesSkeleton } from "@/components/admin-categories-skeleton";
 import { AdminCategoryCreateForm } from "@/components/admin-category-create-form";
+import { AdminCategoryEditForm } from "@/components/admin-category-edit-form";
 import { AdminCategoryList } from "@/components/admin-category-list";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
@@ -21,8 +22,33 @@ export default function AdminCategoriesPage() {
   const [successNotice, setSuccessNotice] = useState<string | null>(null);
   const [errorNotice, setErrorNotice] = useState<string | null>(null);
 
+  // At most one row in edit mode. Opening another one discards it without asking.
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  function clearErrorNotice() {
+    setErrorNotice(null);
+  }
+
   function handleCreated(category: CategoryDTO) {
     setSuccessNotice(`Creaste la categoría «${category.name}».`);
+    reload({ background: true });
+  }
+
+  function closeEdit() {
+    setEditingId(null);
+  }
+
+  // Editing shows no success notice: the updated row is the confirmation.
+  function handleEditSaved() {
+    closeEdit();
+    reload({ background: true });
+  }
+
+  // Another admin deleted it: drop the ghost row.
+  function handleEditNotFound(message: string) {
+    closeEdit();
+    setErrorNotice(message);
     reload({ background: true });
   }
 
@@ -70,7 +96,7 @@ export default function AdminCategoriesPage() {
       {/* One column with the form on top; from 820px the form sits on the right. */}
       <div className="grid gap-6 min-[820px]:grid-cols-[minmax(0,1fr)_280px] min-[820px]:items-start">
         <AdminCategoryCreateForm
-          onMutationStart={() => setErrorNotice(null)}
+          onMutationStart={clearErrorNotice}
           onCreated={handleCreated}
           onError={setErrorNotice}
           className="min-[820px]:sticky min-[820px]:top-20 min-[820px]:col-start-2 min-[820px]:row-start-1"
@@ -92,7 +118,24 @@ export default function AdminCategoriesPage() {
           )}
 
           {!loading && !error && categories && categories.length > 0 && (
-            <AdminCategoryList categories={categories} />
+            <AdminCategoryList
+              categories={categories}
+              editingId={editingId}
+              editDisabled={savingEdit}
+              onEdit={(category) => setEditingId(category.id)}
+              renderEditForm={(category) => (
+                <AdminCategoryEditForm
+                  key={category.id}
+                  category={category}
+                  onCancel={closeEdit}
+                  onSavingChange={setSavingEdit}
+                  onMutationStart={clearErrorNotice}
+                  onSaved={handleEditSaved}
+                  onNotFound={handleEditNotFound}
+                  onError={setErrorNotice}
+                />
+              )}
+            />
           )}
         </div>
       </div>

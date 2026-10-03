@@ -7,7 +7,15 @@ export const ADMIN_CATEGORY_ROW_CLASS =
   "border-t border-[var(--divider)] px-5 py-4 first:border-t-0";
 
 // Read mode: name, description or "Sin descripción", "Editar" and "Borrar".
-export function AdminCategoryRow({ category }: { category: CategoryDTO }) {
+export function AdminCategoryRow({
+  category,
+  onEdit,
+  editDisabled,
+}: {
+  category: CategoryDTO;
+  onEdit: () => void;
+  editDisabled: boolean; // while another row is saving
+}) {
   return (
     <div
       className={`${ADMIN_CATEGORY_ROW_CLASS} flex flex-wrap items-start justify-between gap-x-4 gap-y-3`}
@@ -27,7 +35,13 @@ export function AdminCategoryRow({ category }: { category: CategoryDTO }) {
         )}
       </div>
       <div className="flex shrink-0 gap-2">
-        <Button type="button" variant="outline" size="sm">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={editDisabled}
+          onClick={onEdit}
+        >
           Editar
         </Button>
         <DangerOutlineButton type="button">Borrar</DangerOutlineButton>
