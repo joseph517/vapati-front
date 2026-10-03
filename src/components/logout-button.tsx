@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { authService } from "@/data/auth/auth.service";
 import { useAuthStore } from "@/data/auth/session-store";
-import { revokeRefreshToken } from "@/lib/session";
 
 export function LogoutButton() {
   const [loggingOut, setLoggingOut] = useState(false);
@@ -12,7 +12,7 @@ export function LogoutButton() {
     if (loggingOut) return;
     setLoggingOut(true);
 
-    await revokeRefreshToken();
+    await authService.revokeRefreshToken();
     // The protected layout redirects to /login?flash=logged-out once the session is cleared.
     useAuthStore.getState().clearSession();
   }

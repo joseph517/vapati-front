@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { UserAvatar } from "@/components/user-avatar";
-import type { ProfileSummary } from "@/lib/user-profile";
+import type { ProfileSummary } from "@/data/users/user-profile.adapter";
 
 interface ProfileHeaderProps {
   summary: ProfileSummary;

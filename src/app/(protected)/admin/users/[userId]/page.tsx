@@ -10,11 +10,14 @@ import { ProfileHeader } from "@/components/profile-header";
 import { ProfilePrivateDataCard } from "@/components/profile-private-data-card";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
 import { UserIdPill } from "@/components/user-id-pill";
+import {
+  isFullUserProfile,
+  toProfileSummary,
+} from "@/data/users/user-profile.adapter";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { isUserNotFound } from "@/domain/users/user-profile";
 import { adminUsersBackHref } from "@/lib/admin-users";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
-import { isFullUserProfile, toProfileSummary } from "@/lib/user-profile";
 
 export default function AdminUserDetailPage() {
   return (

@@ -101,3 +101,9 @@ export const useAuthStore = create<AuthState>()(
 export function getAccessToken(): string | null {
   return useAuthStore.getState().accessToken;
 }
+
+// apiFetch options for an authenticated request. Without a token it goes out as public,
+// as it did when callers passed the store's accessToken.
+export function auth(): { accessToken: string | null } {
+  return { accessToken: getAccessToken() };
+}

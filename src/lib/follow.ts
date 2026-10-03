@@ -1,6 +1,5 @@
 import type {
   FollowAudience,
-  FollowerUserDTO,
   FollowListKind,
 } from "@/domain/follows/follow.types";
 
@@ -46,15 +45,6 @@ export function isFollowingPath(sessionId: UserId, targetId: UserId): string {
 // POST follows, DELETE unfollows. Neither has a body
 export function followPath(userId: UserId): string {
   return `/api/users/${userId}/follow`;
-}
-
-// The backend does not guarantee an order: newest first
-export function sortByFollowedAtDesc(
-  users: FollowerUserDTO[]
-): FollowerUserDTO[] {
-  return [...users].sort(
-    (a, b) => new Date(b.followedAt).getTime() - new Date(a.followedAt).getTime()
-  );
 }
 
 export function followerProfileHref(
