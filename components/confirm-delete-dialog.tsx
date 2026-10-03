@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { NoticeAlert } from "@/components/notice-alert";
 import { toErrorMessage } from "@/lib/api";
 
 interface ConfirmDeleteDialogProps {
@@ -20,8 +21,11 @@ interface ConfirmDeleteDialogProps {
   note: ReactNode;
   confirmLabel: string;
   // If it throws, the dialog shows the error and re-enables. If it resolves, the dialog
-  // stays in "borrando…", because the caller navigates away.
+  // stays in "borrando…" until the caller navigates away or closes it.
   onConfirm: () => Promise<void>;
+  // If it returns a message for the error thrown by onConfirm, the dialog enters
+  // "blocked" mode: a notice with that message and a single "Cerrar" button.
+  getBlockedMessage?: (err: unknown) => string | null;
 }
 
 export function ConfirmDeleteDialog({
@@ -32,14 +36,21 @@ export function ConfirmDeleteDialog({
   note,
   confirmLabel,
   onConfirm,
+  getBlockedMessage,
 }: ConfirmDeleteDialogProps) {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [blocked, setBlocked] = useState<string | null>(null);
 
+  // Full reset on open: a caller that closes the dialog without navigating away
+  // reopens it on the same page.
   useEffect(() => {
     if (open) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      /* eslint-disable react-hooks/set-state-in-effect */
       setError(null);
+      setBlocked(null);
+      setDeleting(false);
+      /* eslint-enable react-hooks/set-state-in-effect */
     }
   }, [open]);
 
@@ -55,7 +66,12 @@ export function ConfirmDeleteDialog({
     try {
       await onConfirm();
     } catch (err) {
-      setError(toErrorMessage(err));
+      const blockedMessage = getBlockedMessage?.(err) ?? null;
+      if (blockedMessage) {
+        setBlocked(blockedMessage);
+      } else {
+        setError(toErrorMessage(err));
+      }
       setDeleting(false);
     }
   }
@@ -89,6 +105,8 @@ export function ConfirmDeleteDialog({
           <p className="mt-2 text-[13.5px] text-muted-foreground">{note}</p>
         </div>
 
+        {blocked && <NoticeAlert>{blocked}</NoticeAlert>}
+
         {error && (
           <Alert
             variant="destructive"
@@ -101,27 +119,39 @@ export function ConfirmDeleteDialog({
         )}
 
         <div className="flex justify-end gap-2.5">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={deleting}
-            onClick={() => handleOpenChange(false)}
-          >
-            Cancelar
-          </Button>
-          <Button
-            type="button"
-            disabled={deleting}
-            onClick={handleConfirm}
-            className="bg-destructive font-semibold text-primary-foreground hover:bg-[var(--destructive-hover)]"
-          >
-            {confirmLabel}
-            {deleting && (
-              <span className="animate-pulse text-[13px] font-normal opacity-85">
-                borrando…
-              </span>
-            )}
-          </Button>
+          {blocked ? (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleOpenChange(false)}
+            >
+              Cerrar
+            </Button>
+          ) : (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={deleting}
+                onClick={() => handleOpenChange(false)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="button"
+                disabled={deleting}
+                onClick={handleConfirm}
+                className="bg-destructive font-semibold text-primary-foreground hover:bg-[var(--destructive-hover)]"
+              >
+                {confirmLabel}
+                {deleting && (
+                  <span className="animate-pulse text-[13px] font-normal opacity-85">
+                    borrando…
+                  </span>
+                )}
+              </Button>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

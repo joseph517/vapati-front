@@ -4,8 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-// SPEC 14 adds "Categorías"
-const ADMIN_SECTIONS = [{ href: "/admin/users", label: "Usuarios" }];
+const ADMIN_SECTIONS = [
+  { href: "/admin/users", label: "Usuarios" },
+  { href: "/admin/categories", label: "Categorías" },
+];
 
 function isSectionActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
