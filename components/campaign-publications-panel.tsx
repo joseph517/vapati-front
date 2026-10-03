@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { DeletePublicationDialog } from "@/components/delete-publication-dialog";
 import { InlineRetryAlert } from "@/components/inline-retry-alert";
 import { NoticeAlert } from "@/components/notice-alert";
 import { PublicationComposer } from "@/components/publication-composer";
@@ -35,6 +37,21 @@ export function CampaignPublicationsPanel({
   );
 
   const loaded = !loading && !error && publications !== null;
+
+  // Kept apart from `deleteOpen` so the dialog keeps its content while closing.
+  const [deleteTarget, setDeleteTarget] =
+    useState<PublicationResponseDTO | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  function openDelete(publication: PublicationResponseDTO) {
+    setDeleteTarget(publication);
+    setDeleteOpen(true);
+  }
+
+  function handleDeleted() {
+    setDeleteOpen(false);
+    reload({ background: true });
+  }
 
   return (
     <section className="mt-5 rounded-2xl border border-border bg-card p-[26px]">
@@ -82,11 +99,24 @@ export function CampaignPublicationsPanel({
         {loaded && publications.length > 0 && (
           <div className="flex flex-col">
             {publications.map((publication) => (
-              <PublicationRow key={publication.id} publication={publication} />
+              <PublicationRow
+                key={publication.id}
+                publication={publication}
+                onDelete={isOwner ? () => openDelete(publication) : undefined}
+              />
             ))}
           </div>
         )}
       </div>
+
+      {deleteTarget && (
+        <DeletePublicationDialog
+          open={deleteOpen}
+          onOpenChange={setDeleteOpen}
+          publication={deleteTarget}
+          onDeleted={handleDeleted}
+        />
+      )}
     </section>
   );
 }
