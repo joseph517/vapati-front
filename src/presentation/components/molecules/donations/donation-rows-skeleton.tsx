@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 import { cn } from "@/presentation/utils/cn";
 
 const TITLE_WIDTHS = ["62%", "48%", "55%"];

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 import { useSession } from "@/presentation/hooks/auth/use-session";
 import { useCampaignStatusHistory } from "@/presentation/hooks/campaigns/use-campaign-status-history";
 import { formatDateTime } from "@/presentation/utils/format";

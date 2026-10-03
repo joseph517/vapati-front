@@ -1,17 +1,6 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type {
   CreateDonationRequest,
@@ -22,6 +11,17 @@ import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
+import { Alert, AlertDescription } from "@/presentation/components/ui/alert";
+import { Button } from "@/presentation/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/presentation/components/ui/dialog";
+import { Input } from "@/presentation/components/ui/input";
+import { Label } from "@/presentation/components/ui/label";
 import { useDonationActions } from "@/presentation/hooks/donations/use-donation-actions";
 import { cn } from "@/presentation/utils/cn";
 import { formatCurrencyCOP } from "@/presentation/utils/format";

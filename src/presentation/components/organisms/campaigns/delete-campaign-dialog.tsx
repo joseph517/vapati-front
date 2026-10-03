@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import {
+  ConfirmDeleteDialog,
+} from "@/presentation/components/molecules/confirm-delete-dialog";
 import { useCampaignActions } from "@/presentation/hooks/campaigns/use-campaign-actions";
 
 export function DeleteCampaignDialog({

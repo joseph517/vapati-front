@@ -1,20 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { AdminCategoriesSkeleton } from "@/components/admin-categories-skeleton";
-import { AdminCategoryCreateForm } from "@/components/admin-category-create-form";
-import { AdminCategoryEditForm } from "@/components/admin-category-edit-form";
-import { AdminCategoryList } from "@/components/admin-category-list";
-import { EmptyState } from "@/components/empty-state";
-import { ErrorCard } from "@/components/error-card";
-import { DeleteCategoryDialog } from "@/components/delete-category-dialog";
-import { NoticeAlert } from "@/components/notice-alert";
 import { categoriesService } from "@/data/categories/categories.service";
 import {
   categoryCountLabel,
   sortCategoriesByName,
 } from "@/domain/categories/category-form";
 import type { CategoryDTO } from "@/domain/categories/category.types";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import { EmptyState } from "@/presentation/components/molecules/empty-state";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  AdminCategoriesSkeleton,
+} from "@/presentation/components/organisms/admin/admin-categories-skeleton";
+import {
+  AdminCategoryCreateForm,
+} from "@/presentation/components/organisms/admin/admin-category-create-form";
+import {
+  AdminCategoryEditForm,
+} from "@/presentation/components/organisms/admin/admin-category-edit-form";
+import {
+  AdminCategoryList,
+} from "@/presentation/components/organisms/admin/admin-category-list";
+import {
+  DeleteCategoryDialog,
+} from "@/presentation/components/organisms/admin/delete-category-dialog";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 // The list is public: a non-admin who spoofs the role sees it, but the mutations answer 403.

@@ -3,17 +3,23 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { AdminUsersSortControls } from "@/components/admin-users-sort-controls";
-import { AdminUsersTable } from "@/components/admin-users-table";
-import { EmptyState } from "@/components/empty-state";
-import { ErrorCard } from "@/components/error-card";
-import { PaginationControls } from "@/components/pagination-controls";
 import { adminUsersService } from "@/data/admin/admin-users.service";
 import {
   parseAdminUsersQuery,
   type AdminUsersQuery,
 } from "@/domain/admin/admin-users-query";
+import {
+  AdminUsersSortControls,
+} from "@/presentation/components/molecules/admin/admin-users-sort-controls";
+import { EmptyState } from "@/presentation/components/molecules/empty-state";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  PaginationControls,
+} from "@/presentation/components/molecules/pagination-controls";
+import {
+  AdminUsersTable,
+} from "@/presentation/components/organisms/admin/admin-users-table";
+import { Button } from "@/presentation/components/ui/button";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 import { adminUsersHref } from "@/presentation/utils/admin-routes";
 

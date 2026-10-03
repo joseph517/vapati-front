@@ -1,14 +1,22 @@
 "use client";
 
-import { DialogClose, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ErrorCard } from "@/components/error-card";
-import { FollowListRow } from "@/components/follow-list-row";
-import { FollowListSkeleton } from "@/components/follow-list-skeleton";
 import type {
   FollowAudience,
   FollowListKind,
 } from "@/domain/follows/follow.types";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  FollowListRow,
+} from "@/presentation/components/molecules/follows/follow-list-row";
+import {
+  FollowListSkeleton,
+} from "@/presentation/components/molecules/follows/follow-list-skeleton";
+import {
+  DialogClose,
+  DialogHeader,
+  DialogTitle,
+} from "@/presentation/components/ui/dialog";
 import { useSession } from "@/presentation/hooks/auth/use-session";
 import { useFollowList } from "@/presentation/hooks/follows/use-follow-list";
 import {

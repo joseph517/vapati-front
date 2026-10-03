@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { UserIdPill } from "@/components/user-id-pill";
 import type { AdminUsersQuery } from "@/domain/admin/admin-users-query";
 import type { UserDTO } from "@/domain/users/user.types";
+import { UserIdPill } from "@/presentation/components/atoms/user-id-pill";
 import { adminUserDetailHref } from "@/presentation/utils/admin-routes";
 
 // Shared by the header, the rows and the skeleton so the columns line up.

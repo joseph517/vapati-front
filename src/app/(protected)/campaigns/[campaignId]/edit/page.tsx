@@ -3,15 +3,19 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { CampaignForm } from "@/components/campaign-form";
-import { CampaignFormSkeleton } from "@/components/campaign-form-skeleton";
-import { ErrorCard } from "@/components/error-card";
 import { useAuthStore } from "@/data/auth/session-store";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type {
   CreateCampaignRequest,
   UpdateCampaignRequest,
 } from "@/domain/campaigns/campaign.types";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  CampaignForm,
+} from "@/presentation/components/organisms/campaigns/campaign-form";
+import {
+  CampaignFormSkeleton,
+} from "@/presentation/components/organisms/campaigns/campaign-form-skeleton";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 import { cn } from "@/presentation/utils/cn";
 

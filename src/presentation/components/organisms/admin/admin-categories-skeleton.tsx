@@ -1,6 +1,10 @@
-import { ADMIN_CATEGORY_LIST_CLASS } from "@/components/admin-category-list";
-import { ADMIN_CATEGORY_ROW_CLASS } from "@/components/admin-category-row";
-import { Skeleton } from "@/components/ui/skeleton";
+import {
+  ADMIN_CATEGORY_ROW_CLASS,
+} from "@/presentation/components/molecules/admin/admin-category-row";
+import {
+  ADMIN_CATEGORY_LIST_CLASS,
+} from "@/presentation/components/organisms/admin/admin-category-list";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 
 const SKELETON_ROWS = 10;
 

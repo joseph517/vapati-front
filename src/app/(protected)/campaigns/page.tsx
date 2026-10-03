@@ -2,14 +2,22 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { CampaignCard } from "@/components/campaign-card";
-import { CampaignGridSkeleton } from "@/components/campaign-grid-skeleton";
-import { CampaignSearchBar } from "@/components/campaign-search-bar";
-import { CategoryStrip } from "@/components/category-strip";
-import { EmptyState } from "@/components/empty-state";
-import { ErrorCard } from "@/components/error-card";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
+import {
+  CampaignCard,
+} from "@/presentation/components/molecules/campaigns/campaign-card";
+import {
+  CampaignSearchBar,
+} from "@/presentation/components/molecules/campaigns/campaign-search-bar";
+import { EmptyState } from "@/presentation/components/molecules/empty-state";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  CampaignGridSkeleton,
+} from "@/presentation/components/organisms/campaigns/campaign-grid-skeleton";
+import {
+  CategoryStrip,
+} from "@/presentation/components/organisms/categories/category-strip";
+import { Button } from "@/presentation/components/ui/button";
 import { useCategories } from "@/presentation/hooks/categories/use-categories";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 

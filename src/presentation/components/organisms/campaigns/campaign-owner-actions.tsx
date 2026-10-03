@@ -2,11 +2,15 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { DangerOutlineButton } from "@/components/danger-outline-button";
-import { DeleteCampaignDialog } from "@/components/delete-campaign-dialog";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import { toErrorMessage } from "@/domain/shared/errors";
+import {
+  DangerOutlineButton,
+} from "@/presentation/components/atoms/danger-outline-button";
+import {
+  DeleteCampaignDialog,
+} from "@/presentation/components/organisms/campaigns/delete-campaign-dialog";
+import { Button } from "@/presentation/components/ui/button";
 import { useSession } from "@/presentation/hooks/auth/use-session";
 import { useCampaignActions } from "@/presentation/hooks/campaigns/use-campaign-actions";
 import { cn } from "@/presentation/utils/cn";

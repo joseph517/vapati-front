@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { toErrorMessage } from "@/domain/shared/errors";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import { Alert, AlertDescription } from "@/presentation/components/ui/alert";
+import { Button } from "@/presentation/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { NoticeAlert } from "@/components/notice-alert";
-import { toErrorMessage } from "@/domain/shared/errors";
+} from "@/presentation/components/ui/dialog";
 
 interface ConfirmDeleteDialogProps {
   open: boolean;

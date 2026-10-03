@@ -3,13 +3,17 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { CampaignCard } from "@/components/campaign-card";
-import { CampaignGridSkeleton } from "@/components/campaign-grid-skeleton";
-import { EmptyState } from "@/components/empty-state";
-import { ErrorCard } from "@/components/error-card";
-import { NoticeAlert } from "@/components/notice-alert";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import {
+  CampaignCard,
+} from "@/presentation/components/molecules/campaigns/campaign-card";
+import { EmptyState } from "@/presentation/components/molecules/empty-state";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  CampaignGridSkeleton,
+} from "@/presentation/components/organisms/campaigns/campaign-grid-skeleton";
+import { Button } from "@/presentation/components/ui/button";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 const FLASH_MESSAGES: Record<string, string> = {

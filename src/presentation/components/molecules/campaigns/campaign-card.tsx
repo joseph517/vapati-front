@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { CategoryChips } from "@/components/category-chips";
-import { ProgressBar } from "@/components/progress-bar";
-import { StatusBadge } from "@/components/status-badge";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import { ProgressBar } from "@/presentation/components/atoms/progress-bar";
+import { StatusBadge } from "@/presentation/components/atoms/status-badge";
+import {
+  CategoryChips,
+} from "@/presentation/components/molecules/categories/category-chips";
 import { formatCurrencyCOP } from "@/presentation/utils/format";
 
 function truncateDescription(text: string): string {

@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { Suspense, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BlockedAccountAlert } from "@/components/blocked-account-alert";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { authService } from "@/data/auth/auth.service";
 import { useAuthStore } from "@/data/auth/session-store";
 import { toErrorMessage } from "@/domain/shared/errors";
+import {
+  BlockedAccountAlert,
+} from "@/presentation/components/molecules/auth/blocked-account-alert";
+import { Alert, AlertDescription } from "@/presentation/components/ui/alert";
+import { Button } from "@/presentation/components/ui/button";
+import { Input } from "@/presentation/components/ui/input";
+import { Label } from "@/presentation/components/ui/label";
 
 const FLASH_MESSAGES: Record<string, string> = {
   "logged-out": "Cerraste sesión.",

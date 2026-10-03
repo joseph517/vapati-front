@@ -2,7 +2,9 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AdminSectionTabs } from "@/components/admin-section-tabs";
+import {
+  AdminSectionTabs,
+} from "@/presentation/components/molecules/admin/admin-section-tabs";
 import { useCanAccess } from "@/presentation/hooks/auth/use-can-access";
 
 // UI-only guard: the real authorization is the backend's @PreAuthorize on the admin endpoints.

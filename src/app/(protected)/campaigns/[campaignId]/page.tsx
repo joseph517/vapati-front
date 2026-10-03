@@ -3,18 +3,32 @@
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { DonateDialog } from "@/components/donate-dialog";
-import { Button } from "@/components/ui/button";
-import { CampaignDonationsPanel } from "@/components/campaign-donations-panel";
-import { CampaignProgressPanel } from "@/components/campaign-progress-panel";
-import { CampaignPublicationsPanel } from "@/components/campaign-publications-panel";
-import { CampaignStatusHistoryPanel } from "@/components/campaign-status-history-panel";
-import { CategoryChips } from "@/components/category-chips";
-import { DonationReceiptCard } from "@/components/donation-receipt-card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { StatusBadge } from "@/components/status-badge";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type { DonationReceipt } from "@/domain/donations/donation.types";
+import { StatusBadge } from "@/presentation/components/atoms/status-badge";
+import {
+  CategoryChips,
+} from "@/presentation/components/molecules/categories/category-chips";
+import {
+  DonationReceiptCard,
+} from "@/presentation/components/molecules/donations/donation-receipt-card";
+import {
+  CampaignProgressPanel,
+} from "@/presentation/components/organisms/campaigns/campaign-progress-panel";
+import {
+  CampaignStatusHistoryPanel,
+} from "@/presentation/components/organisms/campaigns/campaign-status-history-panel";
+import {
+  CampaignDonationsPanel,
+} from "@/presentation/components/organisms/donations/campaign-donations-panel";
+import {
+  DonateDialog,
+} from "@/presentation/components/organisms/donations/donate-dialog";
+import {
+  CampaignPublicationsPanel,
+} from "@/presentation/components/organisms/publications/campaign-publications-panel";
+import { Button } from "@/presentation/components/ui/button";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 import {
   useCampaignStatistics,
 } from "@/presentation/hooks/donations/use-campaign-statistics";

@@ -1,10 +1,14 @@
-import { FormTextField } from "@/components/form-text-field";
-import { NoticeAlert } from "@/components/notice-alert";
-import { ProfileFormSection } from "@/components/profile-form-section";
 import {
   getCredentialsNotice,
   type CredentialsChange,
 } from "@/domain/users/profile-form";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import {
+  FormTextField,
+} from "@/presentation/components/molecules/form-text-field";
+import {
+  ProfileFormSection,
+} from "@/presentation/components/molecules/users/profile-form-section";
 
 interface CredentialsConfirmSectionProps {
   change: Exclude<CredentialsChange, null>;

@@ -3,19 +3,27 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { ErrorCard } from "@/components/error-card";
-import { ProfileAboutCard } from "@/components/profile-about-card";
-import { ProfileHeader } from "@/components/profile-header";
-import { ProfilePrivateDataCard } from "@/components/profile-private-data-card";
-import { ProfileSkeleton } from "@/components/profile-skeleton";
-import { UserIdPill } from "@/components/user-id-pill";
 import {
   isFullUserProfile,
   toProfileSummary,
 } from "@/data/users/user-profile.adapter";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { isUserNotFound } from "@/domain/users/user-profile";
+import { UserIdPill } from "@/presentation/components/atoms/user-id-pill";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  ProfileAboutCard,
+} from "@/presentation/components/molecules/users/profile-about-card";
+import {
+  ProfileHeader,
+} from "@/presentation/components/molecules/users/profile-header";
+import {
+  ProfilePrivateDataCard,
+} from "@/presentation/components/molecules/users/profile-private-data-card";
+import {
+  ProfileSkeleton,
+} from "@/presentation/components/organisms/users/profile-skeleton";
+import { Button } from "@/presentation/components/ui/button";
 import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 import { adminUsersBackHref } from "@/presentation/utils/admin-routes";
 

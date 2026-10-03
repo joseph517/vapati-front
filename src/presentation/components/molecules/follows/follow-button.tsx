@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import type { LoadStatus } from "@/domain/shared/shared.types";
+import { Button } from "@/presentation/components/ui/button";
 
 interface FollowButtonProps {
   status: LoadStatus; // of is-following

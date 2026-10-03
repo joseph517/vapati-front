@@ -3,17 +3,27 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ErrorCard } from "@/components/error-card";
-import { FollowButton } from "@/components/follow-button";
-import { NoticeAlert } from "@/components/notice-alert";
-import { ProfileAboutCard } from "@/components/profile-about-card";
-import { ProfileFollowStats } from "@/components/profile-follow-stats";
-import { ProfileHeader } from "@/components/profile-header";
-import { ProfileSkeleton } from "@/components/profile-skeleton";
 import { useAuthStore } from "@/data/auth/session-store";
 import { toProfileSummary } from "@/data/users/user-profile.adapter";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { isUserNotFound } from "@/domain/users/user-profile";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  FollowButton,
+} from "@/presentation/components/molecules/follows/follow-button";
+import {
+  ProfileAboutCard,
+} from "@/presentation/components/molecules/users/profile-about-card";
+import {
+  ProfileHeader,
+} from "@/presentation/components/molecules/users/profile-header";
+import {
+  ProfileFollowStats,
+} from "@/presentation/components/organisms/follows/profile-follow-stats";
+import {
+  ProfileSkeleton,
+} from "@/presentation/components/organisms/users/profile-skeleton";
 import { useCanAccess } from "@/presentation/hooks/auth/use-can-access";
 import {
   useFollowCounts,

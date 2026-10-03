@@ -1,20 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { DeleteAccountSection } from "@/components/delete-account-section";
-import { ErrorCard } from "@/components/error-card";
-import { ProfileAboutCard } from "@/components/profile-about-card";
-import { ProfileFollowStats } from "@/components/profile-follow-stats";
-import { ProfileHeader } from "@/components/profile-header";
-import { ProfilePrivateDataCard } from "@/components/profile-private-data-card";
-import { ProfileSkeleton } from "@/components/profile-skeleton";
 import { useAuthStore } from "@/data/auth/session-store";
 import {
   isFullUserProfile,
   toProfileSummary,
 } from "@/data/users/user-profile.adapter";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  ProfileAboutCard,
+} from "@/presentation/components/molecules/users/profile-about-card";
+import {
+  ProfileHeader,
+} from "@/presentation/components/molecules/users/profile-header";
+import {
+  ProfilePrivateDataCard,
+} from "@/presentation/components/molecules/users/profile-private-data-card";
+import {
+  ProfileFollowStats,
+} from "@/presentation/components/organisms/follows/profile-follow-stats";
+import {
+  DeleteAccountSection,
+} from "@/presentation/components/organisms/users/delete-account-section";
+import {
+  ProfileSkeleton,
+} from "@/presentation/components/organisms/users/profile-skeleton";
+import { Button } from "@/presentation/components/ui/button";
 import {
   useFollowCounts,
 } from "@/presentation/hooks/follows/use-follow-counts";

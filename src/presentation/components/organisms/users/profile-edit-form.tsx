@@ -2,17 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { CredentialsConfirmSection } from "@/components/credentials-confirm-section";
-import { FieldError } from "@/components/field-error";
-import { FormTextField } from "@/components/form-text-field";
-import { InterestsPicker } from "@/components/interests-picker";
-import { PasswordRulesChecklist } from "@/components/password-rules-checklist";
-import { ProfileFormSection } from "@/components/profile-form-section";
-import { ProfilePictureField } from "@/components/profile-picture-field";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import type { CategoryDTO } from "@/domain/categories/category.types";
 import {
   ApiClientError,
@@ -34,6 +23,29 @@ import {
   USER_MAX_LENGTHS,
 } from "@/domain/users/user-validation";
 import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
+import { FieldError } from "@/presentation/components/atoms/field-error";
+import {
+  PasswordRulesChecklist,
+} from "@/presentation/components/molecules/auth/password-rules-checklist";
+import {
+  FormTextField,
+} from "@/presentation/components/molecules/form-text-field";
+import {
+  CredentialsConfirmSection,
+} from "@/presentation/components/molecules/users/credentials-confirm-section";
+import {
+  InterestsPicker,
+} from "@/presentation/components/molecules/users/interests-picker";
+import {
+  ProfileFormSection,
+} from "@/presentation/components/molecules/users/profile-form-section";
+import {
+  ProfilePictureField,
+} from "@/presentation/components/molecules/users/profile-picture-field";
+import { Alert, AlertDescription } from "@/presentation/components/ui/alert";
+import { Button } from "@/presentation/components/ui/button";
+import { Label } from "@/presentation/components/ui/label";
+import { Textarea } from "@/presentation/components/ui/textarea";
 import { cn } from "@/presentation/utils/cn";
 import {
   FIELD_LABEL_CLASSES,

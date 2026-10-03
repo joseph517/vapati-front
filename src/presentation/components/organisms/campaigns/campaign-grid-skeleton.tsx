@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 
 export function CampaignGridSkeleton() {
   return (

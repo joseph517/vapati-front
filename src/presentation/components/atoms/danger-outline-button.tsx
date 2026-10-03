@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/presentation/components/ui/button";
 import { cn } from "@/presentation/utils/cn";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- props are declared as interfaces

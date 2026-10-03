@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 
 // Loading placeholder for the followers / following list: 4 rows
 export function FollowListSkeleton() {

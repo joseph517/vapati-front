@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { CampaignDonationRow } from "@/components/campaign-donation-row";
-import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
+import {
+  CampaignDonationRow,
+} from "@/presentation/components/molecules/donations/campaign-donation-row";
+import {
+  DonationRowsSkeleton,
+} from "@/presentation/components/molecules/donations/donation-rows-skeleton";
 import { useCampaignDonations } from "@/presentation/hooks/donations/use-campaign-donations";
 
 // Collapsible "Donaciones" section of the campaign detail, visible to anyone.

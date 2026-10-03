@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { FollowListPanel } from "@/components/follow-list-panel";
 import type {
   FollowAudience,
   FollowListKind,
 } from "@/domain/follows/follow.types";
+import {
+  FollowListPanel,
+} from "@/presentation/components/organisms/follows/follow-list-panel";
+import { Dialog, DialogContent } from "@/presentation/components/ui/dialog";
 
 interface FollowListDialogProps {
   userId: string;

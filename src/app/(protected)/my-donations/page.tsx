@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
-import { EmptyState } from "@/components/empty-state";
-import { ErrorCard } from "@/components/error-card";
-import { MyDonationRow } from "@/components/my-donation-row";
 import { donationsService } from "@/data/donations/donations.service";
+import {
+  DonationRowsSkeleton,
+} from "@/presentation/components/molecules/donations/donation-rows-skeleton";
+import {
+  MyDonationRow,
+} from "@/presentation/components/molecules/donations/my-donation-row";
+import { EmptyState } from "@/presentation/components/molecules/empty-state";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import { Button } from "@/presentation/components/ui/button";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 const LIST_CARD_CLASS =

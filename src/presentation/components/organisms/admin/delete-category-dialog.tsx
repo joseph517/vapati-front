@@ -1,12 +1,14 @@
 "use client";
 
-import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 import {
   categoryDeleteBlockedMessage,
   isCategoryNotFoundError,
 } from "@/domain/categories/category-form";
 import type { CategoryDTO } from "@/domain/categories/category.types";
 import { toErrorMessage } from "@/domain/shared/errors";
+import {
+  ConfirmDeleteDialog,
+} from "@/presentation/components/molecules/confirm-delete-dialog";
 import { useAdminCategoryActions } from "@/presentation/hooks/admin/use-admin-category-actions";
 
 // A rejected delete (400, the category is in use) leaves the dialog in blocked mode.

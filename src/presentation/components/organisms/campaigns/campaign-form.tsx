@@ -2,15 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { CategorySelectChips } from "@/components/category-select-chips";
-import { FieldError } from "@/components/field-error";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { NoticeAlert } from "@/components/notice-alert";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Textarea } from "@/components/ui/textarea";
 import {
   CAMPAIGN_FIELD_LABELS,
   MAX_CATEGORIES,
@@ -27,6 +18,17 @@ import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
+import { FieldError } from "@/presentation/components/atoms/field-error";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import {
+  CategorySelectChips,
+} from "@/presentation/components/molecules/categories/category-select-chips";
+import { Alert, AlertDescription } from "@/presentation/components/ui/alert";
+import { Button } from "@/presentation/components/ui/button";
+import { Input } from "@/presentation/components/ui/input";
+import { Label } from "@/presentation/components/ui/label";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
+import { Textarea } from "@/presentation/components/ui/textarea";
 import { useCategories } from "@/presentation/hooks/categories/use-categories";
 import { cn } from "@/presentation/utils/cn";
 import {

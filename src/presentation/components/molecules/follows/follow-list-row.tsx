@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { UserAvatar } from "@/components/user-avatar";
 import type { FollowerUserDTO } from "@/domain/follows/follow.types";
+import { UserAvatar } from "@/presentation/components/atoms/user-avatar";
 import { followerProfileHref } from "@/presentation/utils/follow-texts";
 import { formatDate } from "@/presentation/utils/format";
 

@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 
 const LAST_LINE_WIDTHS = ["72%", "48%"];
 

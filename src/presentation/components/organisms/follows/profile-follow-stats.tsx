@@ -1,13 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { FollowCounterButton } from "@/components/follow-counter-button";
-import { FollowListDialog } from "@/components/follow-list-dialog";
 import type {
   FollowAudience,
   FollowCount,
   FollowListKind,
 } from "@/domain/follows/follow.types";
+import {
+  FollowCounterButton,
+} from "@/presentation/components/molecules/follows/follow-counter-button";
+import {
+  FollowListDialog,
+} from "@/presentation/components/organisms/follows/follow-list-dialog";
 import { FOLLOW_LIST_TITLES } from "@/presentation/utils/follow-texts";
 
 interface ProfileFollowStatsProps {

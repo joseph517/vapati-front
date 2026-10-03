@@ -1,11 +1,13 @@
 "use client";
 
-import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 import type { PublicationResponseDTO } from "@/domain/publications/publication.types";
 import {
   isPublicationNotFoundError,
   publicationExcerpt,
 } from "@/domain/publications/publications";
+import {
+  ConfirmDeleteDialog,
+} from "@/presentation/components/molecules/confirm-delete-dialog";
 import { usePublicationActions } from "@/presentation/hooks/publications/use-publication-actions";
 
 // A 404 means it was already deleted (e.g. in another tab), so it counts as deleted.

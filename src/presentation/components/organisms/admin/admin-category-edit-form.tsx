@@ -1,11 +1,6 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { ADMIN_CATEGORY_ROW_CLASS } from "@/components/admin-category-row";
-import { FormTextField } from "@/components/form-text-field";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   CATEGORY_NAME_REQUIRED_MESSAGE,
   CATEGORY_TEXT_MAX_LENGTH,
@@ -17,6 +12,15 @@ import {
 } from "@/domain/categories/category-form";
 import type { CategoryDTO } from "@/domain/categories/category.types";
 import { toErrorMessage } from "@/domain/shared/errors";
+import {
+  ADMIN_CATEGORY_ROW_CLASS,
+} from "@/presentation/components/molecules/admin/admin-category-row";
+import {
+  FormTextField,
+} from "@/presentation/components/molecules/form-text-field";
+import { Button } from "@/presentation/components/ui/button";
+import { Label } from "@/presentation/components/ui/label";
+import { Textarea } from "@/presentation/components/ui/textarea";
 import { useAdminCategoryActions } from "@/presentation/hooks/admin/use-admin-category-actions";
 import { FIELD_LABEL_CLASSES } from "@/presentation/utils/form-classes";
 

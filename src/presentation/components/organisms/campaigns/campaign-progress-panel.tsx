@@ -1,15 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { CampaignOwnerActions } from "@/components/campaign-owner-actions";
-import { CampaignStatsRow } from "@/components/campaign-stats-row";
-import { NoticeAlert } from "@/components/notice-alert";
-import { ProgressBar } from "@/components/progress-bar";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type { CampaignStatisticsDTO } from "@/domain/donations/donation.types";
 import { getDonationBlockReason } from "@/domain/donations/donations";
 import type { LoadStatus } from "@/domain/shared/shared.types";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import { ProgressBar } from "@/presentation/components/atoms/progress-bar";
+import {
+  CampaignStatsRow,
+} from "@/presentation/components/molecules/campaigns/campaign-stats-row";
+import {
+  CampaignOwnerActions,
+} from "@/presentation/components/organisms/campaigns/campaign-owner-actions";
+import { Button } from "@/presentation/components/ui/button";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 import { useSession } from "@/presentation/hooks/auth/use-session";
 import { formatCurrencyCOP } from "@/presentation/utils/format";
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { CampaignStatisticsDTO } from "@/domain/donations/donation.types";
 import type { LoadStatus } from "@/domain/shared/shared.types";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 import { cn } from "@/presentation/utils/cn";
 import { formatCurrencyCOP } from "@/presentation/utils/format";
 

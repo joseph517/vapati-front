@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { HeaderProfileLink } from "@/components/header-profile-link";
-import { LogoutButton } from "@/components/logout-button";
-import { MainNav } from "@/components/main-nav";
 import { useAuthStore } from "@/data/auth/session-store";
+import {
+  HeaderProfileLink,
+} from "@/presentation/components/organisms/shared/header-profile-link";
+import {
+  LogoutButton,
+} from "@/presentation/components/organisms/shared/logout-button";
+import { MainNav } from "@/presentation/components/organisms/shared/main-nav";
 import { useAuthHydrated } from "@/presentation/hooks/auth/use-auth-hydrated";
 
 export default function ProtectedLayout({

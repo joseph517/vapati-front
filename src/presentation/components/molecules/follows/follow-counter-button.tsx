@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import type { FollowCount } from "@/domain/follows/follow.types";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 
 interface FollowCounterButtonProps {
   label: string;

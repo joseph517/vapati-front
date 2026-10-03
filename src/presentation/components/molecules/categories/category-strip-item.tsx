@@ -1,5 +1,5 @@
-import { CategoryMark } from "@/components/category-mark";
 import type { CategoryDTO } from "@/domain/categories/category.types";
+import { CategoryMark } from "@/presentation/components/atoms/category-mark";
 
 export function CategoryStripItem({
   category,

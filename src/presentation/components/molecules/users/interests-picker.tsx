@@ -1,10 +1,12 @@
-import { CategorySelectChips } from "@/components/category-select-chips";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { CategoryDTO } from "@/domain/categories/category.types";
 import {
   getInterestsHint,
   MAX_INTERESTS,
 } from "@/domain/users/user-validation";
+import {
+  CategorySelectChips,
+} from "@/presentation/components/molecules/categories/category-select-chips";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 
 interface InterestsPickerProps {
   categories: CategoryDTO[];

@@ -1,4 +1,8 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/presentation/components/ui/alert";
 
 // The message comes from the backend as-is (in English), so it is marked lang="en".
 export function BlockedAccountAlert({ message }: { message: string }) {

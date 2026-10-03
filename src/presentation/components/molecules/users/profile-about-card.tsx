@@ -1,4 +1,4 @@
-import { CategoryPill } from "@/components/category-pill";
+import { CategoryPill } from "@/presentation/components/atoms/category-pill";
 import { cn } from "@/presentation/utils/cn";
 
 interface ProfileAboutCardProps {

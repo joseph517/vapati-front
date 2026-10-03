@@ -1,6 +1,8 @@
 "use client";
 
-import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+import {
+  ConfirmDeleteDialog,
+} from "@/presentation/components/molecules/confirm-delete-dialog";
 import { useAuthActions } from "@/presentation/hooks/auth/use-auth-actions";
 import { useSessionActions } from "@/presentation/hooks/auth/use-session-actions";
 import { useAccountActions } from "@/presentation/hooks/users/use-account-actions";

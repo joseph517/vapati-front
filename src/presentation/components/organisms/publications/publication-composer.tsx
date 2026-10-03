@@ -1,12 +1,6 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Button } from "@/components/ui/button";
-import { CharCounter } from "@/components/char-counter";
-import { FieldError } from "@/components/field-error";
-import { Label } from "@/components/ui/label";
-import { NoticeAlert } from "@/components/notice-alert";
-import { Textarea } from "@/components/ui/textarea";
 import type { CreatePublicationRequest } from "@/domain/publications/publication.types";
 import {
   PUBLICATION_COUNTER_WARNING_AT,
@@ -15,6 +9,12 @@ import {
   publicationDescriptionError,
 } from "@/domain/publications/publications";
 import { toErrorMessage } from "@/domain/shared/errors";
+import { CharCounter } from "@/presentation/components/atoms/char-counter";
+import { FieldError } from "@/presentation/components/atoms/field-error";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import { Button } from "@/presentation/components/ui/button";
+import { Label } from "@/presentation/components/ui/label";
+import { Textarea } from "@/presentation/components/ui/textarea";
 import { usePublicationActions } from "@/presentation/hooks/publications/use-publication-actions";
 import { cn } from "@/presentation/utils/cn";
 import {

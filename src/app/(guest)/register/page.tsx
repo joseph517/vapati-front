@@ -3,13 +3,6 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { InterestsPicker } from "@/components/interests-picker";
-import { PasswordRulesChecklist } from "@/components/password-rules-checklist";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { usersService } from "@/data/users/users.service";
 import {
   ApiClientError,
@@ -27,6 +20,21 @@ import {
   USER_MAX_LENGTHS,
 } from "@/domain/users/user-validation";
 import type { CreateUserRequest } from "@/domain/users/user.types";
+import {
+  PasswordRulesChecklist,
+} from "@/presentation/components/molecules/auth/password-rules-checklist";
+import {
+  InterestsPicker,
+} from "@/presentation/components/molecules/users/interests-picker";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/presentation/components/ui/alert";
+import { Button } from "@/presentation/components/ui/button";
+import { Input } from "@/presentation/components/ui/input";
+import { Label } from "@/presentation/components/ui/label";
+import { Textarea } from "@/presentation/components/ui/textarea";
 import { useCategories } from "@/presentation/hooks/categories/use-categories";
 import { cn } from "@/presentation/utils/cn";
 import { FIELD_LABEL_CLASSES } from "@/presentation/utils/form-classes";

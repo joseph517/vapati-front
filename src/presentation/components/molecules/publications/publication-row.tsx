@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { DangerOutlineButton } from "@/components/danger-outline-button";
 import type {
   PublicationResponseDTO,
 } from "@/domain/publications/publication.types";
 import { publicationAuthorName } from "@/domain/publications/publications";
+import {
+  DangerOutlineButton,
+} from "@/presentation/components/atoms/danger-outline-button";
 import { formatDateTime } from "@/presentation/utils/format";
 
 // One entry of the campaign's "Novedades" list. "Borrar" only with `onDelete`.

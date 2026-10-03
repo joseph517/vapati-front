@@ -3,15 +3,19 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ErrorCard } from "@/components/error-card";
-import { ProfileEditForm } from "@/components/profile-edit-form";
-import { ProfileEditSkeleton } from "@/components/profile-edit-skeleton";
 import { useAuthStore } from "@/data/auth/session-store";
 import { isFullUserProfile } from "@/data/users/user-profile.adapter";
 import { usersService } from "@/data/users/users.service";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import type { CredentialsChange } from "@/domain/users/profile-form";
 import type { UpdateUserRequest } from "@/domain/users/user.types";
+import { ErrorCard } from "@/presentation/components/molecules/error-card";
+import {
+  ProfileEditForm,
+} from "@/presentation/components/organisms/users/profile-edit-form";
+import {
+  ProfileEditSkeleton,
+} from "@/presentation/components/organisms/users/profile-edit-skeleton";
 import { useCategories } from "@/presentation/hooks/categories/use-categories";
 import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 import { cn } from "@/presentation/utils/cn";

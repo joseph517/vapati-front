@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/presentation/components/ui/button";
 
 // `page` is 0-based, the label is 1-based.
 export function PaginationControls({

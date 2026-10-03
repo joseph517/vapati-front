@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 
 // Loading placeholder for the edit form: name, description, goal and category chips.
 export function CampaignFormSkeleton() {

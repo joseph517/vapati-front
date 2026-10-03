@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { DangerOutlineButton } from "@/components/danger-outline-button";
-import { DeleteAccountDialog } from "@/components/delete-account-dialog";
+import {
+  DangerOutlineButton,
+} from "@/presentation/components/atoms/danger-outline-button";
+import {
+  DeleteAccountDialog,
+} from "@/presentation/components/organisms/users/delete-account-dialog";
 
 // "Borrar cuenta" footer of /profile, with its confirmation dialog
 export function DeleteAccountSection() {

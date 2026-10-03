@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
-import { AdminCategoryRow } from "@/components/admin-category-row";
 import type { CategoryDTO } from "@/domain/categories/category.types";
+import {
+  AdminCategoryRow,
+} from "@/presentation/components/molecules/admin/admin-category-row";
 
 // Shared with the skeleton, which renders its own container.
 export const ADMIN_CATEGORY_LIST_CLASS =

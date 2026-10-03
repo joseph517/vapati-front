@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/presentation/components/ui/button";
 import { useAuthActions } from "@/presentation/hooks/auth/use-auth-actions";
 import { useSessionActions } from "@/presentation/hooks/auth/use-session-actions";
 

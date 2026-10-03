@@ -1,18 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { DeletePublicationDialog } from "@/components/delete-publication-dialog";
-import { InlineRetryAlert } from "@/components/inline-retry-alert";
-import { NoticeAlert } from "@/components/notice-alert";
-import { PublicationComposer } from "@/components/publication-composer";
-import { PublicationRow } from "@/components/publication-row";
-import { PublicationRowsSkeleton } from "@/components/publication-rows-skeleton";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type { PublicationResponseDTO } from "@/domain/publications/publication.types";
 import {
   canPublish,
   publicationsEmptyText,
 } from "@/domain/publications/publications";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import {
+  InlineRetryAlert,
+} from "@/presentation/components/molecules/inline-retry-alert";
+import {
+  PublicationRow,
+} from "@/presentation/components/molecules/publications/publication-row";
+import {
+  PublicationRowsSkeleton,
+} from "@/presentation/components/molecules/publications/publication-rows-skeleton";
+import {
+  DeletePublicationDialog,
+} from "@/presentation/components/organisms/publications/delete-publication-dialog";
+import {
+  PublicationComposer,
+} from "@/presentation/components/organisms/publications/publication-composer";
 import { useSession } from "@/presentation/hooks/auth/use-session";
 import { useCampaignPublications } from "@/presentation/hooks/publications/use-campaign-publications";
 import { cn } from "@/presentation/utils/cn";

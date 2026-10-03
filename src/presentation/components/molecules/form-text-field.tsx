@@ -1,6 +1,6 @@
-import { FieldError } from "@/components/field-error";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { FieldError } from "@/presentation/components/atoms/field-error";
+import { Input } from "@/presentation/components/ui/input";
+import { Label } from "@/presentation/components/ui/label";
 import { cn } from "@/presentation/utils/cn";
 import {
   FIELD_LABEL_CLASSES,

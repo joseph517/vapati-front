@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/presentation/components/ui/skeleton";
 
 // Loading placeholder for edit profile: four fields, "Sobre vos" and interest chips.
 export function ProfileEditSkeleton() {

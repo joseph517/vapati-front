@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CampaignForm } from "@/components/campaign-form";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type { CampaignFormValues } from "@/domain/campaigns/campaign-form";
 import type { CreateCampaignRequest } from "@/domain/campaigns/campaign.types";
+import {
+  CampaignForm,
+} from "@/presentation/components/organisms/campaigns/campaign-form";
 
 const EMPTY_VALUES: CampaignFormValues = {
   name: "",
