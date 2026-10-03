@@ -8,7 +8,7 @@ import { ProgressBar } from "@/components/progress-bar";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type { CampaignStatisticsDTO } from "@/domain/donations/donation.types";
-import { getDonationBlockReason } from "@/lib/donations";
+import { getDonationBlockReason } from "@/domain/donations/donations";
 import type { CampaignStatisticsStatus } from "@/lib/hooks/use-campaign-statistics";
 import { useAuthStore } from "@/lib/store/auth-store";
 import { formatCurrencyCOP } from "@/lib/utils";

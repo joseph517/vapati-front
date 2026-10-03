@@ -1,4 +1,4 @@
-import { checkAmountFormat } from "@/lib/amount";
+import { checkAmountFormat } from "@/domain/shared/amount";
 
 export type CampaignFieldKey =
   | "name"

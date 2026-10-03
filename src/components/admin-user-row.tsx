@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { UserIdPill } from "@/components/user-id-pill";
+import type { AdminUsersQuery } from "@/domain/admin/admin-users-query";
 import type { UserDTO } from "@/domain/users/user.types";
-import { adminUserDetailHref, type AdminUsersQuery } from "@/lib/admin-users";
+import { adminUserDetailHref } from "@/lib/admin-users";
 
 // Shared by the header, the rows and the skeleton so the columns line up.
 // ID, Nombre, Usuario, Email, Teléfono, Intereses

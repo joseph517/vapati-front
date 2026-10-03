@@ -11,15 +11,15 @@ import type {
   CreatePublicationRequest,
   PublicationResponseDTO,
 } from "@/domain/publications/publication.types";
-import { toErrorMessage } from "@/domain/shared/errors";
-import { apiFetch } from "@/lib/api";
-import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import {
   PUBLICATION_COUNTER_WARNING_AT,
   PUBLICATION_MAX_LENGTH,
   isPublicationRejectedByCampaign,
   publicationDescriptionError,
-} from "@/lib/publications";
+} from "@/domain/publications/publications";
+import { toErrorMessage } from "@/domain/shared/errors";
+import { apiFetch } from "@/lib/api";
+import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import { useAuthStore } from "@/lib/store/auth-store";
 import { cn } from "@/lib/utils";
 

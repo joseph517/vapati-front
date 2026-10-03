@@ -11,12 +11,13 @@ import { ProfileFollowStats } from "@/components/profile-follow-stats";
 import { ProfileHeader } from "@/components/profile-header";
 import { ProfileSkeleton } from "@/components/profile-skeleton";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
+import { isUserNotFound } from "@/domain/users/user-profile";
 import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
 import { useFollowStatus } from "@/lib/hooks/use-follow-status";
 import { useUserProfile } from "@/lib/hooks/use-user-profile";
 import { useIsAdmin } from "@/lib/roles";
 import { useAuthStore } from "@/lib/store/auth-store";
-import { isUserNotFound, toProfileSummary } from "@/lib/user-profile";
+import { toProfileSummary } from "@/lib/user-profile";
 
 export default function PublicProfilePage() {
   const params = useParams<{ userId: string }>();

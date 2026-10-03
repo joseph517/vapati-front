@@ -11,8 +11,11 @@ import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type {
   PublicationResponseDTO,
 } from "@/domain/publications/publication.types";
+import {
+  canPublish,
+  publicationsEmptyText,
+} from "@/domain/publications/publications";
 import { useApiQuery } from "@/lib/hooks/use-api-query";
-import { canPublish, publicationsEmptyText } from "@/lib/publications";
 import { useAuthStore } from "@/lib/store/auth-store";
 import { cn } from "@/lib/utils";
 

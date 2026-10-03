@@ -7,7 +7,7 @@ import {
   isValidUserName,
   PASSWORD_RULE_MESSAGE,
   USERNAME_RULE_MESSAGE,
-} from "@/lib/validation/user";
+} from "@/domain/users/user-validation";
 
 export type RegisterStep = 1 | 2 | 3;
 

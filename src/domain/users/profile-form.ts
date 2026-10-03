@@ -1,5 +1,4 @@
 import type { CategoryDTO } from "@/domain/categories/category.types";
-import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
 import {
   INTERESTS_RULE_MESSAGE,
   isValidEmail,
@@ -8,7 +7,8 @@ import {
   isValidUserName,
   PASSWORD_RULE_MESSAGE,
   USERNAME_RULE_MESSAGE,
-} from "@/lib/validation/user";
+} from "@/domain/users/user-validation";
+import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
 
 export type ProfileFieldKey =
   | "firstName"

@@ -1,6 +1,6 @@
 import { ADMIN_USERS_GRID } from "@/components/admin-user-row";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ADMIN_USERS_PAGE_SIZE } from "@/lib/admin-users";
+import { ADMIN_USERS_PAGE_SIZE } from "@/domain/admin/admin-users-query";
 
 // One full page of placeholder rows, in both the wide and the narrow variant.
 // The caller provides the container.

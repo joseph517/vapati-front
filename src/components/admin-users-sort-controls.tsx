@@ -1,6 +1,6 @@
+import type { AdminUsersQuery } from "@/domain/admin/admin-users-query";
 import type { AdminUserSortBy } from "@/domain/admin/admin.types";
 import type { SortDirection } from "@/domain/shared/shared.types";
-import type { AdminUsersQuery } from "@/lib/admin-users";
 import { cn } from "@/lib/utils";
 
 type Option<T extends string> = { value: T; label: string };

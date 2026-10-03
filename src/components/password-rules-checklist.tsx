@@ -1,4 +1,7 @@
-import { PASSWORD_RULES, PASSWORD_SPECIAL_CHARS } from "@/lib/validation/user";
+import {
+  PASSWORD_RULES,
+  PASSWORD_SPECIAL_CHARS,
+} from "@/domain/users/user-validation";
 import { cn } from "@/lib/utils";
 
 interface PasswordRulesChecklistProps {

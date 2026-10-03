@@ -14,18 +14,21 @@ import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
-import type { CreateUserRequest } from "@/domain/users/user.types";
-import { apiFetch } from "@/lib/api";
-import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
-import { useCategories } from "@/lib/hooks/use-categories";
 import {
   getRegisterErrorMessages,
   getRegisterErrorStep,
   validateRegisterStep,
   type RegisterFormValues,
   type RegisterStep,
-} from "@/lib/register-form";
-import { MAX_INTERESTS, USER_MAX_LENGTHS } from "@/lib/validation/user";
+} from "@/domain/users/register-form";
+import {
+  MAX_INTERESTS,
+  USER_MAX_LENGTHS,
+} from "@/domain/users/user-validation";
+import type { CreateUserRequest } from "@/domain/users/user.types";
+import { apiFetch } from "@/lib/api";
+import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
+import { useCategories } from "@/lib/hooks/use-categories";
 import { cn } from "@/lib/utils";
 
 const STEP_LABELS = ["Datos personales", "Cuenta", "Intereses"] as const;

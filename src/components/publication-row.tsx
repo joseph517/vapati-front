@@ -3,7 +3,7 @@ import { DangerOutlineButton } from "@/components/danger-outline-button";
 import type {
   PublicationResponseDTO,
 } from "@/domain/publications/publication.types";
-import { publicationAuthorName } from "@/lib/publications";
+import { publicationAuthorName } from "@/domain/publications/publications";
 import { formatDateTime } from "@/lib/utils";
 
 // One entry of the campaign's "Novedades" list. "Borrar" only with `onDelete`.

@@ -5,11 +5,11 @@ import type {
   DeletePublicationResponse,
   PublicationResponseDTO,
 } from "@/domain/publications/publication.types";
-import { apiFetch } from "@/lib/api";
 import {
   isPublicationNotFoundError,
   publicationExcerpt,
-} from "@/lib/publications";
+} from "@/domain/publications/publications";
+import { apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 
 // A 404 means it was already deleted (e.g. in another tab), so it counts as deleted.

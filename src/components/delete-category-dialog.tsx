@@ -1,15 +1,15 @@
 "use client";
 
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+import {
+  categoryDeleteBlockedMessage,
+  isCategoryNotFoundError,
+} from "@/domain/categories/category-form";
 import type {
   CategoryDTO,
   DeleteCategoryResponse,
 } from "@/domain/categories/category.types";
 import { toErrorMessage } from "@/domain/shared/errors";
-import {
-  categoryDeleteBlockedMessage,
-  isCategoryNotFoundError,
-} from "@/lib/admin-categories";
 import { apiFetch } from "@/lib/api";
 import { useAuthStore } from "@/lib/store/auth-store";
 

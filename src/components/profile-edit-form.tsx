@@ -18,8 +18,6 @@ import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
-import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
-import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import {
   buildUpdateUserRequest,
   getCredentialsChange,
@@ -30,9 +28,14 @@ import {
   type ProfileFieldErrors,
   type ProfileFieldKey,
   type ProfileFormValues,
-} from "@/lib/profile-form";
+} from "@/domain/users/profile-form";
+import {
+  MAX_INTERESTS,
+  USER_MAX_LENGTHS,
+} from "@/domain/users/user-validation";
+import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
+import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import { cn } from "@/lib/utils";
-import { MAX_INTERESTS, USER_MAX_LENGTHS } from "@/lib/validation/user";
 
 const FIELDS_GRID_CLASSES =
   "grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3.5";

@@ -18,12 +18,12 @@ import type {
   CreateDonationResponse,
   DonationReceipt,
 } from "@/domain/donations/donation.types";
+import { validateDonationAmount } from "@/domain/donations/donations";
 import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
 import { apiFetch } from "@/lib/api";
-import { validateDonationAmount } from "@/lib/donations";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
 
 const SUGGESTED_AMOUNTS = [10000, 25000, 50000, 100000];

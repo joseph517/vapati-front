@@ -11,6 +11,14 @@ import { Label } from "@/components/ui/label";
 import { NoticeAlert } from "@/components/notice-alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  CAMPAIGN_FIELD_LABELS,
+  MAX_CATEGORIES,
+  MAX_TEXT_LENGTH,
+  validateCampaignForm,
+  type CampaignFieldKey,
+  type CampaignFormValues,
+} from "@/domain/campaigns/campaign-form";
 import type {
   CampaignResponseDTO,
   CreateCampaignRequest,
@@ -19,14 +27,6 @@ import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
-import {
-  CAMPAIGN_FIELD_LABELS,
-  MAX_CATEGORIES,
-  MAX_TEXT_LENGTH,
-  validateCampaignForm,
-  type CampaignFieldKey,
-  type CampaignFormValues,
-} from "@/lib/campaign-form";
 import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
 import { useCategories } from "@/lib/hooks/use-categories";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
