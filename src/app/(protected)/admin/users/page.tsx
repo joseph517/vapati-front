@@ -9,14 +9,13 @@ import { AdminUsersTable } from "@/components/admin-users-table";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { PaginationControls } from "@/components/pagination-controls";
+import { adminUsersService } from "@/data/admin/admin-users.service";
 import {
   parseAdminUsersQuery,
   type AdminUsersQuery,
 } from "@/domain/admin/admin-users-query";
-import type { SpringPage } from "@/domain/shared/shared.types";
-import type { UserDTO } from "@/domain/users/user.types";
-import { adminUsersApiPath, adminUsersHref } from "@/lib/admin-users";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
+import { adminUsersHref } from "@/lib/admin-users";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 export default function AdminUsersPage() {
   return (
@@ -32,8 +31,9 @@ function AdminUsers() {
   const query = parseAdminUsersQuery(searchParams);
 
   // A non-admin gets 403 here: the layout's guard is UI-only.
-  const { data, loading, error, reload } = useApiQuery<SpringPage<UserDTO>>(
-    adminUsersApiPath(query)
+  const { data, loading, error, reload } = useApiQuery(
+    adminUsersService.keys.paginated(query),
+    () => adminUsersService.listPaginated(query)
   );
 
   const goTo = (next: AdminUsersQuery) => router.push(adminUsersHref(next));

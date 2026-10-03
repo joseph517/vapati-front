@@ -8,6 +8,7 @@ import { PublicationComposer } from "@/components/publication-composer";
 import { PublicationRow } from "@/components/publication-row";
 import { PublicationRowsSkeleton } from "@/components/publication-rows-skeleton";
 import { useAuthStore } from "@/data/auth/session-store";
+import { publicationsService } from "@/data/publications/publications.service";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type {
   PublicationResponseDTO,
@@ -16,8 +17,8 @@ import {
   canPublish,
   publicationsEmptyText,
 } from "@/domain/publications/publications";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 // "Novedades" section of the campaign detail, visible to anyone and always open.
 export function CampaignPublicationsPanel({
@@ -38,8 +39,8 @@ export function CampaignPublicationsPanel({
     loading,
     error,
     reload,
-  } = useApiQuery<PublicationResponseDTO[]>(
-    `/api/campaigns/${campaign.id}/publications`
+  } = useApiQuery(publicationsService.keys.byCampaign(campaign.id), () =>
+    publicationsService.listByCampaign(campaign.id)
   );
 
   const loaded = !loading && !error && publications !== null;

@@ -28,8 +28,8 @@ import {
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
 import { FIELD_LABEL_CLASSES, INVALID_FIELD_CLASSES } from "@/lib/form-classes";
-import { useCategories } from "@/lib/hooks/use-categories";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
+import { useCategories } from "@/presentation/hooks/categories/use-categories";
 
 type FieldErrors = Partial<Record<CampaignFieldKey, string>>;
 

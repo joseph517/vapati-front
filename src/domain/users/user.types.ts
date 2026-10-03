@@ -38,6 +38,16 @@ export interface PublicUserProfileDTO {
   profilePicture: string | null; // null or "" without a photo
 }
 
+// The fields shared by the own profile (UserDTO) and another user's (PublicUserProfileDTO)
+export interface ProfileSummary {
+  firstName: string;
+  lastName: string;
+  userName: string;
+  description: string;
+  profilePicture: string | null;
+  categories: string[];
+}
+
 // GET /api/users/{id}. It is a UserDTO when it has "userInfo".
 export type UserProfileResponse = UserDTO | PublicUserProfileDTO;
 

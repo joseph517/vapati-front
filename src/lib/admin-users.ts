@@ -1,5 +1,4 @@
 import {
-  ADMIN_USERS_PAGE_SIZE,
   adminUsersQueryString,
   parseAdminUsersQuery,
   type AdminUsersQuery,
@@ -7,16 +6,6 @@ import {
 
 export function adminUsersHref(query: AdminUsersQuery): string {
   return `/admin/users?${adminUsersQueryString(query)}`;
-}
-
-export function adminUsersApiPath(query: AdminUsersQuery): string {
-  const params = new URLSearchParams({
-    page: String(query.page),
-    size: String(ADMIN_USERS_PAGE_SIZE),
-    sortBy: query.sortBy,
-    sortDirection: query.sortDirection,
-  });
-  return `/api/users/list/paginated?${params.toString()}`;
 }
 
 // "from" keeps the list's page and sort for the detail's back link

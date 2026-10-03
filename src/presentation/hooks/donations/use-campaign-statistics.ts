@@ -1,19 +1,14 @@
 import { useCallback } from "react";
-import type {
-  CampaignStatisticsDTO,
-  CampaignStatisticsResponse,
-} from "@/domain/donations/donation.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
-
-export type CampaignStatisticsStatus = "loading" | "ready" | "error";
+import { donationsService } from "@/data/donations/donations.service";
+import type { LoadStatus } from "@/domain/shared/shared.types";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 export function useCampaignStatistics(campaignId: string) {
-  const { data, error, reload: reloadQuery } = useApiQuery<
-    CampaignStatisticsResponse,
-    CampaignStatisticsDTO
-  >(`/api/donations/campaign/${campaignId}/statistics`, {
-    select: (response) => response.statistics,
-  });
+  const { data, error, reload: reloadQuery } = useApiQuery(
+    donationsService.keys.statistics(campaignId),
+    () => donationsService.statistics(campaignId),
+    { select: (response) => response.statistics }
+  );
 
   // Background: the old figures stay until the new ones arrive.
   const reload = useCallback(
@@ -21,7 +16,7 @@ export function useCampaignStatistics(campaignId: string) {
     [reloadQuery]
   );
 
-  const status: CampaignStatisticsStatus = error
+  const status: LoadStatus = error
     ? "error"
     : data
       ? "ready"

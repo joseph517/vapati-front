@@ -14,10 +14,12 @@ import { DonationReceiptCard } from "@/components/donation-receipt-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusBadge } from "@/components/status-badge";
 import { useAuthStore } from "@/data/auth/session-store";
-import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
+import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type { DonationReceipt } from "@/domain/donations/donation.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
-import { useCampaignStatistics } from "@/lib/hooks/use-campaign-statistics";
+import {
+  useCampaignStatistics,
+} from "@/presentation/hooks/donations/use-campaign-statistics";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 export default function CampaignDetailPage() {
   return (
@@ -38,7 +40,9 @@ function CampaignDetail() {
     loading,
     error,
     reload,
-  } = useApiQuery<CampaignResponseDTO>(`/api/campaigns/${params.campaignId}`);
+  } = useApiQuery(campaignsService.keys.detail(params.campaignId), () =>
+    campaignsService.getById(params.campaignId)
+  );
   const [isDonateOpen, setIsDonateOpen] = useState(false);
   const [receipt, setReceipt] = useState<DonationReceipt | null>(null);
   const statistics = useCampaignStatistics(params.campaignId);

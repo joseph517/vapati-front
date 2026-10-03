@@ -11,7 +11,7 @@ import type {
 } from "@/domain/follows/follow.types";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { FOLLOW_LIST_EMPTY_TEXTS, FOLLOW_LIST_TITLES } from "@/lib/follow";
-import { useFollowList } from "@/lib/hooks/use-follow-list";
+import { useFollowList } from "@/presentation/hooks/follows/use-follow-list";
 
 interface FollowListPanelProps {
   userId: string;

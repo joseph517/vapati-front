@@ -1,22 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "@/data/auth/session-store";
 import { sortByFollowedAtDesc } from "@/data/follows/follows.adapter";
-import { apiFetch } from "@/data/providers/http-client";
+import { followsService } from "@/data/follows/follows.service";
 import type {
   FollowListKind,
   FollowerUserDTO,
-  FollowersListResponseDTO,
 } from "@/domain/follows/follow.types";
 import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
 import type { LoadStatus } from "@/domain/shared/shared.types";
-import { followListPath } from "@/lib/follow";
 
 // GET followers or followers/following. Lives inside the list dialog's content,
 // which mounts on every opening, so the list is fetched each time it opens.
 export function useFollowList(userId: string, kind: FollowListKind) {
+  // Only a dependency: a new token fetches the list again
   const accessToken = useAuthStore((state) => state.accessToken);
 
   const [status, setStatus] = useState<LoadStatus>("loading");
@@ -34,10 +33,8 @@ export function useFollowList(userId: string, kind: FollowListKind) {
   useEffect(() => {
     let cancelled = false;
 
-    apiFetch<FollowersListResponseDTO>(
-      followListPath(encodeURIComponent(userId), kind),
-      { accessToken }
-    )
+    followsService
+      .list(userId, kind)
       .then((data) => {
         if (cancelled) return;
         setUsers(sortByFollowedAtDesc(data.followers));

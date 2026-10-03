@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
+import { followsService } from "@/data/follows/follows.service";
 import type {
   FollowCount,
   FollowListKind,
 } from "@/domain/follows/follow.types";
-import { followCountPath } from "@/lib/follow";
 
 const LOADING_COUNT: FollowCount = { status: "loading", value: null };
 
@@ -13,14 +12,12 @@ const LOADING_COUNT: FollowCount = { status: "loading", value: null };
 function loadCount(
   userId: string,
   kind: FollowListKind,
-  accessToken: string | null,
   setCount: (count: FollowCount) => void
 ): () => void {
   let cancelled = false;
 
-  apiFetch<number>(followCountPath(encodeURIComponent(userId), kind), {
-    accessToken,
-  })
+  followsService
+    .count(userId, kind)
     .then((value) => {
       if (!cancelled) setCount({ status: "ready", value });
     })
@@ -37,6 +34,7 @@ function loadCount(
 // GET followers/count and followers/following/count in parallel.
 // With userId === null it does not fetch and stays in loading (own profile on /users/[userId]).
 export function useFollowCounts(userId: string | null) {
+  // Only a dependency: a new token fetches the counts again
   const accessToken = useAuthStore((state) => state.accessToken);
 
   const [followers, setFollowers] = useState<FollowCount>(LOADING_COUNT);
@@ -74,12 +72,12 @@ export function useFollowCounts(userId: string | null) {
 
   useEffect(() => {
     if (userId === null) return;
-    return loadCount(userId, "followers", accessToken, setFollowers);
+    return loadCount(userId, "followers", setFollowers);
   }, [userId, accessToken, followersReloadToken]);
 
   useEffect(() => {
     if (userId === null) return;
-    return loadCount(userId, "following", accessToken, setFollowing);
+    return loadCount(userId, "following", setFollowing);
   }, [userId, accessToken]);
 
   return { followers, following, refetchFollowers, adjustFollowers };

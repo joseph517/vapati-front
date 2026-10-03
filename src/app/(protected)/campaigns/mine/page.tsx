@@ -9,11 +9,8 @@ import { CampaignGridSkeleton } from "@/components/campaign-grid-skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { NoticeAlert } from "@/components/notice-alert";
-import type {
-  CampaignResponseDTO,
-  MyCampaignsResponse,
-} from "@/domain/campaigns/campaign.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
+import { campaignsService } from "@/data/campaigns/campaigns.service";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 const FLASH_MESSAGES: Record<string, string> = {
   "campaign-deleted": "La campaña se borró.",
@@ -33,12 +30,14 @@ function MyCampaigns() {
 
   const flash = FLASH_MESSAGES[searchParams.get("flash") ?? ""];
   // Fetched on mount and on "Reintentar" only: dismissing the flash doesn't refetch.
-  const { data, loading, error, reload } = useApiQuery<
-    MyCampaignsResponse,
-    CampaignResponseDTO[]
-  >("/api/campaigns/my-campaigns", {
-    select: (response) => [...response.campaigns].sort((a, b) => b.id - a.id),
-  });
+  const { data, loading, error, reload } = useApiQuery(
+    campaignsService.keys.mine(),
+    campaignsService.listMine,
+    {
+      select: (response) =>
+        [...response.campaigns].sort((a, b) => b.id - a.id),
+    }
+  );
   const items = data ?? [];
 
   let countLine: string;

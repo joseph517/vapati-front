@@ -28,8 +28,8 @@ import {
 } from "@/domain/users/user-validation";
 import type { CreateUserRequest } from "@/domain/users/user.types";
 import { FIELD_LABEL_CLASSES } from "@/lib/form-classes";
-import { useCategories } from "@/lib/hooks/use-categories";
 import { cn } from "@/lib/utils";
+import { useCategories } from "@/presentation/hooks/categories/use-categories";
 
 const STEP_LABELS = ["Datos personales", "Cuenta", "Intereses"] as const;
 const TOTAL_STEPS = STEP_LABELS.length;

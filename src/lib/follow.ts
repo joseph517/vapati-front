@@ -22,31 +22,6 @@ export const FOLLOW_LIST_EMPTY_TEXTS: Record<
   },
 };
 
-type UserId = string | number;
-
-const LIST_SEGMENTS: Record<FollowListKind, string> = {
-  followers: "followers",
-  following: "followers/following",
-};
-
-// All of these endpoints require the JWT
-export function followCountPath(userId: UserId, kind: FollowListKind): string {
-  return `/api/users/${userId}/${LIST_SEGMENTS[kind]}/count`;
-}
-
-export function followListPath(userId: UserId, kind: FollowListKind): string {
-  return `/api/users/${userId}/${LIST_SEGMENTS[kind]}`;
-}
-
-export function isFollowingPath(sessionId: UserId, targetId: UserId): string {
-  return `/api/users/${sessionId}/followers/is-following/${targetId}`;
-}
-
-// POST follows, DELETE unfollows. Neither has a body
-export function followPath(userId: UserId): string {
-  return `/api/users/${userId}/follow`;
-}
-
 export function followerProfileHref(
   id: number,
   sessionId: number | undefined

@@ -1,16 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
-import type {
-  FollowResponseDTO,
-  UnfollowResponseDTO,
-} from "@/domain/follows/follow.types";
+import { followsService } from "@/data/follows/follows.service";
 import {
   ApiClientError,
   UNEXPECTED_ERROR_MESSAGE,
 } from "@/domain/shared/errors";
 import type { LoadStatus } from "@/domain/shared/shared.types";
-import { followPath, isFollowingPath } from "@/lib/follow";
 
 interface FollowersCounter {
   adjust: (delta: 1 | -1) => void;
@@ -28,6 +23,7 @@ export function useFollowStatus(
   targetUserId: string | null,
   followers: FollowersCounter
 ) {
+  // Only a dependency: a new token asks is-following again
   const accessToken = useAuthStore((state) => state.accessToken);
   const sessionUserId = useAuthStore((state) => state.userInfo?.userId);
 
@@ -57,10 +53,8 @@ export function useFollowStatus(
     if (targetUserId === null || sessionUserId === undefined) return;
     let cancelled = false;
 
-    apiFetch<boolean>(
-      isFollowingPath(sessionUserId, encodeURIComponent(targetUserId)),
-      { accessToken }
-    )
+    followsService
+      .isFollowing(sessionUserId, targetUserId)
       .then((value) => {
         if (cancelled) return;
         setFollowing(value);
@@ -78,10 +72,7 @@ export function useFollowStatus(
 
   async function follow(target: string) {
     try {
-      await apiFetch<FollowResponseDTO>(
-        followPath(encodeURIComponent(target)),
-        { method: "POST", accessToken }
-      );
+      await followsService.follow(target);
       if (currentTarget.current !== target) return;
       setFollowing(true);
       followers.adjust(1);
@@ -99,10 +90,7 @@ export function useFollowStatus(
 
   async function unfollow(target: string, sessionId: number) {
     try {
-      await apiFetch<UnfollowResponseDTO>(
-        followPath(encodeURIComponent(target)),
-        { method: "DELETE", accessToken }
-      );
+      await followsService.unfollow(target);
       if (currentTarget.current !== target) return;
       setFollowing(false);
       followers.adjust(-1);
@@ -114,9 +102,9 @@ export function useFollowStatus(
       }
       // The 404 doesn't say whether the follow or the user is missing: ask again
       try {
-        const stillFollowing = await apiFetch<boolean>(
-          isFollowingPath(sessionId, encodeURIComponent(target)),
-          { accessToken }
+        const stillFollowing = await followsService.isFollowing(
+          sessionId,
+          target
         );
         if (currentTarget.current !== target) return;
         if (stillFollowing) {

@@ -17,7 +17,7 @@ import {
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { isUserNotFound } from "@/domain/users/user-profile";
 import { adminUsersBackHref } from "@/lib/admin-users";
-import { useUserProfile } from "@/lib/hooks/use-user-profile";
+import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 
 export default function AdminUserDetailPage() {
   return (

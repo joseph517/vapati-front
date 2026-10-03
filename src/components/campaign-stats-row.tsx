@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { CampaignStatisticsDTO } from "@/domain/donations/donation.types";
-import type { CampaignStatisticsStatus } from "@/lib/hooks/use-campaign-statistics";
+import type { LoadStatus } from "@/domain/shared/shared.types";
 import { cn, formatCurrencyCOP } from "@/lib/utils";
 
 export function CampaignStatsRow({
@@ -9,7 +9,7 @@ export function CampaignStatsRow({
   status,
 }: {
   statistics: CampaignStatisticsDTO | null;
-  status: CampaignStatisticsStatus;
+  status: LoadStatus;
 }) {
   if (status === "error") return null;
 

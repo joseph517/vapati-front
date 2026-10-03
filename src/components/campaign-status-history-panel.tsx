@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthStore } from "@/data/auth/session-store";
-import type {
-  CampaignResponseDTO,
-  CampaignStatusHistoryResponseDTO,
-} from "@/domain/campaigns/campaign.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
+import { campaignsService } from "@/data/campaigns/campaigns.service";
+import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import { formatDateTime } from "@/lib/utils";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 export function CampaignStatusHistoryPanel({
   campaign,
@@ -26,8 +24,9 @@ export function CampaignStatusHistoryPanel({
     data: history,
     loading,
     error,
-  } = useApiQuery<CampaignStatusHistoryResponseDTO[]>(
-    `/api/campaigns/${campaign.id}/status-history`,
+  } = useApiQuery(
+    campaignsService.keys.statusHistory(campaign.id),
+    () => campaignsService.statusHistory(campaign.id),
     {
       enabled: open,
       resetKeys: [campaign.status],

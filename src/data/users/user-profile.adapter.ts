@@ -1,14 +1,8 @@
-import type { UserDTO, UserProfileResponse } from "@/domain/users/user.types";
-
-// The fields shared by the own profile (UserDTO) and another user's (PublicUserProfileDTO)
-export interface ProfileSummary {
-  firstName: string;
-  lastName: string;
-  userName: string;
-  description: string;
-  profilePicture: string | null;
-  categories: string[];
-}
+import type {
+  ProfileSummary,
+  UserDTO,
+  UserProfileResponse,
+} from "@/domain/users/user.types";
 
 // GET /api/users/{id} returns a UserDTO for the user's own id and for an ADMIN
 export function isFullUserProfile(

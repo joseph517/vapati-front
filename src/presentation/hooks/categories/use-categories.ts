@@ -1,11 +1,12 @@
 import { useCallback } from "react";
-import type { CategoryDTO } from "@/domain/categories/category.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
+import { categoriesService } from "@/data/categories/categories.service";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 export function useCategories() {
-  const { data, loading, error, reload: reloadQuery } = useApiQuery<
-    CategoryDTO[]
-  >("/api/categories/list", { public: true });
+  const { data, loading, error, reload: reloadQuery } = useApiQuery(
+    categoriesService.keys.list(),
+    categoriesService.list
+  );
 
   const reload = useCallback(() => reloadQuery(), [reloadQuery]);
 

@@ -10,7 +10,7 @@ import { useAuthStore } from "@/data/auth/session-store";
 import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type { CampaignStatisticsDTO } from "@/domain/donations/donation.types";
 import { getDonationBlockReason } from "@/domain/donations/donations";
-import type { CampaignStatisticsStatus } from "@/lib/hooks/use-campaign-statistics";
+import type { LoadStatus } from "@/domain/shared/shared.types";
 import { formatCurrencyCOP } from "@/lib/utils";
 
 export function CampaignProgressPanel({
@@ -22,7 +22,7 @@ export function CampaignProgressPanel({
 }: {
   campaign: CampaignResponseDTO;
   statistics: CampaignStatisticsDTO | null;
-  statisticsStatus: CampaignStatisticsStatus;
+  statisticsStatus: LoadStatus;
   onDonateClick: () => void;
   onOwnerActionUpdated: () => void;
 }) {

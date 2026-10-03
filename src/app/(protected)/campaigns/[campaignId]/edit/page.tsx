@@ -7,14 +7,15 @@ import { CampaignForm } from "@/components/campaign-form";
 import { CampaignFormSkeleton } from "@/components/campaign-form-skeleton";
 import { ErrorCard } from "@/components/error-card";
 import { useAuthStore } from "@/data/auth/session-store";
+import { campaignsService } from "@/data/campaigns/campaigns.service";
 import { apiFetch } from "@/data/providers/http-client";
 import type {
   CampaignResponseDTO,
   CreateCampaignRequest,
   UpdateCampaignRequest,
 } from "@/domain/campaigns/campaign.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 export default function EditCampaignPage() {
   const router = useRouter();
@@ -22,8 +23,9 @@ export default function EditCampaignPage() {
   const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
 
-  const { data: campaign, error: loadError } = useApiQuery<CampaignResponseDTO>(
-    `/api/campaigns/${params.campaignId}`
+  const { data: campaign, error: loadError } = useApiQuery(
+    campaignsService.keys.detail(params.campaignId),
+    () => campaignsService.getById(params.campaignId)
   );
   const [saving, setSaving] = useState(false);
 

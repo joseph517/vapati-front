@@ -9,9 +9,9 @@ import { CampaignSearchBar } from "@/components/campaign-search-bar";
 import { CategoryStrip } from "@/components/category-strip";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
-import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
-import { useCategories } from "@/lib/hooks/use-categories";
+import { campaignsService } from "@/data/campaigns/campaigns.service";
+import { useCategories } from "@/presentation/hooks/categories/use-categories";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 export default function CampaignsPage() {
   const {
@@ -24,10 +24,10 @@ export default function CampaignsPage() {
   const [search, setSearch] = useState("");
   const [searchDraft, setSearchDraft] = useState("");
 
-  // A new filter is a new path: the list starts over with the skeleton.
-  const query = filterCategory ? `?categoryId=${filterCategory}` : "";
-  const { data, loading, error, reload } = useApiQuery<CampaignResponseDTO[]>(
-    `/api/campaigns/list${query}`
+  // A new filter is a new key: the list starts over with the skeleton.
+  const { data, loading, error, reload } = useApiQuery(
+    campaignsService.keys.list(filterCategory),
+    () => campaignsService.list(filterCategory)
   );
   const items = data ?? [];
 

@@ -12,9 +12,9 @@ import { isFullUserProfile } from "@/data/users/user-profile.adapter";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import type { CredentialsChange } from "@/domain/users/profile-form";
 import type { UpdateUserRequest, UserDTO } from "@/domain/users/user.types";
-import { useCategories } from "@/lib/hooks/use-categories";
-import { useUserProfile } from "@/lib/hooks/use-user-profile";
 import { cn } from "@/lib/utils";
+import { useCategories } from "@/presentation/hooks/categories/use-categories";
+import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 
 export default function EditProfilePage() {
   const router = useRouter();

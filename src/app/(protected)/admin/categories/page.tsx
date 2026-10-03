@@ -9,18 +9,20 @@ import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { DeleteCategoryDialog } from "@/components/delete-category-dialog";
 import { NoticeAlert } from "@/components/notice-alert";
+import { categoriesService } from "@/data/categories/categories.service";
 import {
   categoryCountLabel,
   sortCategoriesByName,
 } from "@/domain/categories/category-form";
 import type { CategoryDTO } from "@/domain/categories/category.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 // The list is public: a non-admin who spoofs the role sees it, but the mutations answer 403.
 export default function AdminCategoriesPage() {
-  const { data: categories, loading, error, reload } = useApiQuery<CategoryDTO[]>(
-    "/api/categories/list",
-    { public: true, select: sortCategoriesByName }
+  const { data: categories, loading, error, reload } = useApiQuery(
+    categoriesService.keys.list(),
+    categoriesService.list,
+    { select: sortCategoriesByName }
   );
   // Section alerts: at most one of each. Starting a new mutation clears the error.
   const [successNotice, setSuccessNotice] = useState<string | null>(null);

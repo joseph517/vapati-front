@@ -15,8 +15,10 @@ import {
   toProfileSummary,
 } from "@/data/users/user-profile.adapter";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
-import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
-import { useUserProfile } from "@/lib/hooks/use-user-profile";
+import {
+  useFollowCounts,
+} from "@/presentation/hooks/follows/use-follow-counts";
+import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 
 export default function ProfilePage() {
   // The protected layout guarantees the session.

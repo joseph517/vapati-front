@@ -14,10 +14,14 @@ import { useAuthStore } from "@/data/auth/session-store";
 import { toProfileSummary } from "@/data/users/user-profile.adapter";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { isUserNotFound } from "@/domain/users/user-profile";
-import { useFollowCounts } from "@/lib/hooks/use-follow-counts";
-import { useFollowStatus } from "@/lib/hooks/use-follow-status";
-import { useUserProfile } from "@/lib/hooks/use-user-profile";
 import { useCanAccess } from "@/presentation/hooks/auth/use-can-access";
+import {
+  useFollowCounts,
+} from "@/presentation/hooks/follows/use-follow-counts";
+import {
+  useFollowStatus,
+} from "@/presentation/hooks/follows/use-follow-status";
+import { useUserProfile } from "@/presentation/hooks/users/use-user-profile";
 
 export default function PublicProfilePage() {
   const params = useParams<{ userId: string }>();

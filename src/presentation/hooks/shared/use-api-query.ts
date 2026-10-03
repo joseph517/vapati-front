@@ -1,13 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useAuthStore } from "@/data/auth/session-store";
-import { apiFetch } from "@/data/providers/http-client";
 import { toQueryError, type QueryError } from "@/domain/shared/errors";
 
 type UseApiQueryOptions<TRaw, T> = {
   enabled?: boolean; // default true. false = no request, keeps what was loaded
   resetKeys?: unknown[]; // a change in any element discards what was loaded
   select?: (raw: TRaw) => T; // transforms the response (sort, extract a field)
-  public?: boolean; // default false. true = request without auth
 };
 
 type UseApiQueryResult<T> = {
@@ -18,7 +15,7 @@ type UseApiQueryResult<T> = {
 };
 
 type QueryState<T> = {
-  path: string | null; // identity the loaded data belongs to
+  key: string | null; // identity the loaded data belongs to
   resetKeys: unknown[];
   data: T | null;
   error: QueryError | null;
@@ -29,28 +26,27 @@ type QueryState<T> = {
 
 const NO_RESET_KEYS: unknown[] = [];
 
-// GET with loading/error state. `path` null = no request. Authenticated
-// requests read the current token from the store when they start, so a
-// token rotation does not refetch.
+// GET with loading/error state. `key` is the request's identity (the service's
+// key, the same as the path) and `null` = no request. Only the key decides when to
+// fetch: the services read the current token when the request starts, so a token
+// rotation does not refetch.
 export function useApiQuery<TRaw, T = TRaw>(
-  path: string | null,
+  key: string | null,
+  fetcher: () => Promise<TRaw>,
   options: UseApiQueryOptions<TRaw, T> = {}
 ): UseApiQueryResult<T> {
-  const {
-    enabled = true,
-    resetKeys = NO_RESET_KEYS,
-    select,
-    public: isPublic = false,
-  } = options;
+  const { enabled = true, resetKeys = NO_RESET_KEYS, select } = options;
 
-  // Read from a ref so an inline `select` doesn't refetch.
+  // Read from refs so an inline `fetcher` or `select` doesn't refetch.
+  const fetcherRef = useRef(fetcher);
   const selectRef = useRef(select);
   useEffect(() => {
+    fetcherRef.current = fetcher;
     selectRef.current = select;
   });
 
   const [state, setState] = useState<QueryState<T>>(() => ({
-    path,
+    key,
     resetKeys,
     data: null,
     error: null,
@@ -61,9 +57,9 @@ export function useApiQuery<TRaw, T = TRaw>(
 
   // Start over when the identity changes
   // (see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes).
-  if (state.path !== path || !sameKeys(state.resetKeys, resetKeys)) {
+  if (state.key !== key || !sameKeys(state.resetKeys, resetKeys)) {
     setState((current) => ({
-      path,
+      key,
       resetKeys,
       data: null,
       error: null,
@@ -76,11 +72,11 @@ export function useApiQuery<TRaw, T = TRaw>(
   const { stale, token } = state;
 
   useEffect(() => {
-    if (path === null || !enabled || !stale) return;
+    if (key === null || !enabled || !stale) return;
     let cancelled = false;
 
-    const accessToken = isPublic ? null : useAuthStore.getState().accessToken;
-    apiFetch<TRaw>(path, { accessToken })
+    fetcherRef
+      .current()
       .then((raw) => {
         if (cancelled) return;
         const transform = selectRef.current;
@@ -106,7 +102,7 @@ export function useApiQuery<TRaw, T = TRaw>(
     return () => {
       cancelled = true;
     };
-  }, [path, enabled, stale, token, isPublic]);
+  }, [key, enabled, stale, token]);
 
   // Keeps `data`. A background reload leaves `loading` unchanged.
   const reload = useCallback(({ background = false } = {}) => {
@@ -121,7 +117,7 @@ export function useApiQuery<TRaw, T = TRaw>(
 
   const nothingLoaded = state.data === null && state.error === null;
   const loading =
-    path !== null && enabled && stale && (!state.background || nothingLoaded);
+    key !== null && enabled && stale && (!state.background || nothingLoaded);
 
   return { data: state.data, loading, error: state.error, reload };
 }

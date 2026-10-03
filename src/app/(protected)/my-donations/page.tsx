@@ -6,16 +6,17 @@ import { DonationRowsSkeleton } from "@/components/donation-rows-skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorCard } from "@/components/error-card";
 import { MyDonationRow } from "@/components/my-donation-row";
-import type { DonationListResponse } from "@/domain/donations/donation.types";
-import { useApiQuery } from "@/lib/hooks/use-api-query";
+import { donationsService } from "@/data/donations/donations.service";
+import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
 
 const LIST_CARD_CLASS =
   "overflow-hidden rounded-xl border border-border bg-card";
 
 export default function MyDonationsPage() {
   // Fetched on mount and on "Reintentar". The backend already sends newest first.
-  const { data, loading, error, reload } = useApiQuery<DonationListResponse>(
-    "/api/donations/my-donations"
+  const { data, loading, error, reload } = useApiQuery(
+    donationsService.keys.mine(),
+    donationsService.listMine
   );
   const items = data?.donations ?? [];
   const total = data?.total ?? 0;
