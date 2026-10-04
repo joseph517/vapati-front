@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAuthStore } from "@/data/auth/session-store";
 import { toProfileSummary } from "@/data/users/user-profile.adapter";
+import { canReport } from "@/domain/reports/reports";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
 import { isUserNotFound } from "@/domain/users/user-profile";
 import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
+import {
+  ReportTriggerButton,
+} from "@/presentation/components/atoms/report-trigger-button";
 import { ErrorCard } from "@/presentation/components/molecules/error-card";
 import {
   FollowButton,
@@ -21,6 +25,9 @@ import {
 import {
   ProfileFollowStats,
 } from "@/presentation/components/organisms/follows/profile-follow-stats";
+import {
+  ReportDialog,
+} from "@/presentation/components/organisms/reports/report-dialog";
 import {
   ProfileSkeleton,
 } from "@/presentation/components/organisms/users/profile-skeleton";
@@ -38,6 +45,7 @@ export function PublicProfilePage() {
   const router = useRouter();
   const userInfo = useAuthStore((state) => state.userInfo);
   const canAccessAdmin = useCanAccess("admin");
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   // The own id goes to /profile without fetching. A non-numeric id is left to the backend (400).
   const isOwnProfile = Number(params.userId) === userInfo?.userId;
@@ -92,12 +100,22 @@ export function PublicProfilePage() {
             />
           }
           action={
-            <FollowButton
-              status={followStatus.status}
-              following={followStatus.following}
-              pending={followStatus.pending}
-              onToggle={followStatus.toggle}
-            />
+            <div className="flex items-center gap-4">
+              {canReport(profile.id, userInfo?.userId) && (
+                <ReportTriggerButton
+                  onClick={() => setIsReportOpen(true)}
+                  className="text-[13px]"
+                >
+                  Reportar usuario
+                </ReportTriggerButton>
+              )}
+              <FollowButton
+                status={followStatus.status}
+                following={followStatus.following}
+                pending={followStatus.pending}
+                onToggle={followStatus.toggle}
+              />
+            </div>
           }
         />
         {followStatus.error && (
@@ -113,6 +131,16 @@ export function PublicProfilePage() {
           aboutTitle={`Sobre ${summary.firstName}`}
           description={summary.description}
           categories={summary.categories}
+        />
+        <ReportDialog
+          open={isReportOpen}
+          onOpenChange={setIsReportOpen}
+          target={{
+            type: "USER",
+            id: profile.id,
+            displayName: `${summary.firstName} ${summary.lastName}`,
+            displayHandle: summary.userName,
+          }}
         />
       </>
     );
