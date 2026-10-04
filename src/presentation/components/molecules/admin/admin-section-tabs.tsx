@@ -7,6 +7,7 @@ import { cn } from "@/presentation/utils/cn";
 const ADMIN_SECTIONS = [
   { href: "/admin/users", label: "Usuarios" },
   { href: "/admin/categories", label: "Categorías" },
+  { href: "/admin/reports", label: "Reportes" },
 ];
 
 function isSectionActive(pathname: string, href: string): boolean {
