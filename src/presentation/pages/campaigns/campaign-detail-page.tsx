@@ -5,6 +5,10 @@ import { useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { campaignsService } from "@/data/campaigns/campaigns.service";
 import type { DonationReceipt } from "@/domain/donations/donation.types";
+import { canReport } from "@/domain/reports/reports";
+import {
+  ReportTriggerButton,
+} from "@/presentation/components/atoms/report-trigger-button";
 import { StatusBadge } from "@/presentation/components/atoms/status-badge";
 import {
   CategoryChips,
@@ -27,8 +31,12 @@ import {
 import {
   CampaignPublicationsPanel,
 } from "@/presentation/components/organisms/publications/campaign-publications-panel";
+import {
+  ReportDialog,
+} from "@/presentation/components/organisms/reports/report-dialog";
 import { Button } from "@/presentation/components/ui/button";
 import { Skeleton } from "@/presentation/components/ui/skeleton";
+import { useSession } from "@/presentation/hooks/auth/use-session";
 import {
   useCampaignStatistics,
 } from "@/presentation/hooks/donations/use-campaign-statistics";
@@ -48,6 +56,8 @@ export function CampaignDetailPage() {
     campaignsService.getById(params.campaignId)
   );
   const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const viewerId = useSession((state) => state.userInfo?.userId);
   const [receipt, setReceipt] = useState<DonationReceipt | null>(null);
   const statistics = useCampaignStatistics(params.campaignId);
   const [donationsReloadKey, setDonationsReloadKey] = useState(0);
@@ -116,6 +126,14 @@ export function CampaignDetailPage() {
               </Link>
             </span>
             <StatusBadge status={campaign.status} />
+            {canReport(campaign.userId, viewerId) && (
+              <ReportTriggerButton
+                onClick={() => setIsReportOpen(true)}
+                className="ml-auto text-[13px]"
+              >
+                Reportar campaña
+              </ReportTriggerButton>
+            )}
           </div>
           <div className="mt-3">
             <CategoryChips categories={campaign.categories} />
@@ -155,6 +173,16 @@ export function CampaignDetailPage() {
             onOpenChange={setIsDonateOpen}
             campaign={campaign}
             onDonated={handleDonated}
+          />
+
+          <ReportDialog
+            open={isReportOpen}
+            onOpenChange={setIsReportOpen}
+            target={{
+              type: "CAMPAIGN",
+              id: campaign.id,
+              displayName: campaign.name,
+            }}
           />
         </>
       )}

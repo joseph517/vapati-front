@@ -5,8 +5,11 @@ import type { CampaignResponseDTO } from "@/domain/campaigns/campaign.types";
 import type { PublicationResponseDTO } from "@/domain/publications/publication.types";
 import {
   canPublish,
+  publicationAuthorName,
   publicationsEmptyText,
 } from "@/domain/publications/publications";
+import type { ReportTarget } from "@/domain/reports/report.types";
+import { canReport } from "@/domain/reports/reports";
 import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
 import {
   InlineRetryAlert,
@@ -23,6 +26,9 @@ import {
 import {
   PublicationComposer,
 } from "@/presentation/components/organisms/publications/publication-composer";
+import {
+  ReportDialog,
+} from "@/presentation/components/organisms/reports/report-dialog";
 import { useSession } from "@/presentation/hooks/auth/use-session";
 import { useCampaignPublications } from "@/presentation/hooks/publications/use-campaign-publications";
 import { cn } from "@/presentation/utils/cn";
@@ -58,6 +64,21 @@ export function CampaignPublicationsPanel({
   function openDelete(publication: PublicationResponseDTO) {
     setDeleteTarget(publication);
     setDeleteOpen(true);
+  }
+
+  // Same as `deleteTarget`: kept apart from `reportOpen`.
+  const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
+  const [reportOpen, setReportOpen] = useState(false);
+
+  function openReport(publication: PublicationResponseDTO) {
+    setReportTarget({
+      type: "PUBLICATION",
+      id: publication.id,
+      displayName: publicationAuthorName(publication),
+      displayHandle: publication.userName,
+      excerpt: publication.description,
+    });
+    setReportOpen(true);
   }
 
   function handleDeleted() {
@@ -115,6 +136,11 @@ export function CampaignPublicationsPanel({
                 key={publication.id}
                 publication={publication}
                 onDelete={isOwner ? () => openDelete(publication) : undefined}
+                onReport={
+                  canReport(publication.userId, userInfo?.userId)
+                    ? () => openReport(publication)
+                    : undefined
+                }
               />
             ))}
           </div>
@@ -127,6 +153,14 @@ export function CampaignPublicationsPanel({
           onOpenChange={setDeleteOpen}
           publication={deleteTarget}
           onDeleted={handleDeleted}
+        />
+      )}
+
+      {reportTarget && (
+        <ReportDialog
+          open={reportOpen}
+          onOpenChange={setReportOpen}
+          target={reportTarget}
         />
       )}
     </section>
