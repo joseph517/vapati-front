@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { adminReportsService } from "@/data/admin/admin-reports.service";
-import { isReportNotFound } from "@/domain/admin/admin-reports";
+import { canReview, isReportNotFound } from "@/domain/admin/admin-reports";
+import type { ReportDTO } from "@/domain/reports/report.types";
 import { UNEXPECTED_ERROR_MESSAGE } from "@/domain/shared/errors";
+import { NoticeAlert } from "@/presentation/components/atoms/notice-alert";
 import { ReportStatusBadge } from "@/presentation/components/atoms/report-status-badge";
 import {
   ReportReviewSummaryCard,
@@ -16,7 +19,11 @@ import { ErrorCard } from "@/presentation/components/molecules/error-card";
 import {
   AdminReportDetailSkeleton,
 } from "@/presentation/components/organisms/admin/admin-report-detail-skeleton";
+import {
+  ReportReviewForm,
+} from "@/presentation/components/organisms/admin/report-review-form";
 import { useApiQuery } from "@/presentation/hooks/shared/use-api-query";
+import { REVIEW_SAVED_NOTICE } from "@/presentation/utils/admin-report-texts";
 import { adminReportsBackHref } from "@/presentation/utils/admin-routes";
 import { formatDateTime } from "@/presentation/utils/format";
 
@@ -26,10 +33,39 @@ export function AdminReportDetailPage() {
   const backHref = adminReportsBackHref(searchParams.get("from"));
 
   // The route's id goes as is: a non-numeric one answers 400, shown as not found.
-  const { data: report, loading, error, reload } = useApiQuery(
+  const { data, loading, error, reload } = useApiQuery(
     adminReportsService.keys.detail(params.reportId),
     () => adminReportsService.detail(params.reportId)
   );
+
+  // The PUT response replaces the fetched report while it belongs to this route.
+  const [savedReport, setSavedReport] = useState<ReportDTO | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [conflict, setConflict] = useState<string | null>(null);
+  const report =
+    savedReport !== null && String(savedReport.id) === params.reportId
+      ? savedReport
+      : data;
+
+  function handleSaved(saved: ReportDTO) {
+    setSavedReport(saved);
+    setNotice(REVIEW_SAVED_NOTICE);
+    setConflict(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Someone else already resolved or rejected it: show the final state.
+  function handleConflict(message: string) {
+    setConflict(message);
+    setNotice(null);
+    setSavedReport(null);
+    reload();
+  }
+
+  function handleSubmitAttempt() {
+    setNotice(null);
+    setConflict(null);
+  }
 
   let content: React.ReactNode;
   if (loading) {
@@ -65,8 +101,35 @@ export function AdminReportDetailPage() {
             </span>
           </div>
         </div>
+        {notice && (
+          <NoticeAlert
+            role="status"
+            className="mt-[22px]"
+            onDismiss={() => setNotice(null)}
+          >
+            {notice}
+          </NoticeAlert>
+        )}
+        {conflict && (
+          <NoticeAlert
+            tone="danger"
+            className="mt-[22px]"
+            onDismiss={() => setConflict(null)}
+          >
+            {conflict}
+          </NoticeAlert>
+        )}
         <ReportSummaryCard report={report} />
         <ReportReviewSummaryCard report={report} />
+        {canReview(report.status) && (
+          <ReportReviewForm
+            key={report.reviewedAt ?? "unreviewed"}
+            report={report}
+            onSaved={handleSaved}
+            onConflict={handleConflict}
+            onSubmitAttempt={handleSubmitAttempt}
+          />
+        )}
       </>
     );
   }
