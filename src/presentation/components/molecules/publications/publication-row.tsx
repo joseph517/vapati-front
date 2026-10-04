@@ -6,15 +6,21 @@ import { publicationAuthorName } from "@/domain/publications/publications";
 import {
   DangerOutlineButton,
 } from "@/presentation/components/atoms/danger-outline-button";
+import {
+  ReportTriggerButton,
+} from "@/presentation/components/atoms/report-trigger-button";
 import { formatDateTime } from "@/presentation/utils/format";
 
-// One entry of the campaign's "Novedades" list. "Borrar" only with `onDelete`.
+// One entry of the campaign's "Novedades" list. "Borrar" only with `onDelete`,
+// "Reportar" only with `onReport`, both in the same place.
 export function PublicationRow({
   publication,
   onDelete,
+  onReport,
 }: {
   publication: PublicationResponseDTO;
   onDelete?: () => void;
+  onReport?: () => void;
 }) {
   const profileHref = `/users/${publication.userId}`;
 
@@ -42,6 +48,11 @@ export function PublicationRow({
           <DangerOutlineButton type="button" onClick={onDelete}>
             Borrar
           </DangerOutlineButton>
+        )}
+        {onReport && (
+          <ReportTriggerButton onClick={onReport} className="text-[12.5px]">
+            Reportar
+          </ReportTriggerButton>
         )}
       </div>
       <p className="mt-2 max-w-[62ch] text-[15px] leading-[1.55] whitespace-pre-wrap text-[var(--ink-body)] [overflow-wrap:anywhere]">
