@@ -45,7 +45,12 @@ export function ReportDescriptionField({
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={error ? true : undefined}
         // dark: overrides shadcn's dark:bg-input/30 (the app has no dark theme).
-        className={cn("resize-y bg-white dark:bg-white", INVALID_FIELD_CLASSES)}
+        // overflow-wrap: with field-sizing-content, a long unbroken word would
+        // widen the textarea and the dialog with it.
+        className={cn(
+          "resize-y bg-white [overflow-wrap:anywhere] dark:bg-white",
+          INVALID_FIELD_CLASSES
+        )}
       />
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
