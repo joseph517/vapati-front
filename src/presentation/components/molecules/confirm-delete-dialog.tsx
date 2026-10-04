@@ -20,8 +20,12 @@ interface ConfirmDeleteDialogProps {
   description: ReactNode;
   note: ReactNode;
   confirmLabel: string;
+  // Shown next to the confirm label while onConfirm runs. Defaults to "borrando…".
+  progressLabel?: string;
+  // Extra content between the note and the alerts.
+  children?: ReactNode;
   // If it throws, the dialog shows the error and re-enables. If it resolves, the dialog
-  // stays in "borrando…" until the caller navigates away or closes it.
+  // stays in progress until the caller navigates away or closes it.
   onConfirm: () => Promise<void>;
   // If it returns a message for the error thrown by onConfirm, the dialog enters
   // "blocked" mode: a notice with that message and a single "Cerrar" button.
@@ -35,6 +39,8 @@ export function ConfirmDeleteDialog({
   description,
   note,
   confirmLabel,
+  progressLabel = "borrando…",
+  children,
   onConfirm,
   getBlockedMessage,
 }: ConfirmDeleteDialogProps) {
@@ -105,6 +111,8 @@ export function ConfirmDeleteDialog({
           <p className="mt-2 text-[13.5px] text-muted-foreground">{note}</p>
         </div>
 
+        {children}
+
         {blocked && <NoticeAlert>{blocked}</NoticeAlert>}
 
         {error && (
@@ -146,7 +154,7 @@ export function ConfirmDeleteDialog({
                 {confirmLabel}
                 {deleting && (
                   <span className="animate-pulse text-[13px] font-normal opacity-85">
-                    borrando…
+                    {progressLabel}
                   </span>
                 )}
               </Button>
